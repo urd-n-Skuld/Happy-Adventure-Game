@@ -17,7 +17,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     int numCols, numRows;       //These values are initialised when the world map is loaded (See loadBlocks())
     static int blockSize = 25;
     public boolean showHitboxes, showGrid = false;
-    String gameStates; // "MenuSystem", "PlayGame"
+    String gameStates; // "MenuSystem", "PlayGame", "2Player"
     String csvFile = "images/WorldMaps/Vertical_world.csv";
     //String csvFile = "images/WorldMaps/Horisontal world.csv";
     // putting this here allows easier changes
@@ -491,12 +491,13 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         death = false;
         softResetIsTrue = false;
         canJump = true;
+        gameOver = false;
         audioObj.playAudioRevive(this, audioObj.revive);
         happyObj.setPosX(startPosX);
         happyObj.setPosY(startPosY);
         happyObj.setVelX(0);
         happyObj.setVelY(0);
-        happyObj.setAccelX(0);
+        happyObj.setAccelX(500);
         happyObj.setAccelY(0);
         happyObj.setHitBoxXY(startPosX, startPosY);
         //if myblocks need to be cleared use the method below
@@ -521,9 +522,19 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         if (!gameOver) {
             drawBlocks();
         }
+        else
+        {
+            menuObj.RetryMenuPanel.setVisible(true);
+            menuObj.RTbuttonPanel.setVisible(true);
+        }
 
     }
-
+    public void gameReset()
+    {
+        gameOver = false;
+        gameStates = "PlayGame";
+        happyObj.setPlayerLife(3);
+    }
     //------------------------------------------------------
     //Game loop component to draw the graphics
     //------------------------------------------------------
@@ -705,6 +716,21 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             }
         }
         if (event.getKeyCode() == KeyEvent.VK_H) {if (showHitboxes) showHitboxes = false; else showHitboxes = true;}
+        if (event.getKeyCode() == KeyEvent.VK_ESCAPE)
+        {
+            if(gameStates == "PlayGame")
+            {
+                if(menuObj.PauseMenuPanel.isVisible())
+                {
+                    menuObj.PauseMenuPanel.setVisible(false); menuObj.PAbuttonPanel.setVisible(false);
+                }
+                else
+                {
+                    menuObj.PauseMenuPanel.setVisible(true); menuObj.PAbuttonPanel.setVisible(true);
+                }
+            }
+
+        }
     }
 
     @Override
