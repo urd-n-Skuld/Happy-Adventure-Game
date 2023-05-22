@@ -85,6 +85,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         initWorld(csvFile);// line 113 .... creates variables for grid class
         initCharacters();// line 145
         initGUI();// line 98
+        initEnemies();// line 927
 
         super.mFrame.setSize(frameWidth, frameHeight);
 
@@ -920,6 +921,37 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 drawLine(block.hitBox.getMinX(), block.hitBox.getMinY(), block.hitBox.getMinX(), block.hitBox.getMaxY());
                 drawLine(block.hitBox.getMaxX(), block.hitBox.getMinY(), block.hitBox.getMaxX(), block.hitBox.getMaxY());
                 drawLine(block.hitBox.getMinX(), block.hitBox.getMaxY(), block.hitBox.getMaxX(), block.hitBox.getMaxY());
+            }
+        }
+    }
+    public void initEnemies()
+    {
+
+        for(BlockClass block: myblocks)
+        {
+            if (block instanceof EnemyClass enemy)
+            {
+
+                int i = -1;
+                int index = enemy.getGridLoc();
+                boolean left = true;
+                boolean right = true;
+                while(left)
+                {
+                    if ((gridObj.get(index-i).getBlockType()==-1) &&((gridObj.get(index+numRows-i).getBlockType()==0) ||(gridObj.get(index+numRows-i).getBlockType()==1) ||(gridObj.get(index+numRows-i).getBlockType()==2))) {
+                        i--;
+                    }
+                    else { enemy.setMaxLeft(i, blockSize); left = false; }
+                }
+                i = 1;
+                while(right)
+                {
+                    if ((gridObj.get(index+i).getBlockType()==-1) &&((gridObj.get(index+numRows+i).getBlockType()==0) ||(gridObj.get(index+numRows+i).getBlockType()==1) ||(gridObj.get(index+numRows+i).getBlockType()==2))) {
+                        i++;
+                    }
+                    else { enemy.setMaxRight(i, blockSize); right = false; }
+                }
+
             }
         }
     }
