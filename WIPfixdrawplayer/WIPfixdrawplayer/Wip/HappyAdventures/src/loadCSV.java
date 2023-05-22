@@ -43,12 +43,13 @@ public class loadCSV {
                     gridObj.setPosY(y);
                     gridObj.setBlockType(type);
 
-                    if (!Objects.equals(col, "-1"))
+                    if (type >= 0)
                     {
+
                         BlockClass newBlock = new BlockClass(x, y, type);
                         gridObj.setActiveInd(false);
 
-                        /*if ((type >= 0) & (type <= 2))
+                        if ((type >= 0) & (type <= 2))
                         {
                             if ((columns[i-1].equals("0"))||(columns[i-1].equals("1"))||(columns[i-1].equals("2")))
                             {
@@ -68,7 +69,7 @@ public class loadCSV {
                                     newBlock.setAttributes(2, true);
                                 }
                             }
-                        }
+                        }/*
                         else if ((type >= 24) && (type <= 26))
                         {
                             myblocks.add(new EnemyClass(x, y, type));
