@@ -18,10 +18,10 @@ public class EnemyClass extends BlockClass {
     }
 
     public void Move() {
-        System.out.println("EC line 25 "+ this.locX+ " "+ this.leftTravelMax );
+        //System.out.println("EC line 25 "+ this.locX+ " "+ this.leftTravelMax );
         this.locX += (int) VelX;
         if ((this.locX >= leftTravelMax)||(this.locX <= rightTravelMax)) { VelX *= -1; }
-        System.out.println("EC line 34 "+ this.locX+ " "+ this.rightTravelMax );
+        //System.out.println("EC line 34 "+ this.locX+ " "+ this.rightTravelMax );
     }
 
 public int getGridLoc(){ return gridLoc; }
