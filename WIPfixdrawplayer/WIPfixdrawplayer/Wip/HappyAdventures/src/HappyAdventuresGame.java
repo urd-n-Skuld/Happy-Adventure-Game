@@ -81,10 +81,10 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         death = false;
         gameOver = false;
 
-        initAudio();// line 104
+        initAudio();// line 109
         initWorld(csvFile);// line 113 .... creates variables for grid class
         initCharacters();// line 145
-        initGUI();// line 94
+        initGUI();// line 98
 
         super.mFrame.setSize(frameWidth, frameHeight);
 
@@ -117,8 +117,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     ArrayList<BlockClass> myblocks;
     ArrayList<GridClass> gridObj;
     public void initWorld(String csv)
-    {System.out.println("InitWorld called");
-
+    {
+        //System.out.println("InitWorld called");
         loadCSV map1 = new loadCSV();
         Object[] resultingLists = map1.loadMap(csv, blockSize);
         myblocks = (ArrayList<BlockClass>) resultingLists[0];
@@ -126,7 +126,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
 
         numCols = loadCSV.getCol();
         numRows = loadCSV.getRows();
-System.out.println("numRows: " + numRows + " numCols: " + numCols);
+        //System.out.println("numRows: " + numRows + " numCols: " + numCols);
 
         for (BlockClass block : myblocks)
         {
@@ -163,14 +163,14 @@ System.out.println("numRows: " + numRows + " numCols: " + numCols);
 
     public void initCharacters()
     {
-System.out.println("InitCharacters called");
+        //System.out.println("InitCharacters called");
         for (int i = 0; i < gridObj.size()-1; i++)
         {
             //Happy
             if (gridObj.get(i).getBlockType() == 31)
             {
-                System.out.println("gridObj.size():" + gridObj.size() + " i " + i);
-                System.out.println("numCol " + numCols);
+                //System.out.println("gridObj.size():" + gridObj.size() + " i " + i);
+                //System.out.println("numCol " + numCols);
                 startPosX = gridObj.get(i).getPosX();
                 startPosY = gridObj.get(i).getPosY();
                 happyObj.setSize(blockSize);
@@ -307,11 +307,11 @@ System.out.println("InitCharacters called");
     static boolean isOnGround, isJumping, isFalling, isClimbing, collided, canJump;
 
     public void updateHappy(double dt) {
-//System.out.println("HAG Line 326 Calling updateHappy function");
-//System.out.println("HAG Line 327 " + leftKey + " " + rightKey + " " + upKey + " " + downKey + " " + jumpKey);
-//System.out.println("HAG Line 328 " + collided + " " + isClimbing + " " + canJump + " " + isFalling);
-//System.out.println("HAG Line 329 " + happyObj.getPosX() + " " + happyObj.getPosY() + " " + happyObj.getVelX() + " " + happyObj.getVelY() + " "+ happyObj.getAccelX() + " " + happyObj.getAccelY());
-//System.out.println("HAG Line 330 " + happyObj.getHitBoxX() + " " + happyObj.getHitBoxY());
+    //System.out.println("HAG Line 326 Calling updateHappy function");
+    //System.out.println("HAG Line 327 " + leftKey + " " + rightKey + " " + upKey + " " + downKey + " " + jumpKey);
+    //System.out.println("HAG Line 328 " + collided + " " + isClimbing + " " + canJump + " " + isFalling);
+    //System.out.println("HAG Line 329 " + happyObj.getPosX() + " " + happyObj.getPosY() + " " + happyObj.getVelX() + " " + happyObj.getVelY() + " "+ happyObj.getAccelX() + " " + happyObj.getAccelY());
+    //System.out.println("HAG Line 330 " + happyObj.getHitBoxX() + " " + happyObj.getHitBoxY());
 
         posX = happyObj.getPosX();
         posY = happyObj.getPosY();
@@ -370,7 +370,7 @@ System.out.println("InitCharacters called");
 
         //Vertical movement
         if (isClimbing) {
-//System.out.println("isClimbing: " + isClimbing);
+            //System.out.println("isClimbing: " + isClimbing);
             accelY = 0;
 
             if (upKey && !downKey) {   //if Happy is climbing up
