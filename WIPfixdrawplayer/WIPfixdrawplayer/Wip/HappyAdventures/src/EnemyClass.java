@@ -11,9 +11,6 @@ public class EnemyClass extends BlockClass {
         super(x, y, type);
         this.locX = x * HappyAdventuresGame.blockSize;
         this.locY = y * HappyAdventuresGame.blockSize;
-        // gets pulled out of grid after it is initialised... will need its own loc
-
-
 
        //////////////////////////////////////////////
         enemyindex = i;

@@ -142,7 +142,7 @@ System.out.println("numRows: " + numRows + " numCols: " + numCols);
         for (int i = 0; i<gridObj.size() - 1; i++)
         {
             gridObj.get(i).getBlockType();
-            System.out.println("HAG 144 type: " + gridObj.get(i).getBlockType());
+            //System.out.println("HAG 144 type: " + gridObj.get(i).getBlockType());
         }
 
 
@@ -602,8 +602,8 @@ System.out.println("InitCharacters called");
             happyImage = happyHit;
         }
 
-        System.out.println("Start pos: " + startPosX + " " + startPosY + " pos: " + posX + " " + posY);
-        System.out.println("numRows: " + numRows);
+        //System.out.println("Start pos: " + startPosX + " " + startPosY + " pos: " + posX + " " + posY);
+        //System.out.println("numRows: " + numRows);
 
         tempY = happyObj.getPosY() - drawY;
 
@@ -612,34 +612,34 @@ System.out.println("InitCharacters called");
         {
             //NEED TO DO ONLY CORNERs
             if (happyObj.getPosX() < frameWidth / 2 && happyObj.getPosY() < frameHeight / 2) { //top-left corner
-                System.out.println("TOP-LEFT");
+                //System.out.println("TOP-LEFT");
                 drawImage(imageArray[happyImage][happyIndex], happyObj.getPosX(), happyObj.getPosY(), blockSize, blockSize);
             }
             else if (happyObj.getPosX() > ((numCols - 15) * blockSize))  //bottom-right OR top-right corner
             {
-                System.out.println("BOTTOM RIGHT or TOP RIGHT");
+                //System.out.println("BOTTOM RIGHT or TOP RIGHT");
                 tempX = happyObj.getPosX() - drawX;
                 drawImage(imageArray[happyImage][happyIndex], tempX, tempY, blockSize, blockSize);
             }
             else if (happyObj.getPosY() > ((numRows-10)*blockSize)) //Bottom-left corner
             {
-                System.out.println("BOTTOM LEFT");
+                //System.out.println("BOTTOM LEFT");
                 drawImage(imageArray[happyImage][happyIndex], happyObj.getPosX(), tempY, blockSize, blockSize);
             }
 
         } else if (happyObj.getPosX() >= frameWidth / 2 && happyObj.getPosX() <= ((numCols - 15) * blockSize)) {
             if (happyObj.getPosY() <= ((numRows - 10) * blockSize) && !(happyObj.getPosY() <= frameHeight/2)) { //Middle
-                System.out.println("MIDDLE");
+                //System.out.println("MIDDLE");
                 drawImage(imageArray[happyImage][happyIndex], frameWidth / 2, frameHeight / 2, blockSize, blockSize);
             } else if (happyObj.getPosY() <= frameHeight/2) { //top
-                System.out.println("TOP");
+                //System.out.println("TOP");
                 drawImage(imageArray[happyImage][happyIndex], frameWidth / 2, tempY, blockSize, blockSize);
             } else { //Bottom
-                System.out.println("BOTTOM");
+                //System.out.println("BOTTOM");
                 drawImage(imageArray[happyImage][happyIndex], frameWidth / 2, tempY, blockSize, blockSize);
             }
         } else if (happyObj.getPosY() >= frameHeight / 2 && happyObj.getPosY() <= ((numRows - 10) * blockSize)) {
-            System.out.println("LEFT AND RIGHT");
+            //System.out.println("LEFT AND RIGHT");
             tempX = happyObj.getPosX() - drawX;
             drawImage(imageArray[happyImage][happyIndex], tempX, frameHeight / 2, blockSize, blockSize);
         }
