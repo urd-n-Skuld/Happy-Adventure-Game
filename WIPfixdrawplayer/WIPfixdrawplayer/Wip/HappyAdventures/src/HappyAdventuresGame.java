@@ -402,13 +402,16 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         collisionCheck();
 
         //if ((posY > frameHeight) || (posY < 0) || (posX > frameWidth) || (posX < 0)) {
-        if ((posY < 0) || (posX < 0)) {
+        if ((posY < 0) || (posX < 0) || (posY > numRows*blockSize) || (posX > numCols*blockSize))
+        {
             life--;
+            happyObj.setPlayerLife(life);
             softResetIsTrue = true;
             softReset();
 
             if (life < 0) {
                 gameOver = true;
+                gameStates = "GameOver";
             }
         }
     }
