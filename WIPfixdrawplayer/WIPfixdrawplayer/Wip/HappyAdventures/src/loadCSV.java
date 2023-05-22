@@ -47,7 +47,7 @@ public class loadCSV {
                     {
                         BlockClass newBlock = new BlockClass(x, y, type);
                         gridObj.setActiveInd(false);
-                        if ((type >= 24) && (type <= 26)) { myblocks.add(new EnemyClass(x, y, type)); }
+                        if ((type >= 24) && (type <= 26)) { myblocks.add(new EnemyClass(x, y, type, i)); }
                         else { newBlock.setblockHitBox(x, y, blockSize, blockSize); myblocks.add(newBlock); }
 
 //                        if ((type >= 0) & (type <= 2))

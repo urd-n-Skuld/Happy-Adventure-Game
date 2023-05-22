@@ -4,15 +4,19 @@ public class EnemyClass extends BlockClass {
     private int leftTravelMax, rightTravelMax;
     private double VelX = 2;
     Rectangle hitBox;
-    private int locX, locY;
+    private int locX, locY, gridLoc;
 
 
 
-    public EnemyClass(int x, int y, int type) {
+    public EnemyClass(int x, int y, int type, int gridIndex) {
         super(x, y, type);
         this.locX = x * HappyAdventuresGame.blockSize;
         this.locY = y * HappyAdventuresGame.blockSize;
+        this.gridLoc = gridIndex;
         this.setEnemyHitBox(x, y, HappyAdventuresGame.blockSize, HappyAdventuresGame.blockSize);
+    }
+    public void init(){
+
     }
 
     public void Move() {
