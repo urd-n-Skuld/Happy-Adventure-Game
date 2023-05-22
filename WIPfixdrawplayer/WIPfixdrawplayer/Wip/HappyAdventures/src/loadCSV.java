@@ -48,41 +48,44 @@ public class loadCSV {
 
                         BlockClass newBlock = new BlockClass(x, y, type);
                         gridObj.setActiveInd(false);
-//
-//                        if ((type >= 0) & (type <= 2))
-//                        {
-//                            if ((columns[i-1].equals("0"))||(columns[i-1].equals("1"))||(columns[i-1].equals("2")))
-//                            {
-//                                newBlock.setAttributes(1, true);
-//                            }
-//                            if(i>0)
-//                            {
-//                                if ((columns[i-1].equals("0"))||(columns[i-1].equals("1"))||(columns[i-1].equals("2")))
-//                                {
-//                                    newBlock.setAttributes(1, true);
-//                                }
-//                            }
-//                            if(i+1!=columns.length)
-//                            {
-//                                if((columns[i+1].equals("0"))||(columns[i+1].equals("1"))||(columns[i+1].equals("2")))
-//                                {
-//                                    newBlock.setAttributes(2, true);
-//                                }
-//                            }
-//                        }/*
-//                        else if ((type >= 24) && (type <= 26))
-//                        {
-//                            myblocks.add(new EnemyClass(x, y, type));
-//                        }
-//                        else
-//                        {
-//
-//                            //System.out.println("LoadCSV line 50 " +i+ " = x and " + row + " = y "+columns[i]+" = type");
-//                        }*/
-//                        //creating a hitbox here is very important
-//                        //The Blockclass will set the proper position of the block depending on the type and whether it needs it or not
-//                        newBlock.setblockHitBox(x, y, blockSize, blockSize);
-                        myblocks.add(newBlock);
+/*
+                        if ((type >= 0) & (type <= 2))
+                        {
+                            if ((columns[i-1].equals("0"))||(columns[i-1].equals("1"))||(columns[i-1].equals("2")))
+                            {
+                                newBlock.setAttributes(1, true);
+                            }
+                            if(i>0)
+                            {
+                                if ((columns[i-1].equals("0"))||(columns[i-1].equals("1"))||(columns[i-1].equals("2")))
+                                {
+                                    newBlock.setAttributes(1, true);
+                                }
+                            }
+                            if(i+1!=columns.length)
+                            {
+                                if((columns[i+1].equals("0"))||(columns[i+1].equals("1"))||(columns[i+1].equals("2")))
+                                {
+                                    newBlock.setAttributes(2, true);
+                                }
+                            }
+                        }
+                        else*/ if ((type >= 24) && (type <= 26))
+                        {
+                            myblocks.add(new EnemyClass(x, y, type));
+                        }/*
+                        else
+                        {
+
+                            //System.out.println("LoadCSV line 50 " +i+ " = x and " + row + " = y "+columns[i]+" = type");
+                        }*/
+                        //creating a hitbox here is very important
+                        //The Blockclass will set the proper position of the block depending on the type and whether it needs it or not
+                        else
+                        {
+                            newBlock.setblockHitBox(x, y, blockSize, blockSize);
+                            myblocks.add(newBlock);
+                        }
                     }
                     else
                     {
