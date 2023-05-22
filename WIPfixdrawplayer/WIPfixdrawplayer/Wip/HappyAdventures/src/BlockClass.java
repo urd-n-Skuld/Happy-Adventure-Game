@@ -67,23 +67,23 @@ public class BlockClass
         return type;
     }
 
-    protected void makeHitBox(int blockSize)
-    // allows for different spacing on the ends of blocks
-    // untested
-    {
-        if (this.blockAttributeArray[1] && this.blockAttributeArray[2]) {
-            this.hitBox = new Rectangle(this.posX, this.posY, blockSize, blockSize);
-        } else if (this.blockAttributeArray[1])// block on left -3 from the right
-        {
-            this.hitBox = new Rectangle(this.posX, this.posY, blockSize - 3, blockSize);
-        } else if (this.blockAttributeArray[2])// block to the right.... hitbox - 3 on the left
-        {
-            this.hitBox = new Rectangle(this.posX + 3, this.posY, blockSize - 3, blockSize);
-        } else// no blocks on either side so both sides lose 3
-        {
-            this.hitBox = new Rectangle(this.posX + 3, this.posY, blockSize - 6, blockSize);
-        }
-    }
+//    protected void makeHitBox(int blockSize)
+//    // allows for different spacing on the ends of blocks
+//    // untested
+//    {
+//        if (this.blockAttributeArray[1] && this.blockAttributeArray[2]) {
+//            this.hitBox = new Rectangle(this.posX, this.posY, blockSize, blockSize);
+//        } else if (this.blockAttributeArray[1])// block on left -3 from the right
+//        {
+//            this.hitBox = new Rectangle(this.posX, this.posY, blockSize - 3, blockSize);
+//        } else if (this.blockAttributeArray[2])// block to the right.... hitbox - 3 on the left
+//        {
+//            this.hitBox = new Rectangle(this.posX + 3, this.posY, blockSize - 3, blockSize);
+//        } else// no blocks on either side so both sides lose 3
+//        {
+//            this.hitBox = new Rectangle(this.posX + 3, this.posY, blockSize - 6, blockSize);
+//        }
+//    }
     public Rectangle getHitBox() {
         return this.hitBox;
     }

@@ -45,52 +45,34 @@ public class loadCSV {
 
                     if (type >= 0)
                     {
-
                         BlockClass newBlock = new BlockClass(x, y, type);
                         gridObj.setActiveInd(false);
-/*
-                        if ((type >= 0) & (type <= 2))
-                        {
-                            if ((columns[i-1].equals("0"))||(columns[i-1].equals("1"))||(columns[i-1].equals("2")))
-                            {
-                                newBlock.setAttributes(1, true);
-                            }
-                            if(i>0)
-                            {
-                                if ((columns[i-1].equals("0"))||(columns[i-1].equals("1"))||(columns[i-1].equals("2")))
-                                {
-                                    newBlock.setAttributes(1, true);
-                                }
-                            }
-                            if(i+1!=columns.length)
-                            {
-                                if((columns[i+1].equals("0"))||(columns[i+1].equals("1"))||(columns[i+1].equals("2")))
-                                {
-                                    newBlock.setAttributes(2, true);
-                                }
-                            }
-                        }
-                        else*/ if ((type >= 24) && (type <= 26))
-                        {
-                            myblocks.add(new EnemyClass(x, y, type));
-                        }/*
-                        else
-                        {
+                        if ((type >= 24) && (type <= 26)) { myblocks.add(new EnemyClass(x, y, type)); }
+                        else { newBlock.setblockHitBox(x, y, blockSize, blockSize); myblocks.add(newBlock); }
 
-                            //System.out.println("LoadCSV line 50 " +i+ " = x and " + row + " = y "+columns[i]+" = type");
-                        }*/
-                        //creating a hitbox here is very important
-                        //The Blockclass will set the proper position of the block depending on the type and whether it needs it or not
-                        else
-                        {
-                            newBlock.setblockHitBox(x, y, blockSize, blockSize);
-                            myblocks.add(newBlock);
-                        }
+//                        if ((type >= 0) & (type <= 2))
+//                        {
+//                            if ((columns[i-1].equals("0"))||(columns[i-1].equals("1"))||(columns[i-1].equals("2")))
+//                            {
+//                                newBlock.setAttributes(1, true);
+//                            }
+//                            if(i>0)
+//                            {
+//                                if ((columns[i-1].equals("0"))||(columns[i-1].equals("1"))||(columns[i-1].equals("2")))
+//                                {
+//                                    newBlock.setAttributes(1, true);
+//                                }
+//                            }
+//                            if(i+1!=columns.length)
+//                            {
+//                                if((columns[i+1].equals("0"))||(columns[i+1].equals("1"))||(columns[i+1].equals("2")))
+//                                {
+//                                    newBlock.setAttributes(2, true);
+//                                }
+//                            }
+//                        }
                     }
-                    else
-                    {
-                        gridObj.setActiveInd(true);
-                    }
+                    else { gridObj.setActiveInd(true); }
 
                     gridArr.add(gridObj);
                     i++;
@@ -99,18 +81,6 @@ public class loadCSV {
                 }
                 numCols = column;
                 row++;
-
-                //System.out.println("LoadCSV line 59 " +numCols+ " = numCols and " + numRows + " = numRows");
-
-//            GridClass[][] gridObj = new GridClass[101][21];
-//            for (BlockClass block : myblocks) {
-//                //System.out.println("LoadCSV line 61 " +block.getPosX()+ " = x " + block.getPosY() + " = y and "+ block.getType() + " = type");
-//                int x = block.getPosX();
-//                int y = block.getPosY();
-//                type = block.getType();
-//                gridObj[x][y] = block;
-//            }
-                //System.out.println("LoadCSV line 69 victory");
             }
             numRows = row;
         }
@@ -123,7 +93,7 @@ public class loadCSV {
                 catch (IOException e) { e.printStackTrace(); }
             }
         }
-System.out.println("CSV finished loading");
+    //System.out.println("CSV finished loading");
     //----------------------------------------------------------------------
     // Returning both blocks arraylist and grid array list here!!!
     //----------------------------------------------------------------------
