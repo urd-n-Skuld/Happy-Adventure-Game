@@ -218,6 +218,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 //System.out.println("startPosX " + gridObj.get(i).getPosX() + " RightStop: " + rightStop + " LeftStop: " + leftStop);
                 tempEnemy.setMaxLeft(leftStop, blockSize);
                 tempEnemy.setMaxRight(rightStop, blockSize);
+                tempEnemy.loadEnemySprites(this);
                 enemyObj.add(tempEnemy);
             }
             else if (gridObj.get(i).getBlockType() == 27 || gridObj.get(i).getBlockType() == 28 || gridObj.get(i).getBlockType() == 29) //Friends
@@ -730,11 +731,14 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         drawBoldText(50, 50, "life: " + life, "arial", 25);
     }
 
-    public void drawEnemies(int drawX, int drawY) {  
+    public void drawEnemies(int drawX, int drawY) {
+        int enemyImage;
         for (int i = 0; i < enemyObj.size(); i++) {
+            Image[][] enemyImageArray = enemyObj.get(i).getImageArray();
+            enemyImage = i;
             int enemyPosX = enemyObj.get(i).getPosX() - drawX;
             int enemyPosY = enemyObj.get(i).getPosY() - drawY;
-            drawImage(blockIMG[enemyObj.get(i).getType()], enemyPosX, enemyPosY, blockSize, blockSize);
+            drawImage(enemyImageArray[enemyImage][happyIndex], enemyPosX, enemyPosY, blockSize, blockSize);
         }
     }
 
@@ -750,7 +754,6 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             }
             int friendPosX = friendObj.get(i).getPosX() - drawX;
             int friendPosY = friendObj.get(i).getPosY() - drawY;
-            //drawImage(blockIMG[friendObj.get(i).getType()], friendPosX, friendPosY, blockSize, blockSize);
             drawImage(friendImageArray[friendImage][happyIndex], friendPosX, friendPosY, blockSize, blockSize);
         }
     }

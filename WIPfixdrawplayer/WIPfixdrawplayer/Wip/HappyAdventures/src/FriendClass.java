@@ -2,7 +2,6 @@ import java.awt.*;
 
 public class FriendClass extends BlockClass {
     private Image[][] ImageArray = new Image[8][15];
-    Image  friendIm;
     Rectangle hitBox;
     private int posX, posY, gridLoc;
     private double VelX;

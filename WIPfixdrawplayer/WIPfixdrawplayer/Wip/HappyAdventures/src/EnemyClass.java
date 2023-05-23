@@ -2,6 +2,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class EnemyClass extends BlockClass {
+    private Image[][] ImageArray = new Image[8][15];
     private int leftTravelMax, rightTravelMax;
     private double VelX = 2;
     Rectangle hitBox;
@@ -36,5 +37,20 @@ public class EnemyClass extends BlockClass {
 
     @Override public int getPosY() {
         return locY;
+    }
+
+    public Image[][] getImageArray() { return ImageArray; }
+
+    public void loadEnemySprites(HappyAdventuresGame gameObj)
+    {
+        Image spriteSheet = gameObj.loadImage("images/Sprites/MonterSprites.png");
+
+        for (int x = 0; x < ImageArray.length; x++)
+        {
+            for (int y = 0; y < ImageArray[x].length; y++)
+            {
+                ImageArray[x][y] = gameObj.subImage(spriteSheet, y * 50, x * 50, 50, 50);
+            }
+        }
     }
 }
