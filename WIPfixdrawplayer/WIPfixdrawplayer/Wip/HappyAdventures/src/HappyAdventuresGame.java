@@ -224,7 +224,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             {
                 int friendPosX = gridObj.get(i).getPosX(), friendPosY = gridObj.get(i).getPosY();
                 FriendClass tempFriend = new FriendClass(friendPosX, friendPosY, gridObj.get(i).getBlockType(), i);
-
+                tempFriend.loadFriendSprites(this);
                 friendObj.add(tempFriend);
             }
         }
@@ -515,6 +515,9 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             int friendPosX = friendObj.get(i).getPosX();
             int friendPosY = friendObj.get(i).getPosY();
             friendObj.get(i).setFriendHitBox(friendPosX, friendPosY, blockSize, blockSize);
+            if (happyObj.hitBox.intersects(friendObj.get(i).hitBox)) {
+                friendObj.get(i).friendSaved();
+            }
         }
     }
 
@@ -736,10 +739,19 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     }
 
     public void drawFriends(int drawX, int drawY) {
+        int friendImage;
         for (int i = 0; i < friendObj.size(); i++) {
+            //friend1 = 0, friend1Jump = 1, friend2 = 2, friend2Jump = 3, friend3 = 4, friend3Jump = 5, friend4 = 6, friend4Jump = 7;
+            Image[][] friendImageArray = friendObj.get(i).getImageArray();
+            if (jump) {
+                friendImage = i*2+1;
+            } else {
+                friendImage = i*2;
+            }
             int friendPosX = friendObj.get(i).getPosX() - drawX;
             int friendPosY = friendObj.get(i).getPosY() - drawY;
-            drawImage(blockIMG[friendObj.get(i).getType()], friendPosX, friendPosY, blockSize, blockSize);
+            //drawImage(blockIMG[friendObj.get(i).getType()], friendPosX, friendPosY, blockSize, blockSize);
+            drawImage(friendImageArray[friendImage][happyIndex], friendPosX, friendPosY, blockSize, blockSize);
         }
     }
 
