@@ -26,6 +26,12 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     // putting this here allows easier changes
     static boolean death, gameOver;
     public boolean softResetIsTrue;
+
+    //volpy HUD variables
+    int candy1Total = 0, candy2Total = 0, candy3Total = 0;
+    int score = 0;
+    //volpy HUD IMAGES
+    Image heart, candy1, candy2, candy3, key1, key2, key3, key4, keyEmpty, hudBG;
     public static Image[] blockIMG =
             {
                     loadImage("images/Sprites/border.png"),//0
@@ -87,6 +93,18 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     @Override
     public void init()
     {System.out.println("Init called");
+        //volpy hud Images initialisation
+
+        hudBG = loadImage("images/Sprites/HUD_bg.png");
+        heart = loadImage("images/Sprites/life.png");
+        key1 = loadImage("images/Sprites/greenKey.png");
+        key2 = loadImage("images/Sprites/yellowKey.png");
+        key3 = loadImage("images/Sprites/blueKey.png");
+        key4 = loadImage("images/Sprites/redKey.png");
+        keyEmpty = loadImage("images/Sprites/emptyKey.png");
+        candy1 = loadImage("images/Sprites/CANDY1_25PX.png");
+        candy2 = loadImage("images/Sprites/CANDY2_25PX.png");
+        candy3 = loadImage("images/Sprites/CANDY3_25PX.png");
         setWindowSize(frameWidth, frameHeight);
 
         gameStates = "MenuSystem";    //Change this to "MenuSystem" if you want to turn on game menus
@@ -120,9 +138,40 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     //------------------------------------------------------
     AudioClass audioObj = new AudioClass();
 
-    public void initAudio()
+        public void initAudio()
     {System.out.println("InitAudio called");
         audioObj.setupAudio(this);
+    }
+
+    public void drawHUD() {
+        //HUD BACKGROUND
+        drawImage(hudBG, 0, 0, 750, 28);
+        changeColor(Color.white);
+
+        //LIFE
+
+        drawBoldText(53, 20, "x" + life, "arial", 15);
+        //CANDIES
+        drawBoldText(150, 20, "x" + candy1Total, "arial", 15);
+        drawBoldText(195, 20, "x" + candy2Total, "arial", 15);
+        drawBoldText(250, 20, "x" + candy3Total, "arial", 15);
+//KEYS
+
+        //EMPTY KEYS REPLACE KEYS WITH COLOUR
+
+        drawImage(keyEmpty, 372, 0, 25, 25);
+        drawImage(keyEmpty, 408, 0, 25, 25);
+        drawImage(keyEmpty, 444, 0, 25, 25);
+        //drawImage(keyEmpty, 480, 0, 25, 25);
+        drawImage(key1, 372, 0, 25, 25);
+        drawImage(key2, 408, 0, 25, 25);
+        drawImage(key3, 444, 0, 25, 25);
+        // drawImage(key4, 480, 0, 25, 25);
+
+        //TOTAL SCORE
+
+        drawBoldText(629, 20, "Total Score: " + score, "arial", 15);
+
     }
 
     //------------------------------------------------------
@@ -487,6 +536,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             menuObj.RTbuttonPanel.setVisible(true);
         }
         drawHitBoxes();
+        drawHUD();
+
     }
     public void gameReset()
     {
@@ -579,8 +630,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         life = happyObj.getPlayerLife();
         Image[][] imageArray = happyObj.getImageArray();
 
-        changeColor(Color.white);
-        drawBoldText(50, 50, "life: " + life, "arial", 25);
+        //changeColor(Color.white);
+        //drawBoldText(50, 50, "life: " + life, "arial", 25);
 
         if (idle && !jump && !hit) {
             happyImage = happyIdle;
@@ -641,8 +692,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             currentY = frameHeight/2;
         }
 
-        changeColor(Color.white);
-        drawBoldText(50, 50, "life: " + life, "arial", 25);
+//        changeColor(Color.white);
+//        drawBoldText(50, 50, "life: " + life, "arial", 25);
     }
 
     public void drawEnemies(int drawX, int drawY) {
