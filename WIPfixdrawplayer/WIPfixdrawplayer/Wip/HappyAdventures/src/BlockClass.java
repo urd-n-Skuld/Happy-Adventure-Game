@@ -85,8 +85,8 @@ public class BlockClass
         return this.hitBox;
     }
     public void setblockHitBox(int x, int y, int w, int h)
-    {   //not hitbox properties set for these types: candy, fire, ladder, spike
-        if ((type == 16) || (type == 17) || (type == 18) || (type == 3) || (type == 4) || (type == 5))
+    {   //not hitbox properties set for these types: candy, fire, ladder, spike, keys
+        if (((type >= 3) && (type <= 5))||((type >= 13) && (type <= 18)))
         {
             hitBox = new Rectangle(0, 0, 0, 0);
         }

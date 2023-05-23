@@ -98,7 +98,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         initWorld(csvFile);// line 113 .... creates variables for grid class
         initCharacters();// line 145
         initGUI();// line 98
-        initEnemies();// line 927
+
 
         super.mFrame.setSize(frameWidth, frameHeight);
 
@@ -176,7 +176,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     static boolean idle, jump, hit;
     static boolean leftKey, rightKey, upKey, downKey, jumpKey;
     int startPosX, startPosY;
-
+    boolean[] keys = new boolean[3];
     public void initCharacters()
     {
         //System.out.println("InitCharacters called");
@@ -251,91 +251,6 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             isJumping = isFalling = isClimbing = collided = false;
     }
 
-    //------------------------------------------------------
-    //Initialising the blocks Arraylist by loading the worldmap csv
-    //------------------------------------------------------
-//    public void loadBlocks()
-//    {
-//        myblocks.clear();
-//
-//        String csvFile = "images/WorldMaps/Horisontal world.csv";
-//        BufferedReader br = null;
-//        String line = "";
-//        String cvsSplitBy = ",";
-//
-//        try
-//        {
-//            br = new BufferedReader(new FileReader(csvFile));
-//            int row = 0;
-//
-//            while ((line = br.readLine()) != null)
-//            {
-//                // Used to Split the line from CSV into columns we can use the tiled app to create different world by exporting the csv file
-//                String[] columns = line.split(cvsSplitBy);      //reads in one line
-//                int column = 0;
-//
-//                for (String col : columns)
-//                {
-//                    int x = column * blockSize;
-//                    int y = row * blockSize;
-//
-//                    if(!Objects.equals(col, "-1"))     //We only want to create a block if it is not an empty space
-//                    {
-//                        BlockClass block = new BlockClass();
-//                        block.setPosX(x);
-//                        block.setPosY(y);
-//                        block.setType(Integer.parseInt(col));
-//
-//                    /*
-//                          Here are the different attributes for the blocks:    (Remember to update the blockAttributeArray[] in BlockClass if new attributes are added
-//                          0 = dangerous - takes 1 life on contact
-//                          1 = has block to left
-//                          2 = has block to the right
-//                          3 = moves
-//                          4 = solid...cant pass through
-//                          5 = adds life on contact
-//                          6 = still exists
-//                          7 = adds points
-//                          8 = can climb up or down
-//                          9 = saves current position for checkpoint
-//                     */
-//                        // The following sets the attributes for the block
-//                        switch (col)
-//                        {
-//                            case "0":
-//                            case "1":
-//                            case "2":
-//                                block.setAttributes(4, true);
-//                                break;
-//                            //case "24":
-//                            //case "25":
-//                            //case "26":
-//                            //break;
-//
-//                            default:
-//                                //
-//                                break;
-//                        }
-//                        myblocks.add(block);
-//                    }
-//
-//                    column++;
-//                }
-//                numCols = column;
-//                row++;
-//            }
-//            numRows = row;
-//        }
-//        catch (IOException e) { e.printStackTrace(); System.out.println("Error loading the CSV file. Location: loadBlocks()");}
-//        finally
-//        {
-//            if (br != null)
-//            {
-//                try { br.close(); }
-//                catch (IOException e) { e.printStackTrace(); }
-//            }
-//        }
-//    }
 
     //------------------------------------------------------
     //The game loop update function for updating the game attributes
@@ -481,40 +396,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         return aniIndex;
     }
 
-    /*private void initEnemyMax()
-    {
-        for (BlockClass block : myblocks)
-        {
-            if (block instanceof EnemyClass enemy)
-            {
-                int x = block.getPosX();
-                int y = block.getPosY();
-                int AI_X = x;
-                int AI_Y = y + 1;
-                System.out.println("hag line 422 x = " + x + " y = " + y);
-                //System.out.println("hag line 423 x = "+ AI_X + " y = "+ AI_Y );
-                //if block below has a block on the left & the block to sprites left doesn't exist or is not solid
-                if ((gridObj[AI_X][AI_Y].blockAttributeArray[1]) && ((gridObj[AI_X - 1][y] == null) || (!gridObj[AI_X - 1][y].blockAttributeArray[4]))) {
-                    while ((gridObj[AI_X][AI_Y].blockAttributeArray[1]) && ((gridObj[AI_X - 1][y] == null) || (!gridObj[AI_X - 1][y].blockAttributeArray[4]))) {
-                        AI_X--;
-                        System.out.println("hag line 423 x = " + AI_X + " y = " + AI_Y);
-                    }
-                }
-                enemy.setLeftMax(AI_X);
-                AI_X = x;
-                // if block below has a block to the right & the block to sprites right doesn't exist or is not solid
-                if ((gridObj[AI_X][AI_Y].blockAttributeArray[2]) && ((gridObj[x + 1][y] == null) || (!gridObj[x + 1][y].blockAttributeArray[4]))) {
-                    while ((gridObj[AI_X][AI_Y].blockAttributeArray[2]) && ((gridObj[x + 1][y] == null) || (!gridObj[x + 1][y].blockAttributeArray[4]))) {
-                        AI_X++;
-                    }
-                }
-                enemy.setRightMax(AI_X);
-                //gridObj[x][y]=null;
-            }
 
-
-        }
-    }*/
 
     private void moveBlocks() {
         if ((posY < 0) || (posX < 0) || (posY > numRows*blockSize) || (posX > numCols*blockSize))
@@ -638,8 +520,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         minDrawPosY = -blockSize;
         maxDrawPosX = frameWidth;
         maxDrawPosY = frameHeight; //(numRows * blockSize) - frameHeight
-//System.out.println("posX: " + posX + " posY: " + posY + "drawX: " + drawX + " drawY: " + drawY);
-//System.out.println(" minDrawPosX: " + minDrawPosX + " minDrawPosY: " + minDrawPosY +" maxDrawPosX: " + maxDrawPosX +" maxDrawPosY: " + maxDrawPosY);
+        //System.out.println("posX: " + posX + " posY: " + posY + "drawX: " + drawX + " drawY: " + drawY);
+        //System.out.println(" minDrawPosX: " + minDrawPosX + " minDrawPosY: " + minDrawPosY +" maxDrawPosX: " + maxDrawPosX +" maxDrawPosY: " + maxDrawPosY);
         if (drawX < 0)
         {
             drawX = 0;
@@ -824,7 +706,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         if (event.getKeyCode() == KeyEvent.VK_SPACE) {
             jumpKey = true;
             jump = true;
-            System.out.println("HAG Line 619 jumpKey: " + jumpKey + " " + isOnGround);
+            //System.out.println("HAG Line 619 jumpKey: " + jumpKey + " " + isOnGround);
 
             if (jump) {
                 if (canJump) {
@@ -838,7 +720,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                     velY *= -1;
                     happyObj.setAccelY(accelY);
                     happyObj.setVelY(velY);
-                    System.out.println("HAG line 635 " + happyObj.getVelY() + " " + happyObj.getAccelY());
+                    //System.out.println("HAG line 635 " + happyObj.getVelY() + " " + happyObj.getAccelY());
                 }
 
             }
@@ -916,8 +798,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
 
         life = happyObj.getPlayerLife();
 
-//System.out.println("velX: " + velX + " velY: " + velY + "  posX: " + posX + " posY: " + posY);
-//System.out.println("HBposX: " + HBposX + " HBposY: " + HBposY + " HBminX: " + HBminX + " HBminY: " + HBminY + " HBmaxX: " + HBmaxX + " HBmaxY: " + HBmaxY);
+        //System.out.println("velX: " + velX + " velY: " + velY + "  posX: " + posX + " posY: " + posY);
+        //System.out.println("HBposX: " + HBposX + " HBposY: " + HBposY + " HBminX: " + HBminX + " HBminY: " + HBminY + " HBmaxX: " + HBmaxX + " HBmaxY: " + HBmaxY);
 
             //Collision with blocks that have a hitBox
         for (BlockClass block : myblocks)
@@ -930,10 +812,12 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             //System.out.println("blockposX: " + blockposX + " blockposY: " + blockposY);
             //System.out.println("blockminX: " + blockminX + " blockMinY: " + blockMinY + " blockmaxX: " + blockmaxX + " blockMaxY: " + blockMaxY);
 
-            if ((type == 0) || (type == 1) || (type == 2)) {
+            if (((type >= 0) && (type <= 2)) || ((type >= 9)&& (type <= 11)))
+            {
             //System.out.println("blocktype called");
 
-                if (happyObj.hitBox.intersects(block.hitBox)) {
+                if (happyObj.hitBox.intersects(block.hitBox))
+                {
                     //System.out.println("668 HAG Collision true, BlockType: " + block.getType() );
                     collided = true;
 
@@ -948,7 +832,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                     if (velY > 0 && happyObj.hitBox.getMaxY() >= block.hitBox.getMinY())
                     {
                         //Happy is falling down to the ground, his feet is going through the nearest block below
-                        //System.out.println("691 HAG Condition 1 is true");
+                        //System.out.println("833 HAG Condition 1 is true");
                         //System.out.println("velX: " + velX + " velY: " + velY + "  posX: " + posX + " posY: " + posY);
                         //System.out.println("collisionVelX: " + collisionVelX + " collisionVelY: " + collisionVelY + " ollisioinHappyPosX: " + collisionHappyPosX + " collisionHappyPosY: " + collisionHappyPosY);
                         //System.out.println("collisionboxX: " + collisionBoxPosX + " collisionboxY: " + collisionBoxPosY);
@@ -964,7 +848,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                     }
                     else if (velY < 0 && happyObj.hitBox.getMinY() <= block.hitBox.getMaxY())
                     {   //Happy is going upwards, his head is going through the block above
-                        //System.out.println(" 701 HAG Condition 2 is true");
+                        //System.out.println(" 849 HAG Condition 2 is true");
                         // System.out.println("velX: " + velX + " velY: " + velY + "  posX: " + posX + " posY: " + posY);
                         //System.out.println("collisionVelX: " + collisionVelX + " collisionVelY: " + collisionVelY + " ollisioinHappyPosX: " + collisionHappyPosX + " collisionHappyPosY: " + collisionHappyPosY);
                         //System.out.println("collisionboxX: " + collisionBoxPosX + " collisionboxY: " + collisionBoxPosY);
@@ -975,13 +859,12 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                         isOnGround = checkIsOnGround(posX, posY);
 
 
-                        if (!isOnGround) {
-                            canJump = false;
-                        } else {
-                            canJump = true;
-                        }
-                    } else if (velX > 0 && happyObj.hitBox.getMaxX() >= block.hitBox.getMinX()) {   //Happy is moving to the right, his right side is going through the block on the right
-                        //System.out.println("700 HAG Condition 3 is true");
+                        if (!isOnGround) { canJump = false; }
+                        else { canJump = true; }
+                    }
+                    else if (velX > 0 && happyObj.hitBox.getMaxX() >= block.hitBox.getMinX())
+                    {   //Happy is moving to the right, his right side is going through the block on the right
+                        //System.out.println("866 HAG Condition 3 is true");
                         //System.out.println("velX: " + velX + " velY: " + velY + "  posX: " + posX + " posY: " + posY);
                         //System.out.println("collisionVelX: " + collisionVelX + " collisionVelY: " + collisionVelY + " ollisioinHappyPosX: " + collisionHappyPosX + " collisionHappyPosY: " + collisionHappyPosY);
                         //System.out.println("collisionboxX: " + collisionBoxPosX + " collisionboxY: " + collisionBoxPosY);
@@ -994,7 +877,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                     else if (velX < 0 && happyObj.hitBox.getMinX() <= block.hitBox.getMaxX())
                     {
                     //Happy is moving to the left, his left side is going through the block on the left
-                    //System.out.println("707 HAG Condition 4 is true");
+                    //System.out.println("879 HAG Condition 4 is true");
                     //System.out.println("velX: " + velX + " velY: " + velY + "  posX: " + posX + " posY: " + posY);
                     //System.out.println("collisionVelX: " + collisionVelX + " collisionVelY: " + collisionVelY + " ollisioinHappyPosX: " + collisionHappyPosX + " collisionHappyPosY: " + collisionHappyPosY);
                     //System.out.println("collisionboxX: " + collisionBoxPosX + " collisionboxY: " + collisionBoxPosY);
@@ -1035,18 +918,14 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                         life++;
                         audioObj.playAudioExtraLife(this, audioObj.extraLife);
                         happyObj.setPlayerLife(life);
-                        gridObj.get(block.getCellIndex()).setBlockType(-1);     //set the current block in the grid to -1, so that it can no longer be drawn on the screen
-                        gridObj.get(block.getCellIndex()).setActiveInd(false);  //this block in the grid is no longer active
-                        myblocks.remove(block);
+                        deleteBlock(block);
                     }
                     else
                     {
                         audioObj.playAudioEatCandy(this, audioObj.eatCandy);
                         //candy score
-                        happyObj.setPlayerScore((int) 4*((type)- 16)^2 + 1);
-                        gridObj.get(block.getCellIndex()).setBlockType(-1);     //set the current block in the grid to -1, so that it can no longer be drawn on the screen
-                        gridObj.get(block.getCellIndex()).setActiveInd(false);  //this block in the grid is no longer active
-                        myblocks.remove(block);
+                        happyObj.setPlayerScore(4*((type)- 16)^2 + 1);
+                        deleteBlock(block);
                     }
                     break;
                 }
@@ -1076,8 +955,44 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                     }
                 }
             }
+            else if ((type == 13) || (type == 14) || (type == 15))
+            {//keys
+                if ((((happyObj.hitBox.getMaxX() - 5 > block.getPosX() && happyObj.hitBox.getMaxX() - 5 < block.getPosX() + blockSize)) && (happyObj.hitBox.getMaxY() - 5 > block.getPosY() && happyObj.hitBox.getMaxY() - 5 < block.getPosY() + blockSize))
+                        || ((((happyObj.hitBox.getMinX() + 5 > block.getPosX() && happyObj.hitBox.getMinX() + 5 < block.getPosX() + blockSize)) && (happyObj.hitBox.getMinY() + 5 > block.getPosY() && happyObj.hitBox.getMinY() + 5 < block.getPosY() + blockSize))))
+                {
+                    keys[type-13] = true;
+                    deleteBlock(block);
+                    break;
+                }
+            }
+
+
+            else if ((type == 9) || (type == 10) || (type == 11))
+            {
+//                System.out.println(type);
+//                System.out.println(happyObj.hitBox.getMaxX()+" xhit maxy "+happyObj.hitBox.getMaxY());
+//                System.out.println(happyObj.hitBox.getMinX()+"  xhit miny  "+happyObj.hitBox.getMinY());
+//                System.out.println(happyObj.getPosX()+" xhappyy "+happyObj.getPosY());
+//                System.out.println((happyObj.hitBox.getMaxX() + 2)+" > "+block.getPosX());
+//                System.out.println((happyObj.hitBox.getMaxX() + 2)+" < "+block.getPosX() + blockSize);
+
+                if (keys[type - 9] && (((happyObj.hitBox.getMaxX() + 2 > block.getPosX() && happyObj.hitBox.getMaxX() + 2 < block.getPosX() + blockSize) || (happyObj.hitBox.getMaxY() + 5 > block.getPosY() && happyObj.hitBox.getMaxY() + 2 < block.getPosY() + blockSize))
+                        || ((happyObj.hitBox.getMinX() - 2 < block.getPosX() + blockSize && happyObj.hitBox.getMinX() - 2 > block.getPosX()) || (happyObj.hitBox.getMinY() - 2 < block.getPosY() + blockSize && happyObj.hitBox.getMinY() - 2 > block.getPosY()))))
+                {
+                    deleteBlock(block);
+                    break;
+                }
+            }
+
+
         }
         return false;
+
+    }
+    private void deleteBlock(BlockClass block){
+        gridObj.get(block.getCellIndex()).setBlockType(-1);
+        gridObj.get(block.getCellIndex()).setActiveInd(false);
+        myblocks.remove(block);
     }
     //-----------------------------------------------------
     //This function will give Happy a few seconds to pass through objects when get hurt
@@ -1127,37 +1042,6 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 drawLine(block.hitBox.getMinX(), block.hitBox.getMaxY(), block.hitBox.getMaxX(), block.hitBox.getMaxY());
             }
         }
-    }
-    public void initEnemies()  
-    {
-
-//        for(BlockClass block: myblocks)
-//        {
-//            if (block instanceof EnemyClass enemy)
-//            {
-//
-//                int i = -1;
-//                int index = enemy.getGridLoc();
-//                boolean left = true;
-//                boolean right = true;
-//                while(left)
-//                {
-//                    if ((gridObj.get(index-i).getBlockType()==-1) &&((gridObj.get(index+numRows-i).getBlockType()==0) ||(gridObj.get(index+numRows-i).getBlockType()==1) ||(gridObj.get(index+numRows-i).getBlockType()==2))) {
-//                        i--;
-//                    }
-//                    else { enemy.setMaxLeft(i, blockSize); left = false; }
-//                }
-//                i = 1;
-//                while(right)
-//                {
-//                    if ((gridObj.get(index+i).getBlockType()==-1) &&((gridObj.get(index+numRows+i).getBlockType()==0) ||(gridObj.get(index+numRows+i).getBlockType()==1) ||(gridObj.get(index+numRows+i).getBlockType()==2))) {
-//                        i++;
-//                    }
-//                    else { enemy.setMaxRight(i, blockSize); right = false; }
-//                }
-//
-//            }
-//        }
     }
 }
 

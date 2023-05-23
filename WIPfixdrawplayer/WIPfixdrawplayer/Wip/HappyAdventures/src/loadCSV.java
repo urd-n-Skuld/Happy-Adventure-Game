@@ -62,27 +62,7 @@ public class loadCSV {
                             myblocks.add(newBlock);
                         }
 
-//                        if ((type >= 0) & (type <= 2))
-//                        {
-//                            if ((columns[i-1].equals("0"))||(columns[i-1].equals("1"))||(columns[i-1].equals("2")))
-//                            {
-//                                newBlock.setAttributes(1, true);
-//                            }
-//                            if(i>0)
-//                            {
-//                                if ((columns[i-1].equals("0"))||(columns[i-1].equals("1"))||(columns[i-1].equals("2")))
-//                                {
-//                                    newBlock.setAttributes(1, true);
-//                                }
-//                            }
-//                            if(i+1!=columns.length)
-//                            {
-//                                if((columns[i+1].equals("0"))||(columns[i+1].equals("1"))||(columns[i+1].equals("2")))
-//                                {
-//                                    newBlock.setAttributes(2, true);
-//                                }
-//                            }
-//                        }
+
                     }
                     else { gridObj.setActiveInd(false); }
 
