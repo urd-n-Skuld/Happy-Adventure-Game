@@ -5,7 +5,7 @@ public class PlayerCharacterClass
 {
     private Image[][] ImageArray = new Image[8][15];
     Image playerIm;
-    private int posX, posY, size, score, type;
+    private int posX, posY, size, score, type, cellIndex;
     private double velX, velY;
     private double accelX, accelY;
     public final double gravity = 9.8;
@@ -25,6 +25,7 @@ public class PlayerCharacterClass
     public void setPlayerScore(int val) { score += val; }
     public void setPlayerLife(int l) { life = l; }
     public void setHitBoxXY(int x, int y) { hitBox.x = x; hitBox.y = y; }
+    public void setCellIndex(int i) { cellIndex = i; }
     public int getSize () { return size; }
     public int getType () { return type; }
     public int getPosX () { return posX; }
@@ -38,6 +39,7 @@ public class PlayerCharacterClass
     public int getHitBoxX() { return hitBox.x; }
     public int getHitBoxY() { return hitBox.y; }
     public Image[][] getImageArray() { return ImageArray; }
+    public int getCellIndex() { return cellIndex; }
     private Image getPlayerImage(HappyAdventuresGame gameObj)
     {
         if (type == 31)

@@ -12,6 +12,7 @@ public class BlockClass
     private int posX;   //Don't make these static!!!
     private int posY;   //Don't make these static!!!
     private int type;   //Don't make these static!!!
+    private int cellIndex;
     boolean[] blockAttributeArray = new boolean[11];        //The more attributes are added, this will need to increase!
 
     public BlockClass(int x, int y, int type) {
@@ -19,10 +20,6 @@ public class BlockClass
         this.posX = x;
         this.posY = y;
         this.type = type;
-    }
-
-    public BlockClass() {
-
     }
 
     // 0 = dangerous
@@ -42,14 +39,13 @@ public class BlockClass
     public void setPosX(int x) {
         posX = x;
     }
-
     public void setPosY(int y) {
         posY = y;
     }
-
     public void setType(int t) {
         type = t;
     }
+    public void setCellIndex(int i) { cellIndex = i; }
 
     public void setAttributes(int index, boolean attributeFlag) {
         this.blockAttributeArray[index] = attributeFlag;
@@ -66,6 +62,7 @@ public class BlockClass
     public int getType() {
         return type;
     }
+    public int getCellIndex() { return cellIndex; }
 
 //    protected void makeHitBox(int blockSize)
 //    // allows for different spacing on the ends of blocks

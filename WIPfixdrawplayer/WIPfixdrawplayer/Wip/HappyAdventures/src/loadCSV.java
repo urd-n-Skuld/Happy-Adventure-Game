@@ -46,9 +46,21 @@ public class loadCSV {
                     if (type >= 0)
                     {
                         BlockClass newBlock = new BlockClass(x, y, type);
-                        gridObj.setActiveInd(false);
-                        if ((type >= 24) && (type <= 26)) { myblocks.add(new EnemyClass(x, y, type, i)); }
-                        else { newBlock.setblockHitBox(x, y, blockSize, blockSize); myblocks.add(newBlock); }
+                        gridObj.setActiveInd(true);
+                        if ((type >= 24) && (type <= 26))
+                        {
+                            myblocks.add(new EnemyClass(x, y, type, i));
+                        }
+                        else
+                        {
+                            newBlock.setPosX(x);
+                            newBlock.setPosY(y);
+                            newBlock.setCellIndex(i);
+                            newBlock.setType(type);
+                            newBlock.setblockHitBox(x, y, blockSize, blockSize);
+
+                            myblocks.add(newBlock);
+                        }
 
 //                        if ((type >= 0) & (type <= 2))
 //                        {
@@ -72,7 +84,7 @@ public class loadCSV {
 //                            }
 //                        }
                     }
-                    else { gridObj.setActiveInd(true); }
+                    else { gridObj.setActiveInd(false); }
 
                     gridArr.add(gridObj);
                     i++;

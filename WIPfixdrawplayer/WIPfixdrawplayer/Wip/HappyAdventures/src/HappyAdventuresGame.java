@@ -29,11 +29,11 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                     loadImage("images/Sprites/soil.png"),//1
                     loadImage("images/Sprites/grass.png"),//2
                     loadImage("images/Sprites/spikesUp25px.png"),//3
-                    loadImage("images/Sprites/spikesUp25px.png"),//4 need fire
+                    loadImage("images/Sprites/fire.png"),//4 to create the fire sprite
                     loadImage("images/Sprites/ladder25px.png"),//5
                     loadImage("images/Sprites/ladder25px.png"),//6 need safe zone
-                    loadImage("images/Sprites/ladder25px.png"),//7 need checkpoint
-                    loadImage("images/Sprites/ladder25px.png"),//8 need checkpoint
+                    loadImage("images/Sprites/safezonesign.png"),//7 need checkpoint sprites
+                    loadImage("images/Sprites/checkpointInactive.png"),//8 need checkpoint
                     loadImage("images/Sprites/door_yellow25x.png"),//9
                     loadImage("images/Sprites/door_blue25x.png"),//10
                     loadImage("images/Sprites/door_yellow25x.png"),//11
@@ -44,20 +44,30 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                     loadImage("images/Sprites/CANDY1_25PX.png"),//16
                     loadImage("images/Sprites/CANDY2_25PX.png"),//17
                     loadImage("images/Sprites/CANDY3_25PX.png"),//18
-                    loadImage("images/Sprites/apple.png"),//19 need heart
+                    loadImage("images/Sprites/heart.png"),//19 need heart sprite
                     loadImage("images/Sprites/block.png"),//20 need gate
-                    loadImage("images/Sprites/block.png"),//21 need WF bo
-                    loadImage("images/Sprites/block.png"),//22 need WF mi
-                    loadImage("images/Sprites/block.png"),//23 need WF to
+                    loadImage("images/Sprites/waterfallbottom.png"),//21 need waterfall sprite
+                    loadImage("images/Sprites/waterfallmiddle.png"),//22 need waterfall sprite
+                    loadImage("images/Sprites/waterfalltop.png"),//23 need waterfall sprite
                     loadImage("images/Sprites/enemy1.png"),//24
                     loadImage("images/Sprites/enemy2.png"),//25
-                    loadImage("images/Sprites/enemy1.png"),//26 need enemy 3
-                    loadImage("images/Sprites/orange.png"),//27
-                    loadImage("images/Sprites/orange.png"),//28 need friends
-                    loadImage("images/Sprites/orange.png"),//29 need friends
+                    loadImage("images/Sprites/enemy3.png"),//26
+                    loadImage("images/Sprites/orange.png"),//27 use friends sprite
+                    loadImage("images/Sprites/orange.png"),//28 use friends sprite
+                    loadImage("images/Sprites/orange.png"),//29 use friends sprite
                     loadImage("images/Sprites/orange.png"),//30 need clock
                     loadImage("images/Sprites/happy.png"),//31
                     loadImage("images/Sprites/happy_ass.png"),//32 need bappy
+                    loadImage("images/Sprites/block_float25x75.png"),//33
+                    loadImage("images/Sprites/vinetop.png"),//34
+                    loadImage("images/Sprites/vinemiddle.png"),//35
+                    loadImage("images/Sprites/vinebottom.png"),//36
+                    loadImage("images/Sprites/supersweet.png"),//37
+                    loadImage("images/Sprites/disappearingBlock.png"),//38    might need a sprite for this one
+                    loadImage("images/Sprites/spikeBottom.png"),//39 need bappy
+                    loadImage("images/Sprites/spikeLeft.png"),//40 need bappy
+                    loadImage("images/Sprites/spikeRight.png"),//41 need bappy
+                    loadImage("images/Sprites/secretblock1.png"),//42 need bappy
             };
 
 
@@ -189,6 +199,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 happyObj.setPlayerLife(3);
                 happyObj.createHitBox(startPosX, startPosY, blockSize);
                 happyObj.loadPlayerSprites(this);
+                happyObj.setCellIndex(gridObj.get(i).getCellIndex());
             }
             else if (gridObj.get(i).getBlockType() == 24 || gridObj.get(i).getBlockType() == 25 || gridObj.get(i).getBlockType() == 26) //Enemies  
             {
@@ -501,14 +512,15 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             softResetIsTrue = true;
             softReset();
         }
-        for (int i = 0; i < enemyObj.size(); i++) {
+        for (int i = 0; i < enemyObj.size(); i++)
+        {
             enemyObj.get(i).Move();
             int enemyPosX = enemyObj.get(i).getPosX();
             int enemyPosY = enemyObj.get(i).getPosY();
             enemyObj.get(i).setEnemyHitBox(enemyPosX, enemyPosY, blockSize, blockSize);
             if (happyObj.hitBox.intersects(enemyObj.get(i).hitBox)) {
                 hit = true;
-                softResetIsTrue = true;
+                //softResetIsTrue = true;
             }
         }
         for (int i = 0; i < friendObj.size(); i++) {
@@ -579,7 +591,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             menuObj.RetryMenuPanel.setVisible(true);
             menuObj.RTbuttonPanel.setVisible(true);
         }
-
+        drawHitBoxes();
     }
     public void gameReset()
     {
@@ -636,7 +648,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 {
                     if(x >= minDrawPosX && x <= maxDrawPosX && y >= minDrawPosY && y <= maxDrawPosY)
                     {
-                        drawImage(blockIMG[type], x, y, blockSize, blockSize);  //Blocktypes are coming through as very weird numbers!!!!!! Pictures are not making sense here.
+                        drawImage(blockIMG[type], x, y, blockSize, blockSize);
                         //System.out.println("index: " + index + " posX: " + gridObj.get(index).getPosX() + " Y: " + gridObj.get(index).getPosY() + " type: " + gridObj.get(index).getBlockType()+1);
                         //System.out.println("x: " + x + " y: " + y + " minDrawPosX: " + minDrawPosX + " minDrawPosY: " + minDrawPosY +" maxDrawPosX: " + maxDrawPosX +" maxDrawPosY: " + maxDrawPosY);
                     }
@@ -723,8 +735,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             currentY = frameHeight/2;
         }
 
-        if (hit) {
-            softReset();
+        if ((hit) && (life >= 0)) {
+            life--;
         }
 
         changeColor(Color.white);
@@ -739,6 +751,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             int enemyPosX = enemyObj.get(i).getPosX() - drawX;
             int enemyPosY = enemyObj.get(i).getPosY() - drawY;
             drawImage(enemyImageArray[enemyImage][happyIndex], enemyPosX, enemyPosY, blockSize, blockSize);
+System.out.println("i: " + i + " happyIndex: " + happyIndex + " enemyObjcreated: " + enemyObj.size());
         }
     }
 
@@ -985,10 +998,12 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             //Collision for blocks that don't have hitboxes
             if ((type == 16) || (type == 17) || (type == 18)) {   //These are candies
                 if ((((happyObj.hitBox.getMaxX() - 5 > block.getPosX() && happyObj.hitBox.getMaxX() - 5 < block.getPosX() + blockSize)) && (happyObj.hitBox.getMaxY() - 5 > block.getPosY() && happyObj.hitBox.getMaxY() - 5 < block.getPosY() + blockSize))
-                        || ((((happyObj.hitBox.getMinX() + 5 > block.getPosX() && happyObj.hitBox.getMinX() + 5 < block.getPosY() + blockSize)) && (happyObj.hitBox.getMinY() + 5 > block.getPosY() && happyObj.hitBox.getMinY() + 5 < block.getPosY() + blockSize)))) {
+                        || ((((happyObj.hitBox.getMinX() + 5 > block.getPosX() && happyObj.hitBox.getMinX() + 5 < block.getPosX() + blockSize)) && (happyObj.hitBox.getMinY() + 5 > block.getPosY() && happyObj.hitBox.getMinY() + 5 < block.getPosY() + blockSize)))) {
                     audioObj.playAudioEatCandy(this, audioObj.eatCandy);
                     //candy score
                     happyObj.setPlayerScore((int) 4*((type)- 16)^2 + 1);
+                    gridObj.get(block.getCellIndex()).setBlockType(-1);     //set the current block in the grid to -1, so that it can no longer be drawn on the screen
+                    gridObj.get(block.getCellIndex()).setActiveInd(false);  //this block in the grid is no longer active
                     myblocks.remove(block);
 
                     break;
