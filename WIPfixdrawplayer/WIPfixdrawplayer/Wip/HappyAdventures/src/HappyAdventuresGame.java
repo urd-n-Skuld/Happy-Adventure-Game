@@ -157,8 +157,9 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     //------------------------------------------------------
     //Player and other non-playable characters initialisation
     //------------------------------------------------------
-    ArrayList<EnemyClass> enemyObj = new ArrayList<>();  
     PlayerCharacterClass happyObj = new PlayerCharacterClass();
+    ArrayList<EnemyClass> enemyObj = new ArrayList<>();
+    ArrayList<FriendClass> friendObj = new ArrayList<>();
     static boolean idle, jump, hit;
     static boolean leftKey, rightKey, upKey, downKey, jumpKey;
     int startPosX, startPosY;
@@ -214,10 +215,17 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                         break;
                     }
                 }
-                System.out.println("startPosX " + gridObj.get(i).getPosX() + " RightStop: " + rightStop + " LeftStop: " + leftStop);
+                //System.out.println("startPosX " + gridObj.get(i).getPosX() + " RightStop: " + rightStop + " LeftStop: " + leftStop);
                 tempEnemy.setMaxLeft(leftStop, blockSize);
                 tempEnemy.setMaxRight(rightStop, blockSize);
                 enemyObj.add(tempEnemy);
+            }
+            else if (gridObj.get(i).getBlockType() == 27 || gridObj.get(i).getBlockType() == 28 || gridObj.get(i).getBlockType() == 29) //Friends
+            {
+                int friendPosX = gridObj.get(i).getPosX(), friendPosY = gridObj.get(i).getPosY();
+                FriendClass tempFriend = new FriendClass(friendPosX, friendPosY, gridObj.get(i).getBlockType(), i);
+
+                friendObj.add(tempFriend);
             }
         }
             //Bappy Placeholder
@@ -614,7 +622,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 type = gridObj.get(index).getBlockType();
 
                 //System.out.println("index: " + index + " row" + row + " col: " + col + " numCols: " + numCols + " numRows: " + numRows + " arraysize: " + gridObj.size() + " type: " + gridObj.get(index).getBlockType() );
-                if (type != -1 && type != 31 && type != 24 && type != 25 && type != 26)  
+                //if (type != -1 && type != 31 && type != 24 && type != 25 && type != 26 && type != 27 && type != 28 && type != 29)
+                if (type != -1 && type != 31 && !(type >= 24 && type <= 29)) //Not air, happy, enemies, or friends
                 {
                     if(x >= minDrawPosX && x <= maxDrawPosX && y >= minDrawPosY && y <= maxDrawPosY)
                     {
@@ -625,8 +634,9 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 }
             }
         }
+        drawFriends(drawX, drawY);
         drawPlayer(drawX, drawY);
-        drawEnemies(drawX, drawY);  
+        drawEnemies(drawX, drawY);
     }
 
 
@@ -704,6 +714,14 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             int enemyPosX = enemyObj.get(i).getPosX() - drawX;
             int enemyPosY = enemyObj.get(i).getPosY() - drawY;
             drawImage(blockIMG[enemyObj.get(i).getType()], enemyPosX, enemyPosY, blockSize, blockSize);
+        }
+    }
+
+    public void drawFriends(int drawX, int drawY) {
+        for (int i = 0; i < friendObj.size(); i++) {
+            int friendPosX = friendObj.get(i).getPosX() - drawX;
+            int friendPosY = friendObj.get(i).getPosY() - drawY;
+            drawImage(blockIMG[friendObj.get(i).getType()], friendPosX, friendPosY, blockSize, blockSize);
         }
     }
 
