@@ -212,17 +212,17 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 int leftStop = gridObj.get(i).getPosX(), rightStop = gridObj.get(i).getPosX(); //Initialise
                 for (int indx = i+1; gridObj.get(indx).getBlockType() == -1 || gridObj.get(indx+numCols).getBlockType() != -1; indx++)
                 {
-                    System.out.println("CycleRight");
+                    //System.out.println("CycleRight");
                     if (gridObj.get(indx).getBlockType() != -1 || gridObj.get(indx+numCols).getBlockType() == -1)
                     {
-                        System.out.println("i " + i + " indx " + indx + " type " + gridObj.get(indx).getBlockType() + " type " + gridObj.get(indx + numCols).getBlockType());
+                        //System.out.println("i " + i + " indx " + indx + " type " + gridObj.get(indx).getBlockType() + " type " + gridObj.get(indx + numCols).getBlockType());
                         rightStop = gridObj.get(indx-1).getPosX();
                         break;
                     }
                 }
                 for (int indx = i-1; gridObj.get(indx).getBlockType() == -1 || gridObj.get(indx+numCols).getBlockType() != -1; indx--)
                 {
-                    System.out.println("CycleLeft");
+                    //System.out.println("CycleLeft");
                     if (gridObj.get(indx).getBlockType() != -1 || gridObj.get(indx+numCols).getBlockType() == -1)
                     {
                         leftStop = gridObj.get(indx+1).getPosX();
