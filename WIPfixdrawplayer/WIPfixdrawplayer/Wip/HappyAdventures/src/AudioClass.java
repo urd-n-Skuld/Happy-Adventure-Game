@@ -26,7 +26,7 @@ public class AudioClass
     {
         game.playAudio(revive,-10f);
     }
-    public void playAudioEatCandy(HappyAdventuresGame game, GameEngine.AudioClip revive) { game.playAudio(revive,-10f); }
+    public void playAudioEatCandy(HappyAdventuresGame game, GameEngine.AudioClip eatCandy) { game.playAudio(eatCandy,-10f); }
     public void playAudioWasHit(HappyAdventuresGame game, GameEngine.AudioClip wasHit) { game.playAudio(wasHit,-10f);}
     public void playAudioExtraLife(HappyAdventuresGame game, GameEngine.AudioClip extraLife) { game.playAudio(extraLife,-10f);}
 }

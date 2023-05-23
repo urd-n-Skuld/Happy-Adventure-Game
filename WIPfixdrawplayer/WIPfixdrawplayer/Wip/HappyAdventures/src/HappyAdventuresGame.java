@@ -382,7 +382,6 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             gameStates = "GameOver";
         }
 
-
         //Horisontal movement
         if (leftKey && !rightKey)
         {
@@ -433,7 +432,6 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         //Vertical movement
         if (isClimbing)
         {
-            //System.out.println("isClimbing: " + isClimbing);
             accelY = 0;
 
             if (upKey && !downKey) {   //if Happy is climbing up
@@ -442,7 +440,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 velY = 100;
             }
             posY += velY * dt;
-        } else if (!canJump && !isOnGround && isJumping) {   //if Happy is jumping
+        }if (!canJump && !isOnGround && isJumping) {   //if Happy is jumping
             //System.out.println("isJumping: " + isJumping);
             accelY += happyObj.gravity;
             velY += accelY * dt;
@@ -464,13 +462,6 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         //Collision
         collisionCheck();
 
-        //Update Happy's current position, and hitbox current pos
-        happyObj.setAccelY(accelY);
-        happyObj.setVelY(velY);
-        happyObj.setPosY(posY);
-        happyObj.setHitBoxXY(posX, posY);
-
-        collisionCheck();
     }
 
     //------------------------------------------------------
@@ -541,10 +532,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             int enemyPosY = enemyObj.get(i).getPosY();
             enemyObj.get(i).setEnemyHitBox(enemyPosX, enemyPosY, blockSize, blockSize);
             if (happyObj.hitBox.intersects(enemyObj.get(i).hitBox)) {
-                hit = true;
                 hitDelay();
-
-                //softResetIsTrue = true;
             }
         }
         for (int i = 0; i < friendObj.size(); i++) {
@@ -621,9 +609,19 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     public void gameReset()
     {
         gameOver = false;
+        hit = false;
         gameStates = "PlayGame";
         happyObj.setPlayerLife(3);
-        //softReset();
+        death = false;
+        softResetIsTrue = false;
+        canJump = true;
+        happyObj.setPosX(startPosX);
+        happyObj.setPosY(startPosY);
+        happyObj.setVelX(0);
+        happyObj.setVelY(0);
+        happyObj.setAccelX(500);
+        happyObj.setAccelY(0);
+        happyObj.setHitBoxXY(startPosX, startPosY);
     }
     //------------------------------------------------------
     //Game loop component to draw the graphics
@@ -869,10 +867,14 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         if (event.getKeyCode() == KeyEvent.VK_LEFT) {
             leftKey = false;/* System.out.println("leftkey: " + leftKey);*/
         }
-        if (event.getKeyCode() == KeyEvent.VK_UP) {
-            upKey = false;
-            velY = 0;
-            happyObj.setVelY(0);
+        if (event.getKeyCode() == KeyEvent.VK_UP)
+        {   upKey = false;
+            if(isClimbing)
+            {
+                velY = 0;
+                happyObj.setVelY(0);
+            }
+
             /* System.out.println("upKey: " + upKey);*/
         }
         if (event.getKeyCode() == KeyEvent.VK_RIGHT) {
@@ -911,6 +913,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         double collisionVelY;
         int hitBoxX = happyObj.getHitBoxX();
         int hitBoxY = happyObj.getHitBoxY();
+
+        life = happyObj.getPlayerLife();
 
 //System.out.println("velX: " + velX + " velY: " + velY + "  posX: " + posX + " posY: " + posY);
 //System.out.println("HBposX: " + HBposX + " HBposY: " + HBposY + " HBminX: " + HBminX + " HBminY: " + HBminY + " HBmaxX: " + HBmaxX + " HBmaxY: " + HBmaxY);
@@ -1031,6 +1035,9 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                         life++;
                         audioObj.playAudioExtraLife(this, audioObj.extraLife);
                         happyObj.setPlayerLife(life);
+                        gridObj.get(block.getCellIndex()).setBlockType(-1);     //set the current block in the grid to -1, so that it can no longer be drawn on the screen
+                        gridObj.get(block.getCellIndex()).setActiveInd(false);  //this block in the grid is no longer active
+                        myblocks.remove(block);
                     }
                     else
                     {
@@ -1045,7 +1052,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 }
             }
             else if ((type == 3) || (type == 4) || (type == 39) || (type == 40) ||(type == 41))
-            {   //These are spikes
+            {   //These are spikes and fire
                 if ((((happyObj.hitBox.getMaxX() - 5 > block.getPosX() && happyObj.hitBox.getMaxX() - 5 < block.getPosX() + blockSize)) && (happyObj.hitBox.getMaxY() - 5 > block.getPosY() && happyObj.hitBox.getMaxY() - 5 < block.getPosY() + blockSize))
                         || ((((happyObj.hitBox.getMinX() + 5 > block.getPosX() && happyObj.hitBox.getMinX() + 5 < block.getPosX() + blockSize)) && (happyObj.hitBox.getMinY() + 5 > block.getPosY() && happyObj.hitBox.getMinY() + 5 < block.getPosY() + blockSize))))
                 {
@@ -1057,19 +1064,18 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 if ((((happyObj.hitBox.getMaxX() - 10 > block.getPosX() && happyObj.hitBox.getMaxX() - 10 < block.getPosX() + blockSize)) && (happyObj.hitBox.getMaxY() - 5 > block.getPosX() && happyObj.hitBox.getMaxY() - 5 < block.getPosY() + blockSize))
                         || ((((happyObj.hitBox.getMinX() + 10 > block.getPosX() && happyObj.hitBox.getMinX() + 10 < block.getPosX() + blockSize)) && (happyObj.hitBox.getMinY() + 5 > block.getPosY() && happyObj.hitBox.getMinY() + 5 < block.getPosY() + blockSize))))
                 {
-                    if (upKey) {
+                    if ((upKey) || (downKey))
+                    {
                         posX = block.getPosX();
                         posY = block.getPosY();
                         isClimbing = true;
+                        happyObj.setAccelY(0);
                         happyObj.setPosX(posX);
-                        happyObj.setPosX(posY);
+                        happyObj.setPosY(posY);
+                        happyObj.setHitBoxXY(posX, posY);
                     }
                 }
             }
-
-            happyObj.setPosY(posY);
-            happyObj.setPosX(posX);
-            happyObj.setHitBoxXY(posX, posY);
         }
         return false;
     }
@@ -1077,14 +1083,14 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     //This function will give Happy a few seconds to pass through objects when get hurt
     public void hitDelay()
     {
-        if (!hit && life > 0)
+        if (!hit && life >= 0)
         {
+            life = happyObj.getPlayerLife();
             life--;
             happyObj.setPlayerLife(life);
             audioObj.playAudioWasHit(this, audioObj.wasHit);
         }
         hit = true;
-
         hitTimer.schedule(new TimerTask()
         {
             @Override
