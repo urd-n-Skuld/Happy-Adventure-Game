@@ -4,6 +4,7 @@ public class FriendClass extends BlockClass {
     Rectangle hitBox;
     private int posX, posY, gridLoc;
     private double VelX;
+    boolean saved = false;
 
     public FriendClass(int x, int y, int type, int gridIndex) {
         super(x, y, type);
@@ -21,7 +22,10 @@ public class FriendClass extends BlockClass {
     @Override public int getPosX() { return posX; }
     @Override public int getPosY() { return posY; }
 
+    public void friendSaved() { saved = true; }
     public void Move() {
+        if (saved) {
 
+        }
     }
 }

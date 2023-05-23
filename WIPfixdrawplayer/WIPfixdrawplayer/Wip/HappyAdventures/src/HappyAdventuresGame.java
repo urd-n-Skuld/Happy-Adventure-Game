@@ -362,97 +362,84 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         happyBoxX = happyObj.getHitBoxX();
         happyBoxY = happyObj.getHitBoxY();
 
-        //Horisontal movement
-        if (leftKey && !rightKey) {
-            //Moving to the left
-            velX -= accelX * dt;
+        if (!hit) {
+            //Horisontal movement
+            if (leftKey && !rightKey) {
+                //Moving to the left
+                velX -= accelX * dt;
 
-            if (velX < -happyObj.maxSpeedX) {
-                velX = -happyObj.maxSpeedX;
-            }
-        } else if (rightKey && !leftKey) {
-            //Moving to the right
-            velX += accelX * dt;
-
-            if (velX > happyObj.maxSpeedX) {
-                velX = happyObj.maxSpeedX;
-            }
-        } else {
-            //Happy is not moving left or right, but velX is not 0
-            if (velX > 0) {
-                //If happy has positive velocity, applying a negative stop force
-                velX -= happyObj.stopSpeedX * dt;
-
-                if (velX < 0) {
-                    velX = 0;
+                if (velX < -happyObj.maxSpeedX) {
+                    velX = -happyObj.maxSpeedX;
                 }
-            }
-            //Happy is not moving left or right, but velX is not 0
-            else if (velX < 0) {
-                //If happy has negative velocity, applying a positive stop force
-                velX += happyObj.stopSpeedX * dt;
+            } else if (rightKey && !leftKey) {
+                //Moving to the right
+                velX += accelX * dt;
 
+                if (velX > happyObj.maxSpeedX) {
+                    velX = happyObj.maxSpeedX;
+                }
+            } else {
+                //Happy is not moving left or right, but velX is not 0
                 if (velX > 0) {
-                    velX = 0;
+                    //If happy has positive velocity, applying a negative stop force
+                    velX -= happyObj.stopSpeedX * dt;
+
+                    if (velX < 0) {
+                        velX = 0;
+                    }
+                }
+                //Happy is not moving left or right, but velX is not 0
+                else if (velX < 0) {
+                    //If happy has negative velocity, applying a positive stop force
+                    velX += happyObj.stopSpeedX * dt;
+
+                    if (velX > 0) {
+                        velX = 0;
+                    }
                 }
             }
-        }
 
-        //Update Happy's current position, and hitbox current pos
-        happyObj.setVelX(velX);
-        posX += velX * dt;
-        happyObj.setPosX(posX);
-        happyBoxX = posX;
-        happyObj.setHitBoxXY(posX, posY);
+            //Update Happy's current position, and hitbox current pos
+            happyObj.setVelX(velX);
+            posX += velX * dt;
+            happyObj.setPosX(posX);
+            happyBoxX = posX;
+            happyObj.setHitBoxXY(posX, posY);
 
-        //Collision
-        collisionCheck();
+            //Collision
+            collisionCheck();
 
-        //Vertical movement
-        if (isClimbing) {
-            //System.out.println("isClimbing: " + isClimbing);
-            accelY = 0;
+            //Vertical movement
+            if (isClimbing) {
+                //System.out.println("isClimbing: " + isClimbing);
+                accelY = 0;
 
-            if (upKey && !downKey) {   //if Happy is climbing up
-                velY = -200;
-            } else if (downKey && !upKey) {   //if Happy is climbing down
+                if (upKey && !downKey) {   //if Happy is climbing up
+                    velY = -200;
+                } else if (downKey && !upKey) {   //if Happy is climbing down
+                    velY = 200;
+                }
+            } else if (!canJump && !isOnGround && isJumping) {   //if Happy is jumping
+                //System.out.println("isJumping: " + isJumping);
+                accelY += happyObj.gravity;
+                velY += accelY * dt;
+                posY += velY * dt;
+            } else if (!isJumping) {
+                //if Happy is not in jumping or climbing, apply a vertical gravitational force
+                //System.out.println("isJumping: " + isJumping + " isClimbing: " + isClimbing + " isOnGround: " + isOnGround);
+                accelY += happyObj.gravity;
                 velY = 200;
+                velY += accelY * dt;
+                posY += velY * dt;
             }
-        } else if (!canJump && !isOnGround && isJumping) {   //if Happy is jumping
-            //System.out.println("isJumping: " + isJumping);
-            accelY += happyObj.gravity;
-            velY += accelY * dt;
-            posY += velY * dt;
-        } else if (!isJumping) {
-            //if Happy is not in jumping or climbing, apply a vertical gravitational force
-            //System.out.println("isJumping: " + isJumping + " isClimbing: " + isClimbing + " isOnGround: " + isOnGround);
-            accelY += happyObj.gravity;
-            velY = 200;
-            velY += accelY * dt;
-            posY += velY * dt;
+            //Update Happy's current position, and hitbox current pos
+            happyObj.setAccelY(accelY);
+            happyObj.setVelY(velY);
+            happyObj.setPosY(posY);
+            happyObj.setHitBoxXY(posX, posY);
         }
-        //Update Happy's current position, and hitbox current pos
-        happyObj.setAccelY(accelY);
-        happyObj.setVelY(velY);
-        happyObj.setPosY(posY);
-        happyObj.setHitBoxXY(posX, posY);
-
         //Collision
         collisionCheck();
-
-        //if ((posY > frameHeight) || (posY < 0) || (posX > frameWidth) || (posX < 0)) {
-        if ((posY < 0) || (posX < 0) || (posY > numRows*blockSize) || (posX > numCols*blockSize))
-        {
-            life--;
-            happyObj.setPlayerLife(life);
-            softResetIsTrue = true;
-            softReset();
-
-            if (life < 0) {
-                gameOver = true;
-                gameStates = "GameOver";
-            }
-        }
     }
 
     //------------------------------------------------------
@@ -507,18 +494,28 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         }
     }*/
 
-    private void moveBlocks() {  
+    private void moveBlocks() {
+        if ((posY < 0) || (posX < 0) || (posY > numRows*blockSize) || (posX > numCols*blockSize))
+        {
+            softResetIsTrue = true;
+            softReset();
+        }
         for (int i = 0; i < enemyObj.size(); i++) {
             enemyObj.get(i).Move();
+            int enemyPosX = enemyObj.get(i).getPosX();
+            int enemyPosY = enemyObj.get(i).getPosY();
+            enemyObj.get(i).setEnemyHitBox(enemyPosX, enemyPosY, blockSize, blockSize);
+            if (happyObj.hitBox.intersects(enemyObj.get(i).hitBox)) {
+                hit = true;
+                softResetIsTrue = true;
+            }
         }
-
-//        for (BlockClass block : myblocks) {
-//            if (block instanceof EnemyClass enemy) {
-//                //System.out.println("HAG line 463");
-//                enemy.Move();
-//
-//            }
-//        }
+        for (int i = 0; i < friendObj.size(); i++) {
+            friendObj.get(i).Move();
+            int friendPosX = friendObj.get(i).getPosX();
+            int friendPosY = friendObj.get(i).getPosY();
+            friendObj.get(i).setFriendHitBox(friendPosX, friendPosY, blockSize, blockSize);
+        }
     }
 
 
@@ -530,19 +527,27 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         }
     }*/
     public void softReset() {
-        //Soft Reset only resets the character position and b
-        death = false;
-        softResetIsTrue = false;
-        canJump = true;
-        gameOver = false;
-        audioObj.playAudioRevive(this, audioObj.revive);
-        happyObj.setPosX(startPosX);
-        happyObj.setPosY(startPosY);
-        happyObj.setVelX(0);
-        happyObj.setVelY(0);
-        happyObj.setAccelX(500);
-        happyObj.setAccelY(0);
-        happyObj.setHitBoxXY(startPosX, startPosY);
+        life--;
+        happyObj.setPlayerLife(life);
+        if (life < 0) {
+            gameOver = true;
+            gameStates = "GameOver";
+        } else {
+            //Soft Reset only resets the character position and b
+            death = false;
+            softResetIsTrue = false;
+            canJump = true;
+            hit = false;
+            gameOver = false;
+            audioObj.playAudioRevive(this, audioObj.revive);
+            happyObj.setPosX(startPosX);
+            happyObj.setPosY(startPosY);
+            happyObj.setVelX(0);
+            happyObj.setVelY(0);
+            happyObj.setAccelX(500);
+            happyObj.setAccelY(0);
+            happyObj.setHitBoxXY(startPosX, startPosY);
+        }
         //if myblocks need to be cleared use the method below
         //myblocks.clear();
 
@@ -644,7 +649,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     //Game loop component to draw the playable character
     //------------------------------------------------------
     public void drawPlayer(int drawX, int drawY) {
-        int happyImage, tempX, tempY;
+        int happyImage, tempX, tempY, currentX, currentY;
         happyImage = happyIdle;
         happyBoxX = happyObj.getHitBoxX();
         happyBoxY = happyObj.getHitBoxY();
@@ -667,6 +672,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         //System.out.println("numRows: " + numRows);
 
         tempY = happyObj.getPosY() - drawY;
+        currentX = frameWidth/2;
+        currentY = tempY;
 
         if ((happyObj.getPosX() < frameWidth / 2 || happyObj.getPosX() > ((numCols - 15) * blockSize))
                 && (happyObj.getPosY() < frameHeight / 2 || happyObj.getPosY() > ((numRows - 10) * blockSize)))
@@ -675,23 +682,28 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             if (happyObj.getPosX() < frameWidth / 2 && happyObj.getPosY() < frameHeight / 2) { //top-left corner
                 //System.out.println("TOP-LEFT");
                 drawImage(imageArray[happyImage][happyIndex], happyObj.getPosX(), happyObj.getPosY(), blockSize, blockSize);
+                currentX = happyObj.getPosX();
+                currentY = happyObj.getPosY();
             }
             else if (happyObj.getPosX() > ((numCols - 15) * blockSize))  //bottom-right OR top-right corner
             {
                 //System.out.println("BOTTOM RIGHT or TOP RIGHT");
                 tempX = happyObj.getPosX() - drawX;
                 drawImage(imageArray[happyImage][happyIndex], tempX, tempY, blockSize, blockSize);
+                currentX = tempX;
             }
             else if (happyObj.getPosY() > ((numRows-10)*blockSize)) //Bottom-left corner
             {
                 //System.out.println("BOTTOM LEFT");
                 drawImage(imageArray[happyImage][happyIndex], happyObj.getPosX(), tempY, blockSize, blockSize);
+                currentX = happyObj.getPosX();
             }
 
         } else if (happyObj.getPosX() >= frameWidth / 2 && happyObj.getPosX() <= ((numCols - 15) * blockSize)) {
             if (happyObj.getPosY() <= ((numRows - 10) * blockSize) && !(happyObj.getPosY() <= frameHeight/2)) { //Middle
                 //System.out.println("MIDDLE");
                 drawImage(imageArray[happyImage][happyIndex], frameWidth / 2, frameHeight / 2, blockSize, blockSize);
+                currentY = frameHeight/2;
             } else if (happyObj.getPosY() <= frameHeight/2) { //top
                 //System.out.println("TOP");
                 drawImage(imageArray[happyImage][happyIndex], frameWidth / 2, tempY, blockSize, blockSize);
@@ -703,6 +715,12 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             //System.out.println("LEFT AND RIGHT");
             tempX = happyObj.getPosX() - drawX;
             drawImage(imageArray[happyImage][happyIndex], tempX, frameHeight / 2, blockSize, blockSize);
+            currentX = tempX;
+            currentY = frameHeight/2;
+        }
+
+        if (hit) {
+            softReset();
         }
 
         changeColor(Color.white);

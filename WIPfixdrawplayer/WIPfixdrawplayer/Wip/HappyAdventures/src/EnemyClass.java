@@ -24,11 +24,10 @@ public class EnemyClass extends BlockClass {
         //System.out.println("EC line 34 "+ this.locX+ " "+ this.rightTravelMax );
     }
 
-public int getGridLoc(){ return gridLoc; }
+    public int getGridLoc(){ return gridLoc; }
     public Rectangle getHitBox() { return this.hitBox; }
     public void setEnemyHitBox(int x, int y, int w, int h)
    {   //not hitbox properties set for these types: candy, fire, ladder, spike
-
             hitBox = new Rectangle(x, y, w, h);
     }
     @Override public int getPosX() {
