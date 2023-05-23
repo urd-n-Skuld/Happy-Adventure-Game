@@ -157,6 +157,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     //------------------------------------------------------
     //Player and other non-playable characters initialisation
     //------------------------------------------------------
+    ArrayList<EnemyClass> enemyObj = new ArrayList<>();  
     PlayerCharacterClass happyObj = new PlayerCharacterClass();
     static boolean idle, jump, hit;
     static boolean leftKey, rightKey, upKey, downKey, jumpKey;
@@ -187,6 +188,36 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 happyObj.setPlayerLife(3);
                 happyObj.createHitBox(startPosX, startPosY, blockSize);
                 happyObj.loadPlayerSprites(this);
+            }
+            else if (gridObj.get(i).getBlockType() == 24 || gridObj.get(i).getBlockType() == 25 || gridObj.get(i).getBlockType() == 26) //Enemies  
+            {
+                int enemyPosX = gridObj.get(i).getPosX(), enemyPosY = gridObj.get(i).getPosY();
+                EnemyClass tempEnemy = new EnemyClass(enemyPosX, enemyPosY, gridObj.get(i).getBlockType(), i);
+
+                int leftStop = gridObj.get(i).getPosX(), rightStop = gridObj.get(i).getPosX(); //Initialise
+                for (int indx = i+1; gridObj.get(indx).getBlockType() == -1 || gridObj.get(indx+numCols).getBlockType() != -1; indx++)
+                {
+                    System.out.println("CycleRight");
+                    if (gridObj.get(indx).getBlockType() != -1 || gridObj.get(indx+numCols).getBlockType() == -1)
+                    {
+                        System.out.println("i " + i + " indx " + indx + " type " + gridObj.get(indx).getBlockType() + " type " + gridObj.get(indx + numCols).getBlockType());
+                        rightStop = gridObj.get(indx-1).getPosX();
+                        break;
+                    }
+                }
+                for (int indx = i-1; gridObj.get(indx).getBlockType() == -1 || gridObj.get(indx+numCols).getBlockType() != -1; indx--)
+                {
+                    System.out.println("CycleLeft");
+                    if (gridObj.get(indx).getBlockType() != -1 || gridObj.get(indx+numCols).getBlockType() == -1)
+                    {
+                        leftStop = gridObj.get(indx+1).getPosX();
+                        break;
+                    }
+                }
+                System.out.println("startPosX " + gridObj.get(i).getPosX() + " RightStop: " + rightStop + " LeftStop: " + leftStop);
+                tempEnemy.setMaxLeft(leftStop, blockSize);
+                tempEnemy.setMaxRight(rightStop, blockSize);
+                enemyObj.add(tempEnemy);
             }
         }
             //Bappy Placeholder
@@ -468,14 +499,18 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         }
     }*/
 
-    private void moveBlocks() {
-        for (BlockClass block : myblocks) {
-            if (block instanceof EnemyClass enemy) {
-                //System.out.println("HAG line 463");
-                enemy.Move();
-
-            }
+    private void moveBlocks() {  
+        for (int i = 0; i < enemyObj.size(); i++) {
+            enemyObj.get(i).Move();
         }
+
+//        for (BlockClass block : myblocks) {
+//            if (block instanceof EnemyClass enemy) {
+//                //System.out.println("HAG line 463");
+//                enemy.Move();
+//
+//            }
+//        }
     }
 
 
@@ -579,7 +614,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 type = gridObj.get(index).getBlockType();
 
                 //System.out.println("index: " + index + " row" + row + " col: " + col + " numCols: " + numCols + " numRows: " + numRows + " arraysize: " + gridObj.size() + " type: " + gridObj.get(index).getBlockType() );
-                if (type != -1)
+                if (type != -1 && type != 31 && type != 24 && type != 25 && type != 26)  
                 {
                     if(x >= minDrawPosX && x <= maxDrawPosX && y >= minDrawPosY && y <= maxDrawPosY)
                     {
@@ -591,6 +626,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             }
         }
         drawPlayer(drawX, drawY);
+        drawEnemies(drawX, drawY);  
     }
 
 
@@ -623,7 +659,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         tempY = happyObj.getPosY() - drawY;
 
         if ((happyObj.getPosX() < frameWidth / 2 || happyObj.getPosX() > ((numCols - 15) * blockSize))
-                && (happyObj.getPosY() < frameHeight / 2 || happyObj.getPosY() > ((numRows - 10) * blockSize))) //NEW
+                && (happyObj.getPosY() < frameHeight / 2 || happyObj.getPosY() > ((numRows - 10) * blockSize)))
         {
             //NEED TO DO ONLY CORNERs
             if (happyObj.getPosX() < frameWidth / 2 && happyObj.getPosY() < frameHeight / 2) { //top-left corner
@@ -661,6 +697,14 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
 
         changeColor(Color.white);
         drawBoldText(50, 50, "life: " + life, "arial", 25);
+    }
+
+    public void drawEnemies(int drawX, int drawY) {  
+        for (int i = 0; i < enemyObj.size(); i++) {
+            int enemyPosX = enemyObj.get(i).getPosX() - drawX;
+            int enemyPosY = enemyObj.get(i).getPosY() - drawY;
+            drawImage(blockIMG[enemyObj.get(i).getType()], enemyPosX, enemyPosY, blockSize, blockSize);
+        }
     }
 
     //------------------------------------------------------
@@ -953,36 +997,36 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             }
         }
     }
-    public void initEnemies()
+    public void initEnemies()  
     {
 
-        for(BlockClass block: myblocks)
-        {
-            if (block instanceof EnemyClass enemy)
-            {
-
-                int i = -1;
-                int index = enemy.getGridLoc();
-                boolean left = true;
-                boolean right = true;
-                while(left)
-                {
-                    if ((gridObj.get(index-i).getBlockType()==-1) &&((gridObj.get(index+numRows-i).getBlockType()==0) ||(gridObj.get(index+numRows-i).getBlockType()==1) ||(gridObj.get(index+numRows-i).getBlockType()==2))) {
-                        i--;
-                    }
-                    else { enemy.setMaxLeft(i, blockSize); left = false; }
-                }
-                i = 1;
-                while(right)
-                {
-                    if ((gridObj.get(index+i).getBlockType()==-1) &&((gridObj.get(index+numRows+i).getBlockType()==0) ||(gridObj.get(index+numRows+i).getBlockType()==1) ||(gridObj.get(index+numRows+i).getBlockType()==2))) {
-                        i++;
-                    }
-                    else { enemy.setMaxRight(i, blockSize); right = false; }
-                }
-
-            }
-        }
+//        for(BlockClass block: myblocks)
+//        {
+//            if (block instanceof EnemyClass enemy)
+//            {
+//
+//                int i = -1;
+//                int index = enemy.getGridLoc();
+//                boolean left = true;
+//                boolean right = true;
+//                while(left)
+//                {
+//                    if ((gridObj.get(index-i).getBlockType()==-1) &&((gridObj.get(index+numRows-i).getBlockType()==0) ||(gridObj.get(index+numRows-i).getBlockType()==1) ||(gridObj.get(index+numRows-i).getBlockType()==2))) {
+//                        i--;
+//                    }
+//                    else { enemy.setMaxLeft(i, blockSize); left = false; }
+//                }
+//                i = 1;
+//                while(right)
+//                {
+//                    if ((gridObj.get(index+i).getBlockType()==-1) &&((gridObj.get(index+numRows+i).getBlockType()==0) ||(gridObj.get(index+numRows+i).getBlockType()==1) ||(gridObj.get(index+numRows+i).getBlockType()==2))) {
+//                        i++;
+//                    }
+//                    else { enemy.setMaxRight(i, blockSize); right = false; }
+//                }
+//
+//            }
+//        }
     }
 }
 

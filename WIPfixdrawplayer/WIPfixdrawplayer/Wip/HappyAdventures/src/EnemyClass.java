@@ -7,8 +7,8 @@ public class EnemyClass extends BlockClass {
     Rectangle hitBox;
     private int locX, locY, gridLoc;
 
-    public void setMaxLeft(int max, int blockSize){ this.leftTravelMax = (max*blockSize)+locX; }
-    public void setMaxRight(int max, int blockSize){ this.rightTravelMax = (max*blockSize)+locX; }
+    public void setMaxLeft(int max, int blockSize){ this.leftTravelMax = max; }
+    public void setMaxRight(int max, int blockSize){ this.rightTravelMax = max; }
     public EnemyClass(int x, int y, int type, int gridIndex) {
         super(x, y, type);
         this.locX = x;
@@ -20,7 +20,7 @@ public class EnemyClass extends BlockClass {
     public void Move() {
         //System.out.println("EC line 25 "+ this.locX+ " "+ this.leftTravelMax );
         this.locX += (int) VelX;
-        if ((this.locX >= leftTravelMax)||(this.locX <= rightTravelMax)) { VelX *= -1; }
+        if ((this.locX <= leftTravelMax)||(this.locX >= rightTravelMax)) { VelX *= -1; }
         //System.out.println("EC line 34 "+ this.locX+ " "+ this.rightTravelMax );
     }
 
