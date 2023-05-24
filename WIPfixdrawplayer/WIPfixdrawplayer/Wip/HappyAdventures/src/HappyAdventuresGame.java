@@ -15,8 +15,9 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     public boolean showHitboxes, showGrid = false;
     Timer hitTimer = new Timer();
     String gameStates; // "MenuSystem", "PlayGame", "2Player"
-    String csvFile = "images/WorldMaps/Worldmapv2.csv";
+    //String csvFile = "images/WorldMaps/Worldmapv2.csv";
     //String csvFile = "images/WorldMaps/Horisontal world.csv";
+    String csvFile = "images/WorldMaps/Vertical_world.csv";
     // putting this here allows easier changes
     static boolean death, gameOver;
     public boolean softResetIsTrue;
@@ -117,7 +118,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         gameOver = false;
 
         initAudio();// line 109
-        initWorld(csvFile);// line 113 .... creates variables for grid class
+        initWorld(csvFile);// line 176 .... creates variables for grid class
         initCharacters();// line 145
         initGUI();// line 98
 
@@ -275,10 +276,15 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 enemyObj.add(tempEnemy);
             } else if (gridObj.get(i).getBlockType() == 27 || gridObj.get(i).getBlockType() == 28 || gridObj.get(i).getBlockType() == 29) //Friends
             {
-                int friendPosX = gridObj.get(i).getPosX(), friendPosY = gridObj.get(i).getPosY();
-                FriendClass tempFriend = new FriendClass(friendPosX, friendPosY, gridObj.get(i).getBlockType(), i);
-                tempFriend.initFriendSprites(this);
-                friendObj.add(tempFriend);
+                for (BlockClass block: myblocks){
+                    if (block instanceof FriendClass friend)
+                    {
+                        if (i==friend.getGridIndex()){
+                            friend.initFriendSprites(this);
+                            friendObj.add(friend);
+                        }
+                    }
+                }
             }
         }
         //Bappy Placeholder
@@ -297,15 +303,13 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
 
     @Override
     public void update(double dt) {//System.out.println("Update called");
-        //int removeIndex = -99;
+
         setDt = dt;
         if (!gameOver) {
             happyIndex = updateAnimationSpeed(15);
             moveClouds(dt);
             updateHappy(dt);
             moveBlocks();
-            //removeIndex = moveBlocks();
-            //deleteEnemy(removeIndex);
         }
 
     }
@@ -468,6 +472,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 }
             }
         }
+
         //--------------------------------------------
         //Removing the enemies that have been converted to friendlies
         for (EnemyClass enemy : enemiesToRemove) {
@@ -475,12 +480,21 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         }
 
         for (FriendClass friendClass : friendObj) {
-            friendClass.Move();
+            //friendClass.Move();
             int friendPosX = friendClass.getPosX();
             int friendPosY = friendClass.getPosY();
-            friendClass.setFriendHitBox(friendPosX, friendPosY, blockSize, blockSize);
+            //friendClass.setFriendHitBox(friendPosX, friendPosY, blockSize, blockSize);
+
             if (happyObj.hitBox.intersects(friendClass.hitBox)) {
                 friendClass.setFriendSaved();
+            }
+        }
+        for (BlockClass block : myblocks) {
+            if (block instanceof FriendClass friend)
+            {
+                double distance = distance(happyObj.getPosX(), happyObj.getPosY(), friend.getPosX(), friend.getPosY());
+                if((friend.getSaved())&&(distance>30)){ friend.Move(happyObj.getPosX(), happyObj.getPosY(), distance); }
+
             }
         }
     }
@@ -515,6 +529,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             happyObj.setAccelX(500);
             happyObj.setAccelY(0);
             happyObj.setHitBoxXY(startPosX, startPosY);
+            friendSaver();
         }
         //if myblocks need to be cleared use the method below
         //myblocks.clear();
@@ -894,7 +909,10 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             //System.out.println("blockposX: " + blockposX + " blockposY: " + blockposY);
             //System.out.println("blockminX: " + blockminX + " blockMinY: " + blockMinY + " blockmaxX: " + blockmaxX + " blockMaxY: " + blockMaxY);
 
-            if (((type >= 0) && (type <= 2)) || ((type >= 9) && (type <= 12))) {  //These are keys and doors
+
+            if (((type >= 0) && (type <= 2)) || ((type >= 9) && (type <= 12)))
+            {
+
                 //System.out.println("blocktype called");
 
                 if (happyObj.hitBox.intersects(block.hitBox)) {
@@ -1078,7 +1096,35 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                     break;
                 }
             }
+            else if ((type >= 27) && (type <= 29))
+            {// friends
+                if (distance(happyObj.hitBox.getMinX(), happyObj.hitBox.getMinY(), block.getPosX(), block.getPosY())<29)
+                {
+                    if (block instanceof FriendClass myfriend){
+                        myfriend.setFriendSaved();
+                    }
 
+                    break;
+                }
+            }
+            else if ((type >= 9) && (type <= 11))
+            {// doors
+                if (keys[type - 9] && (distance(happyObj.hitBox.getMinX(), happyObj.hitBox.getMinY(), block.getPosX(), block.getPosY())<28))
+                {
+                    KEYtot[type - 9]--;
+                    if(KEYtot[type - 9]==0){ keys[type - 9] = false; }
+                    deleteBlock(block);
+                    break;
+                }
+            }
+//            else if (type == 7) {
+//                for (FriendClass friend : friendObj) {
+//                    if (distance(friend.getPosX(), friend.getPosY(), block.getPosX(), block.getPosY()) < 50) {
+//                        deleteBlock(friend);
+//                    }
+//                }
+//
+//            }
         }
         return false;
 
@@ -1089,10 +1135,18 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         gridObj.get(block.getCellIndex()).setActiveInd(false);
         myblocks.remove(block);
     }
-    private void deleteEnemy(EnemyClass enemy){
+
+    private void deleteEnemy(EnemyClass enemy) {
         gridObj.get(enemy.getCellIndex()).setBlockType(-1);
         gridObj.get(enemy.getCellIndex()).setActiveInd(false);
         enemyObj.remove(enemy);
+    }
+    private void friendSaver(){
+        for (FriendClass friendClass : friendObj)
+        {
+            friendClass.softreset();
+        }
+
     }
 
     //-----------------------------------------------------

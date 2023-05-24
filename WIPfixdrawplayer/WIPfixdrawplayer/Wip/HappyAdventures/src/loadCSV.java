@@ -51,6 +51,10 @@ public class loadCSV {
                         {
                             myblocks.add(new EnemyClass(x, y, type, i));
                         }
+                        if ((type >= 27) && (type <= 29))
+                        {
+                            myblocks.add(new FriendClass(x, y, type, i));
+                        }
                         else
                         {
                             newBlock.setPosX(x);

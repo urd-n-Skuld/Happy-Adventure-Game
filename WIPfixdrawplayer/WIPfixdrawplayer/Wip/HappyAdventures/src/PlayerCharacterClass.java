@@ -64,68 +64,11 @@ public class PlayerCharacterClass
             }
         }
     }
-    public void addLife() { life++; }
-    /*public static void loseLife()
-    {
-        hit = true;
-        life--;
-        System.out.println("enemy collision detected");
-        hitTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                hit = false;
-            }
-        }, 2000);
-        System.out.println("hit is "+hit);
-    }*/
-    public void addScore(int i) { score += i; }
+
+
     public void createHitBox(int x, int y, int s)
     {
         hitBox = new Rectangle(x, y, s,s);
     }
-    public void checkIfTrue()
-    {
-        //DEBUG CHECK IF playerSettings is listening keys from SimpleGame
-        //use this if you do any change to the character movement keys or linked methods ex: test the right key
-        // System.out.println("key right " + keyRight);
-    }
-
-
-    /*public static int[] getLoc(){
-        return new int[]{posX, posY};
-    }*/
-    /*public static double[] getVel(){
-        return new double[]{velX, velY};
-    }*/
-    /*public static void setLoc(int loc, int i){
-        if (i==0) { posX = i; }
-        else { posY = i; }
-    }*/
-    /*public static void setVel(double vel, int i){
-        if (i==0) { velX = vel; }
-        else { velY = vel; }
-    }*/
-    /*public static void setHitBox(int loc, int i){
-        if (i==0) { hitBox.x = loc; }
-        else { hitBox.y = loc; }
-    }*/
-    /*public static int[] getHitBox(){
-        return new int[]{hitBox.x, hitBox.y};
-
-    }*/
-
-
-
-    /*public static boolean getIsOnGround(){ return isOnGround; }
-    public static boolean getJump(){ return jump; }
-    public static void setJump(boolean bool){
-        jump = bool;
-    }
-
-    public static void setIsOnGround(boolean bool){
-        isOnGround = bool;
-    }*/
-
-
 
 }
