@@ -22,24 +22,30 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     public boolean softResetIsTrue;
 
     //volpy HUD variables
-    int candy1Total = 0, candy2Total = 0, candy3Total = 0, extraGreenKey = 0, extraYellowKey = 0, extraBlueKey = 0;
-    int totalScore = 0;
-
-
+    int[] HUDtot = {0, 0, 0, 0};
+    int[] KEYtot = {0, 0, 0};
+    int score = 0;
     //volpy HUD IMAGES
-
-    Image heart, candy1, candy2, candy3, key1, key2, key3, key4, keyEmpty, hudBG;
-
+    Image hudBG;
+    Image[] HUDimg ={
+            loadImage("images/Sprites/emptyKey.png"),
+            loadImage("images/Sprites/redKey.png"),
+            loadImage("images/Sprites/blueKey.png"),
+            loadImage("images/Sprites/yellowKey.png"),
+            loadImage("images/Sprites/greenKey.png"),
+            loadImage("images/Sprites/heart.png"),
+            loadImage("images/Sprites/CANDY1_25PX.png"),
+            loadImage("images/Sprites/CANDY2_25PX.png"),
+            loadImage("images/Sprites/CANDY3_25PX.png"),
+    };
 
     //volpy Doors Open
-
-    boolean haveGreenKey=false, haveBlueKey=false, haveYellowKey=false;
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    boolean haveGreenKey, haveBlueKey, haveYellowKey;
 
     //volpy Pause Game
 
     boolean pause=false;
-
-
 
 
     public static Image[] blockIMG =
@@ -53,7 +59,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                     loadImage("images/Sprites/vine.png"),//6 need safe zone
                     loadImage("images/Sprites/safezonesign.png"),//7 need checkpoint sprites
                     loadImage("images/Sprites/checkpointInactive.png"),//8 need checkpoint
-                    loadImage("images/Sprites/door_yellow25x.png"),//9
+                    loadImage("images/Sprites/door_red25x.png"),//9
                     loadImage("images/Sprites/door_blue25x.png"),//10
                     loadImage("images/Sprites/door_yellow25x.png"),//11
                     loadImage("images/Sprites/block.png"),//12 need door extender
@@ -87,8 +93,6 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                     loadImage("images/Sprites/spikeLeft.png"),//40 need bappy
                     loadImage("images/Sprites/spikeRight.png"),//41 need bappy
                     loadImage("images/Sprites/secretblock1.png"),//42 need bappy
-
-
             };
 
     //------------------------------------------------------
@@ -105,17 +109,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     public void init() {
         System.out.println("Init called");
         //volpy hud Images initialisation
-
         hudBG = loadImage("images/Sprites/HUD_bg.png");
-        heart = loadImage("images/Sprites/heart.png");
-        key1 = loadImage("images/Sprites/greenKey.png");
-        key2 = loadImage("images/Sprites/yellowKey.png");
-        key3 = loadImage("images/Sprites/blueKey.png");
-        key4 = loadImage("images/Sprites/redKey.png");
-        keyEmpty = loadImage("images/Sprites/emptyKey.png");
-        candy1 = loadImage("images/Sprites/CANDY1_25PX.png");
-        candy2 = loadImage("images/Sprites/CANDY2_25PX.png");
-        candy3 = loadImage("images/Sprites/CANDY3_25PX.png");
         setWindowSize(frameWidth, frameHeight);
 
         gameStates = "MenuSystem";    //Change this to "MenuSystem" if you want to turn on game menus
@@ -157,55 +151,26 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         //HUD BACKGROUND
         drawImage(hudBG, 0, 0, 750, 28);
         changeColor(Color.white);
-
-        //LIFE
-        drawImage(heart, 28, 1, 25, 25);
-        drawBoldText(53, 20, "x" + life, "arial", 15);
-        //CANDIES
-        drawImage(candy1, 128, 3, 20, 20);
-        drawBoldText(150, 20, "x" + candy1Total, "arial", 15);
-
-        drawImage(candy2, 179, 3, 20, 20);
-
-        drawBoldText(195, 20, "x" + candy2Total, "arial", 15);
-        drawImage(candy3, 230, 3, 20, 20);
-        drawBoldText(250, 20, "x" + candy3Total, "arial", 15);
-//KEYS
-
+        int[] HUDItemIX = {28, 128, 179, 230};
+        int[] HUDTextTX = {53, 150, 195, 250};
+        HUDtot[0] = life;
+        for (int i = 0;i<4;i++){
+            drawImage(HUDimg[i+5], HUDItemIX[i], 1, 25, 25);
+            changeColor(Color.white);
+            drawBoldText(HUDTextTX[i], 20, "x" + HUDtot[i], "arial", 15);
+        }
         //EMPTY KEYS REPLACE KEYS WITH COLOUR
-
-        drawImage(keyEmpty, 372, 0, 25, 25);
-        drawImage(keyEmpty, 408, 0, 25, 25);
-        drawImage(keyEmpty, 444, 0, 25, 25);
-        //drawImage(keyEmpty, 480, 0, 25, 25);
-        if (haveGreenKey) {
-        drawImage(key1, 372, 0, 25, 25);
-
+        int[] HUDKeyIX = {372, 408, 444};
+        for (int i = 0;i<3;i++){// 3 kinds of keys atm
+            int k = 0;
+            if (keys[i]){ k = i+1; }
+            drawImage(HUDimg[k], HUDKeyIX[i], 0, 25, 25);
+            changeColor(Color.white);
+            drawBoldText(HUDKeyIX[i], 25, "x" + KEYtot[i], "arial", 11);
         }
-        if (haveYellowKey) {
-        drawImage(key2, 408, 0, 25, 25);
-
-        }
-        if (haveBlueKey) {
-        drawImage(key3, 444, 0, 25, 25);
-
-        }
-
-        // drawImage(key4, 480, 0, 25, 25);
-        //first key
-        changeColor(Color.white);
-        drawBoldText(372, 25, "x" + extraGreenKey, "arial", 11);
-        changeColor(Color.white);
-        drawBoldText(409, 25, "x" + extraYellowKey, "arial", 11);
-        changeColor(Color.white);
-        drawBoldText(444, 25, "x" + extraBlueKey, "arial", 11);
-
-        //more than one key
-
         //TOTAL SCORE
         changeColor(Color.white);
-        drawBoldText(629, 20, "Total Score: " + totalScore, "arial", 15);
-
+        drawBoldText(629, 20, "Total Score: " + score, "arial", 15);
     }
 
     //------------------------------------------------------
@@ -281,7 +246,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 happyObj.loadPlayerSprites(this);
                 happyObj.setCellIndex(gridObj.get(i).getCellIndex());
             }
-            else if (gridObj.get(i).getBlockType() == 24 || gridObj.get(i).getBlockType() == 25 || gridObj.get(i).getBlockType() == 26) //Enemies  
+            else if (gridObj.get(i).getBlockType() == 24 || gridObj.get(i).getBlockType() == 25 || gridObj.get(i).getBlockType() == 26) //Enemies
             {
                 int enemyPosX = gridObj.get(i).getPosX(), enemyPosY = gridObj.get(i).getPosY();
                 EnemyClass tempEnemy = new EnemyClass(enemyPosX, enemyPosY, gridObj.get(i).getBlockType(), i);
@@ -937,7 +902,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                         isJumping = false;
                         collided = false;
                         isOnGround = checkIsOnGround(posX, posY);
-                        
+
                         if (!isOnGround) { canJump = false; }
                         else { canJump = true; }
                     }
@@ -1016,24 +981,13 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                         life++;
                         audioObj.playAudioExtraLife(this, audioObj.extraLife);
                         happyObj.setPlayerLife(life);
+                        HUDtot[type-19]++;
                         deleteBlock(block);
                     } else {
                         audioObj.playAudioEatCandy(this, audioObj.eatCandy);
-                        //candy score
+                        HUDtot[type - 15]++;
                         happyObj.setPlayerScore(4 * ((type) - 16) ^ 2 + 1);
                         deleteBlock(block);
-                    }
-                    if(type==16){
-                        candy1Total++;
-                        totalScore+=1;
-                    }
-                    if(type==17){
-                        candy2Total++;
-                        totalScore+=5;
-                    }
-                    if(type==18){
-                        candy3Total++;
-                        totalScore+=10;
                     }
                     break;
                 }
@@ -1060,6 +1014,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 if ((((happyObj.hitBox.getMaxX() - 5 > block.getPosX() && happyObj.hitBox.getMaxX() - 5 < block.getPosX() + blockSize)) && (happyObj.hitBox.getMaxY() - 5 > block.getPosY() && happyObj.hitBox.getMaxY() - 5 < block.getPosY() + blockSize))
                         || ((((happyObj.hitBox.getMinX() + 5 > block.getPosX() && happyObj.hitBox.getMinX() + 5 < block.getPosX() + blockSize)) && (happyObj.hitBox.getMinY() + 5 > block.getPosY() && happyObj.hitBox.getMinY() + 5 < block.getPosY() + blockSize)))) {
                     keys[type - 13] = true;
+                    KEYtot[type - 13]++;
                     deleteBlock(block);
                     break;
                 }
@@ -1068,6 +1023,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             {
                 if (keys[type - 9] && (distance(happyObj.hitBox.getMinX(), happyObj.hitBox.getMinY(), block.getPosX(), block.getPosY())<28))
                 {
+                    KEYtot[type - 9]--;
+                    if(KEYtot[type - 9]==0){ keys[type - 9] = false; }
                     deleteBlock(block);
                     break;
                 }
