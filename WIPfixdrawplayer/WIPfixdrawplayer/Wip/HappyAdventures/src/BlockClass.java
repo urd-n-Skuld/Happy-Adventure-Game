@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class BlockClass{
     Rectangle hitBox;
-    private int posX, posY, type, cellIndex;
+    private int posX, posY, type, cellIndex, startX, startY;
     private Image[][] blockAnimArray = new Image[2][15];
     // init
 
@@ -16,6 +16,8 @@ public class BlockClass{
     public void setPosY(int y) { posY = y; }
     public void setType(int t) { type = t; }
     public void setCellIndex(int i) { cellIndex = i; }
+    public void setStartX (int x) { startX = x; }
+    public void setStartY (int y) { startY = y; }
     public void setblockHitBox(int x, int y, int w, int h)
     {   //not hitbox properties set for these types: candy, fire, ladder, spike, keys
 
@@ -34,6 +36,8 @@ public class BlockClass{
     public int getType() { return type; }
     public int getCellIndex() { return cellIndex; }
     public Image[][] getImageArray() { return blockAnimArray; }
+    public int getStartX () {return startX;}
+    public int getStartY () { return startY;}
     public void initBlockAnimSprites(HappyAdventuresGame gameObj)
     {
         Image spriteSheet = gameObj.loadImage("images/Sprites/fire_heart_Sprites.png");
