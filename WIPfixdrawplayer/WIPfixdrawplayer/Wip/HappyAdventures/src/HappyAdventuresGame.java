@@ -15,7 +15,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     public boolean showHitboxes, showGrid = false;
     Timer hitTimer = new Timer();
     String gameStates; // "MenuSystem", "PlayGame", "2Player"
-    String csvFile = "images/WorldMaps/Worldmapv2.csv";
+    String csvFile = "images/WorldMaps/Vertical_world.csv";
     //String csvFile = "images/WorldMaps/Horisontal world.csv";
     // putting this here allows easier changes
     static boolean death, gameOver;
@@ -23,7 +23,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
 
     //volpy HUD variables
     int[] HUDtot = {0, 0, 0, 0};
-    int[] KEYtot = {0, 0, 0};
+    int[] KEYtot = {0, 0, 0, 0, 0};
     int score = 0;
     //volpy HUD IMAGES
     Image hudBG;
@@ -190,6 +190,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             int y = block.getPosY();
             int type = block.getType();
             block.setblockHitBox(x, y, blockSize, blockSize);
+            if ((type >= 13) && (type <= 15)){ KEYtot[4]++; }
         }
 
         for (int i = 0; i < gridObj.size() - 1; i++) {
@@ -848,7 +849,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             //System.out.println("blockposX: " + blockposX + " blockposY: " + blockposY);
             //System.out.println("blockminX: " + blockminX + " blockMinY: " + blockMinY + " blockmaxX: " + blockmaxX + " blockMaxY: " + blockMaxY);
 
-            if (((type >= 0) && (type <= 2)) || ((type >= 9) && (type <= 11))) {
+            if (((type >= 0) && (type <= 2)) || ((type >= 9) && (type <= 12))) {
             //System.out.println("blocktype called");
 
                 if (happyObj.hitBox.intersects(block.hitBox)) {
@@ -1002,17 +1003,20 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                         happyObj.setHitBoxXY(posX, posY);
                     }
                 }
-            } else if ((type == 13) || (type == 14) || (type == 15)) {//keys
+            }
+            else if ((type >= 13) && (type <= 15))
+            {//keys
                 if ((((happyObj.hitBox.getMaxX() - 5 > block.getPosX() && happyObj.hitBox.getMaxX() - 5 < block.getPosX() + blockSize)) && (happyObj.hitBox.getMaxY() - 5 > block.getPosY() && happyObj.hitBox.getMaxY() - 5 < block.getPosY() + blockSize))
                         || ((((happyObj.hitBox.getMinX() + 5 > block.getPosX() && happyObj.hitBox.getMinX() + 5 < block.getPosX() + blockSize)) && (happyObj.hitBox.getMinY() + 5 > block.getPosY() && happyObj.hitBox.getMinY() + 5 < block.getPosY() + blockSize)))) {
                     keys[type - 13] = true;
                     KEYtot[type - 13]++;
+                    KEYtot[3]++;
                     deleteBlock(block);
                     break;
                 }
             }
-            else if ((type == 9) || (type == 10) || (type == 11))
-            {
+            else if ((type >= 9) && (type <= 11))
+            {// doors
                 if (keys[type - 9] && (distance(happyObj.hitBox.getMinX(), happyObj.hitBox.getMinY(), block.getPosX(), block.getPosY())<28))
                 {
                     KEYtot[type - 9]--;
