@@ -924,6 +924,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                             canJump = false;
                         } else {
                             canJump = true;
+                        }
                     }
                     else if (velY < 0 && happyObj.hitBox.getMinY() <= block.hitBox.getMaxY()) //Happy Bottom Collision
                     {   //Happy is going upwards, his head is going through the block above
