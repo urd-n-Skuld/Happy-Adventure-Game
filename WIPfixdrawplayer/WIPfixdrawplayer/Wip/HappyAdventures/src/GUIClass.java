@@ -208,7 +208,8 @@ public class GUIClass
         //Set the settings for each menu panel - Main Menu
         MainMenuPanel.setBackground(new Color(0, 0, 0, 0)); // set background color to transparent
         MainMenuPanel.setOpaque(false); // make the panel transparent
-        MainMenuPanel.setBounds((game.width() - menuWidth) / 2, (game.height() - menuHeight) /2, menuWidth, menuHeight);
+       // MainMenuPanel.setBounds((game.width() - menuWidth) / 2, (game.height() - menuHeight) /2, menuWidth, menuHeight);
+         MainMenuPanel.setBounds(0,0, game.frameWidth,game.frameHeight);
         MMbuttonPanel.setOpaque(false);
         MMbuttonPanel.setLayout(new BoxLayout(MMbuttonPanel, BoxLayout.PAGE_AXIS)); // set layout to place buttons in a column
 
@@ -229,7 +230,8 @@ public class GUIClass
         //Set the settings for each menu panel - Pause Menu
         PauseMenuPanel.setBackground(new Color(0, 0, 0, 0)); // set background color to transparent
         PauseMenuPanel.setOpaque(false); // make the panel transparent
-        PauseMenuPanel.setBounds((game.width() - menuWidth) / 2, (game.height() - menuHeight) /2, menuWidth, menuHeight);
+       // PauseMenuPanel.setBounds((game.width() - menuWidth) / 2, (game.height() - menuHeight) /2, menuWidth, menuHeight);
+         PauseMenuPanel.setBounds(0,0,game.frameWidth, game.frameHeight);
         PAbuttonPanel.setOpaque(false);
         PAbuttonPanel.setLayout(new BoxLayout(PAbuttonPanel, BoxLayout.PAGE_AXIS)); // set layout to place buttons in a column
 

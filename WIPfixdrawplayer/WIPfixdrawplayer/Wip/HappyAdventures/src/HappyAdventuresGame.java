@@ -22,7 +22,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     public boolean softResetIsTrue;
 
     //volpy HUD variables
-    int candy1Total = 0, candy2Total = 0, candy3Total = 0, extraGreenKey = 0, extraYellowKey = 0, extraBlueKey = 0;
+    int candy1Total = 0, candy2Total = 0, candy3Total = 0, extraGreenKey = 2, extraYellowKey = 0, extraBlueKey = 0;
     int totalScore = 0;
 
 
@@ -33,7 +33,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
 
     //volpy Doors Open
 
-    boolean haveGreenKey=false, haveBlueKey=false, haveYellowKey=false;
+    boolean haveGreenKey=true, haveBlueKey=false, haveYellowKey=false;
 
     //volpy Pause Game
 
