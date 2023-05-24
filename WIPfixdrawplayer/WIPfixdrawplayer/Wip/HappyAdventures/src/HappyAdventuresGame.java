@@ -29,7 +29,6 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
 
     //volpy HUD variables
     int candy1Total = 0, candy2Total = 0, candy3Total = 0;
-    int score = 0;
     //volpy HUD IMAGES
     Image heart, candy1, candy2, candy3, key1, key2, key3, key4, keyEmpty, hudBG;
     public static Image[] blockIMG =
@@ -170,7 +169,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
 
         //TOTAL SCORE
 
-        drawBoldText(629, 20, "Total Score: " + score, "arial", 15);
+        drawBoldText(629, 20, "Total Score: " + happyObj.getPlayerScore(), "arial", 15);
 
     }
 
