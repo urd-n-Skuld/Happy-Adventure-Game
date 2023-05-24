@@ -179,15 +179,15 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         drawImage(keyEmpty, 444, 0, 25, 25);
         //drawImage(keyEmpty, 480, 0, 25, 25);
         if (haveGreenKey) {
-            drawImage(key1, 372, 0, 25, 25);
+        drawImage(key1, 372, 0, 25, 25);
 
         }
         if (haveYellowKey) {
-            drawImage(key2, 408, 0, 25, 25);
+        drawImage(key2, 408, 0, 25, 25);
 
         }
         if (haveBlueKey) {
-            drawImage(key3, 444, 0, 25, 25);
+        drawImage(key3, 444, 0, 25, 25);
 
         }
 
@@ -280,7 +280,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 happyObj.createHitBox(startPosX, startPosY, blockSize);
                 happyObj.loadPlayerSprites(this);
                 happyObj.setCellIndex(gridObj.get(i).getCellIndex());
-            } else if (gridObj.get(i).getBlockType() == 24 || gridObj.get(i).getBlockType() == 25 || gridObj.get(i).getBlockType() == 26) //Enemies
+            }
+            else if (gridObj.get(i).getBlockType() == 24 || gridObj.get(i).getBlockType() == 25 || gridObj.get(i).getBlockType() == 26) //Enemies  
             {
                 int enemyPosX = gridObj.get(i).getPosX(), enemyPosY = gridObj.get(i).getPosY();
                 EnemyClass tempEnemy = new EnemyClass(enemyPosX, enemyPosY, gridObj.get(i).getBlockType(), i);
@@ -306,7 +307,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 tempEnemy.setMaxRight(rightStop, blockSize);
                 tempEnemy.loadEnemySprites(this);
                 enemyObj.add(tempEnemy);
-            } else if (gridObj.get(i).getBlockType() == 27 || gridObj.get(i).getBlockType() == 28 || gridObj.get(i).getBlockType() == 29) //Friends
+            }
+            else if (gridObj.get(i).getBlockType() == 27 || gridObj.get(i).getBlockType() == 28 || gridObj.get(i).getBlockType() == 29) //Friends
             {
                 int friendPosX = gridObj.get(i).getPosX(), friendPosY = gridObj.get(i).getPosY();
                 FriendClass tempFriend = new FriendClass(friendPosX, friendPosY, gridObj.get(i).getBlockType(), i);
@@ -314,12 +316,12 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 friendObj.add(tempFriend);
             }
         }
-        //Bappy Placeholder
-        //if (gridObj.getBlockType(i) == 32) {}
+            //Bappy Placeholder
+            //if (gridObj.getBlockType(i) == 32) {}
 
-        idle = isOnGround = canJump = true;
-        leftKey = rightKey = upKey = downKey = jumpKey = jump = hit = false;
-        isJumping = isFalling = isClimbing = collided = false;
+            idle = isOnGround = canJump = canMoveLeft = canMoveRight = true;
+            leftKey = rightKey = upKey = downKey = jumpKey = jump = hit = false;
+            isJumping = isFalling = isClimbing = collided = false;
     }
 
     //------------------------------------------------------
@@ -334,9 +336,9 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         if(!pause){
             setDt = dt;
             if (!gameOver) {
-                happyIndex = updateAnimationSpeed(15);
+             happyIndex = updateAnimationSpeed(15);
                 updateHappy(dt);
-                moveBlocks();
+             moveBlocks();
             }
         }
 
@@ -347,14 +349,14 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     //------------------------------------------------------
     int posX, posY, happyBoxX, happyBoxY, size, life;
     static double velX, velY, accelX, accelY;
-    static boolean isOnGround, isJumping, isFalling, isClimbing, collided, canJump;
+    static boolean isOnGround, isJumping, isFalling, isClimbing, collided, canJump, canMoveLeft, canMoveRight;
 
     public void updateHappy(double dt) {
-        //System.out.println("HAG Line 326 Calling updateHappy function");
-        //System.out.println("HAG Line 327 " + leftKey + " " + rightKey + " " + upKey + " " + downKey + " " + jumpKey);
-        //System.out.println("HAG Line 328 " + collided + " " + isClimbing + " " + canJump + " " + isFalling);
-        //System.out.println("HAG Line 329 " + happyObj.getPosX() + " " + happyObj.getPosY() + " " + happyObj.getVelX() + " " + happyObj.getVelY() + " "+ happyObj.getAccelX() + " " + happyObj.getAccelY());
-        //System.out.println("HAG Line 330 " + happyObj.getHitBoxX() + " " + happyObj.getHitBoxY());
+    //System.out.println("HAG Line 326 Calling updateHappy function");
+    //System.out.println("HAG Line 327 " + leftKey + " " + rightKey + " " + upKey + " " + downKey + " " + jumpKey);
+    //System.out.println("HAG Line 328 " + collided + " " + isClimbing + " " + canJump + " " + isFalling);
+    //System.out.println("HAG Line 329 " + happyObj.getPosX() + " " + happyObj.getPosY() + " " + happyObj.getVelX() + " " + happyObj.getVelY() + " "+ happyObj.getAccelX() + " " + happyObj.getAccelY());
+    //System.out.println("HAG Line 330 " + happyObj.getHitBoxX() + " " + happyObj.getHitBoxY());
 
         posX = happyObj.getPosX();
         posY = happyObj.getPosY();
@@ -373,14 +375,14 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
 
         //Horisontal movement
         if (leftKey && !rightKey) {
-            //Moving to the left
+        //Moving to the left
             velX -= accelX * dt;
 
             if (velX < -happyObj.maxSpeedX) {
                 velX = -happyObj.maxSpeedX;
             }
         } else if (rightKey && !leftKey) {
-            //Moving to the right
+                //Moving to the right
             velX += accelX * dt;
 
             if (velX > happyObj.maxSpeedX) {
@@ -396,7 +398,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                     velX = 0;
                 }
             }
-            //Happy is not moving left or right, but velX is not 0
+                //Happy is not moving left or right, but velX is not 0
             else if (velX < 0) {
                 //If happy has negative velocity, applying a positive stop force
                 velX += happyObj.stopSpeedX * dt;
@@ -477,22 +479,22 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             softResetIsTrue = true;
             softReset();
         }
-        for (int i = 0; i < enemyObj.size(); i++) {
-            enemyObj.get(i).Move();
-            int enemyPosX = enemyObj.get(i).getPosX();
-            int enemyPosY = enemyObj.get(i).getPosY();
-            enemyObj.get(i).setEnemyHitBox(enemyPosX, enemyPosY, blockSize, blockSize);
-            if (happyObj.hitBox.intersects(enemyObj.get(i).hitBox)) {
+        for (EnemyClass enemyClass : enemyObj) {
+            enemyClass.Move();
+            int enemyPosX = enemyClass.getPosX();
+            int enemyPosY = enemyClass.getPosY();
+            enemyClass.setEnemyHitBox(enemyPosX, enemyPosY, blockSize, blockSize);
+            if (happyObj.hitBox.intersects(enemyClass.hitBox)) {
                 hitDelay();
             }
         }
-        for (int i = 0; i < friendObj.size(); i++) {
-            friendObj.get(i).Move();
-            int friendPosX = friendObj.get(i).getPosX();
-            int friendPosY = friendObj.get(i).getPosY();
-            friendObj.get(i).setFriendHitBox(friendPosX, friendPosY, blockSize, blockSize);
-            if (happyObj.hitBox.intersects(friendObj.get(i).hitBox)) {
-                friendObj.get(i).friendSaved();
+        for (FriendClass friendClass : friendObj) {
+            friendClass.Move();
+            int friendPosX = friendClass.getPosX();
+            int friendPosY = friendClass.getPosY();
+            friendClass.setFriendHitBox(friendPosX, friendPosY, blockSize, blockSize);
+            if (happyObj.hitBox.intersects(friendClass.hitBox)) {
+                friendClass.friendSaved();
             }
         }
     }
@@ -515,6 +517,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             death = false;
             softResetIsTrue = false;
             canJump = true;
+            canMoveLeft = true;
+            canMoveRight = true;
             hit = false;
             gameOver = false;
             audioObj.playAudioRevive(this, audioObj.revive);
@@ -568,6 +572,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         death = false;
         softResetIsTrue = false;
         canJump = true;
+        canMoveLeft = true;
+        canMoveRight = true;
         happyObj.setPosX(startPosX);
         happyObj.setPosY(startPosY);
         happyObj.setVelX(0);
@@ -761,10 +767,12 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         }
 
         if (event.getKeyCode() == KeyEvent.VK_LEFT) {
-            leftKey = true; /*System.out.println("Hag 611 leftkey: " + leftKey);*/
+            if (canMoveLeft) {
+                leftKey = true;
+            } /*System.out.println("Hag 611 leftkey: " + leftKey);*/
         }
         if (event.getKeyCode() == KeyEvent.VK_RIGHT) {
-            rightKey = true; /*System.out.println("Hag 612 rightKey: " + rightKey);*/
+            if (canMoveRight) { rightKey = true; } /*System.out.println("Hag 612 rightKey: " + rightKey);*/
         }
         if (event.getKeyCode() == KeyEvent.VK_DOWN) {
             downKey = true; /*System.out.println("Hag 613 downKey: " + downKey);*/
@@ -797,7 +805,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         if (event.getKeyCode() == KeyEvent.VK_H) {
             if (showHitboxes) showHitboxes = false;
             else showHitboxes = true;
-        }
+                }
         if (event.getKeyCode() == KeyEvent.VK_ESCAPE) {
             if (gameStates == "PlayGame") {
                 if (menuObj.PauseMenuPanel.isVisible()) {
@@ -838,7 +846,9 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         }
     }
 
-    public boolean collisionCheck() {
+    int blockAboveLeftIndex, blockAboveRightIndex;
+    public boolean collisionCheck()
+    {
 //System.out.println("collisioncheck called");
 
         int posX = happyObj.getPosX();
@@ -867,8 +877,9 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         //System.out.println("velX: " + velX + " velY: " + velY + "  posX: " + posX + " posY: " + posY);
         //System.out.println("HBposX: " + HBposX + " HBposY: " + HBposY + " HBminX: " + HBminX + " HBminY: " + HBminY + " HBmaxX: " + HBmaxX + " HBmaxY: " + HBmaxY);
 
-        //Collision with blocks that have a hitBox
-        for (BlockClass block : myblocks) {
+            //Collision with blocks that have a hitBox
+        for (BlockClass block : myblocks)
+        {
             //System.out.println("for block initiated");
             int type = block.getType();
             blockposX = block.getPosX();
@@ -881,7 +892,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             //System.out.println("blockminX: " + blockminX + " blockMinY: " + blockMinY + " blockmaxX: " + blockmaxX + " blockMaxY: " + blockMaxY);
 
             if (((type >= 0) && (type <= 2)) || ((type >= 9) && (type <= 11))) {
-                //System.out.println("blocktype called");
+            //System.out.println("blocktype called");
 
                 if (happyObj.hitBox.intersects(block.hitBox)) {
                     //System.out.println("668 HAG Collision true, BlockType: " + block.getType() );
@@ -895,7 +906,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                     collisionVelX = happyObj.getVelX();
                     collisionVelY = happyObj.getVelY();
 
-                    if (velY > 0 && happyObj.hitBox.getMaxY() >= block.hitBox.getMinY()) {
+                    if (velY > 0 && happyObj.hitBox.getMaxY() >= block.hitBox.getMinY()) //Happy Top Collision
+                    {
                         //Happy is falling down to the ground, his feet is going through the nearest block below
                         //System.out.println("833 HAG Condition 1 is true");
                         //System.out.println("velX: " + velX + " velY: " + velY + "  posX: " + posX + " posY: " + posY);
@@ -912,8 +924,9 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                             canJump = false;
                         } else {
                             canJump = true;
-                        }
-                    } else if (velY < 0 && happyObj.hitBox.getMinY() <= block.hitBox.getMaxY()) {   //Happy is going upwards, his head is going through the block above
+                    }
+                    else if (velY < 0 && happyObj.hitBox.getMinY() <= block.hitBox.getMaxY()) //Happy Bottom Collision
+                    {   //Happy is going upwards, his head is going through the block above
                         //System.out.println(" 849 HAG Condition 2 is true");
                         // System.out.println("velX: " + velX + " velY: " + velY + "  posX: " + posX + " posY: " + posY);
                         //System.out.println("collisionVelX: " + collisionVelX + " collisionVelY: " + collisionVelY + " ollisioinHappyPosX: " + collisionHappyPosX + " collisionHappyPosY: " + collisionHappyPosY);
@@ -923,49 +936,68 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                         isJumping = false;
                         collided = false;
                         isOnGround = checkIsOnGround(posX, posY);
-
-                        if (!isOnGround) {
-                            canJump = false;
-                        } else {
-                            canJump = true;
-                        }
-                    } else if (velX > 0 && happyObj.hitBox.getMaxX() >= block.hitBox.getMinX()) {   //Happy is moving to the right, his right side is going through the block on the right
+                        
+                        if (!isOnGround) { canJump = false; }
+                        else { canJump = true; }
+                    }
+                    else if (velX > 0 && happyObj.hitBox.getMaxX() >= block.hitBox.getMinX()) //Happy Right Side Collision
+                    {   //Happy is moving to the right, his right side is going through the block on the right
                         //System.out.println("866 HAG Condition 3 is true");
                         //System.out.println("velX: " + velX + " velY: " + velY + "  posX: " + posX + " posY: " + posY);
                         //System.out.println("collisionVelX: " + collisionVelX + " collisionVelY: " + collisionVelY + " ollisioinHappyPosX: " + collisionHappyPosX + " collisionHappyPosY: " + collisionHappyPosY);
                         //System.out.println("collisionboxX: " + collisionBoxPosX + " collisionboxY: " + collisionBoxPosY);
+                        System.out.println("Happy Right Side Collision");
+                        //blockAboveRightIndex = myblocks.indexOf(block) - numCols + 1;
+                        //if (myblocks.get(blockAboveRightIndex).getType() != -1)
+                        //{
+                            canMoveRight = false;
+                            rightKey = false;
+                        //}
                         velX = 0;
                         posX = (int) block.hitBox.getMinX() - 1 - blockSize;
                         collided = false;
                         isOnGround = checkIsOnGround(posX, posY);
-                        if (!isOnGround) {
-                            canJump = false;
-                        }
-                    } else if (velX < 0 && happyObj.hitBox.getMinX() <= block.hitBox.getMaxX()) {
-                        //Happy is moving to the left, his left side is going through the block on the left
-                        //System.out.println("879 HAG Condition 4 is true");
-                        //System.out.println("velX: " + velX + " velY: " + velY + "  posX: " + posX + " posY: " + posY);
-                        //System.out.println("collisionVelX: " + collisionVelX + " collisionVelY: " + collisionVelY + " ollisioinHappyPosX: " + collisionHappyPosX + " collisionHappyPosY: " + collisionHappyPosY);
-                        //System.out.println("collisionboxX: " + collisionBoxPosX + " collisionboxY: " + collisionBoxPosY);
+                        if (!isOnGround) { canJump = false; }
+                    }
+                    else if (velX < 0 && happyObj.hitBox.getMinX() <= block.hitBox.getMaxX()) //Happy Left Side Collision
+                    {
+                    //Happy is moving to the left, his left side is going through the block on the left
+                    //System.out.println("879 HAG Condition 4 is true");
+                    //System.out.println("velX: " + velX + " velY: " + velY + "  posX: " + posX + " posY: " + posY);
+                    //System.out.println("collisionVelX: " + collisionVelX + " collisionVelY: " + collisionVelY + " ollisioinHappyPosX: " + collisionHappyPosX + " collisionHappyPosY: " + collisionHappyPosY);
+                    //System.out.println("collisionboxX: " + collisionBoxPosX + " collisionboxY: " + collisionBoxPosY);
+                        System.out.println("Happy Left Side Collision");
+                        //blockAboveLeftIndex = myblocks.indexOf(block) - numCols - 1;
+                        //if (myblocks.get(blockAboveLeftIndex).getType() != -1)
+                        //{
+                            canMoveLeft = false;
+                            leftKey = false;
+                        //}
                         velX = 0;
                         posX = (int) block.hitBox.getMaxX() + 1;
                         collided = false;
                         isOnGround = checkIsOnGround(posX, posY);
 
-                        if (!isOnGround) {
-                            canJump = false;
-                        } else {
-                            canJump = true;
-                        }
-                        //System.out.println("isOnGround: " + isOnGround);
-                    } else if ((velX == 0) && (velY == 0)) {
+                        if (!isOnGround) { canJump = false; }
+                        else { canJump = true; }
+                    //System.out.println("isOnGround: " + isOnGround);
+                    }
+                    else if ((velX == 0) && (velY == 0))
+                    {
                         System.out.println("714 HAG Condition 5 is true. Collision occurred with VelX = 0 and VelY = 0... hmmmmm.....");
-                        //System.out.println("velX: " + velX + " velY: " + velY + "  posX: " + posX + " posY: " + posY);
-                        //System.out.println("collisionVelX: " + collisionVelX + " collisionVelY: " + collisionVelY + " ollisioinHappyPosX: " + collisionHappyPosX + " collisionHappyPosY: " + collisionHappyPosY);
-                        //System.out.println("collisionboxX: " + collisionBoxPosX + " collisionboxY: " + collisionBoxPosY);
-                        //Adding some random VelX and VelY to force another collision -- really dumb hack
+                    //System.out.println("velX: " + velX + " velY: " + velY + "  posX: " + posX + " posY: " + posY);
+                    //System.out.println("collisionVelX: " + collisionVelX + " collisionVelY: " + collisionVelY + " ollisioinHappyPosX: " + collisionHappyPosX + " collisionHappyPosY: " + collisionHappyPosY);
+                    //System.out.println("collisionboxX: " + collisionBoxPosX + " collisionboxY: " + collisionBoxPosY);
+                    //Adding some random VelX and VelY to force another collision -- really dumb hack
                         velX = -100;
                         velY = 100;
+                    }
+
+                    if ((!canMoveLeft && (rightKey || velX == 0))) {
+                        canMoveLeft = true;
+                    }
+                    if ((!canMoveRight && (leftKey || velX == 0))) {
+                        canMoveRight = true;
                     }
                 }
                 happyObj.setVelY(velY);
