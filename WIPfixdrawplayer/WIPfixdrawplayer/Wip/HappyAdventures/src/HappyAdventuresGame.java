@@ -15,9 +15,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     public boolean showHitboxes, showGrid = false;
     Timer hitTimer = new Timer();
     String gameStates; // "MenuSystem", "PlayGame", "2Player"
-    //String csvFile = "images/WorldMaps/Worldmapv2.csv";
-    String csvFile = "images/WorldMaps/Horisontal world.csv";
-    //String csvFile = "images/WorldMaps/Worldmapv2.csv";
+    String csvFile = "images/WorldMaps/Worldmapv2.csv";
+    //String csvFile = "images/WorldMaps/Horisontal world.csv";
     // putting this here allows easier changes
     static boolean death, gameOver;
     public boolean softResetIsTrue;
@@ -62,7 +61,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                     loadImage("images/Sprites/door_red25x.png"),//9
                     loadImage("images/Sprites/door_blue25x.png"),//10
                     loadImage("images/Sprites/door_yellow25x.png"),//11
-                    loadImage("images/Sprites/block.png"),//12 need door extender
+                    loadImage("images/Sprites/doorNoKey.png"),//12 need door extender
                     loadImage("images/Sprites/key_red25px.png"),//13
                     loadImage("images/Sprites/key_blue25px.png"),//14
                     loadImage("images/Sprites/key_yellow25px.png"),//15
@@ -201,13 +200,18 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             if ((type >= 13) && (type <= 15)) {
                 KEYtot[4]++;
             }
+            else if ((type == 4) || (type == 19))
+            {
+                block.initBlockAnimSprites(this);
+            }
         }
 
-        for (int i = 0; i < gridObj.size() - 1; i++) {
+        /*for (int i = 0; i < gridObj.size() - 1; i++) {
             gridObj.get(i).getBlockType();
             //System.out.println("HAG 144 type: " + gridObj.get(i).getBlockType());
-        }
+        }*/
 
+        ;
     }
 
     //------------------------------------------------------
@@ -641,7 +645,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
 
                 //System.out.println("index: " + index + " row" + row + " col: " + col + " numCols: " + numCols + " numRows: " + numRows + " arraysize: " + gridObj.size() + " type: " + gridObj.get(index).getBlockType() );
                 //if (type != -1 && type != 31 && type != 24 && type != 25 && type != 26 && type != 27 && type != 28 && type != 29)
-                if (type != -1 && type != 31 && !(type >= 24 && type <= 29)) //Not air, happy, enemies, or friends
+                if (type != -1 && type != 31 && !(type >= 24 && type <= 29) && (type != 4) && (type != 19)) //Not air, happy, enemies, or friends, fire, hearts
                 {
                     if (x >= minDrawPosX && x <= maxDrawPosX && y >= minDrawPosY && y <= maxDrawPosY) {
                         drawImage(blockIMG[type], x, y, blockSize, blockSize);
@@ -654,6 +658,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         drawFriends(drawX, drawY);
         drawPlayer(drawX, drawY);
         drawEnemies(drawX, drawY);
+        drawBlockAnimations(drawX, drawY);
     }
 
     //------------------------------------------------------
@@ -756,6 +761,28 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             int friendPosX = friendObj.get(i).getPosX() - drawX;
             int friendPosY = friendObj.get(i).getPosY() - drawY;
             drawImage(friendImageArray[friendImage][happyIndex], friendPosX, friendPosY, blockSize, blockSize);
+        }
+    }
+    public void drawBlockAnimations(int drawX, int drawY) {
+        int blockImage = 0;
+        int type;
+        for (int i = 0; i < myblocks.size(); i++) {
+            Image[][] blockAnimArray = myblocks.get(i).getImageArray();
+            type = myblocks.get(i).getType();
+            if((type == 4) || (type == 19))
+            {
+                if (type == 4)
+                {//This is fire
+                    blockImage = 0;
+                }
+                if(type == 19)
+                {//This is heart
+                    blockImage = 1;
+                }
+                int blockPosX = myblocks.get(i).getPosX() - drawX;
+                int blockPosY = myblocks.get(i).getPosY() - drawY;
+                drawImage(blockAnimArray[blockImage][happyIndex], blockPosX, blockPosY, blockSize, blockSize);
+            }
         }
     }
 
