@@ -15,7 +15,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     public boolean showHitboxes, showGrid = false;
     Timer hitTimer = new Timer();
     String gameStates; // "MenuSystem", "PlayGame", "2Player"
-    String csvFile = "images/WorldMaps/Vertical_world.csv";
+    String csvFile = "images/WorldMaps/Worldmapv2.csv";
     //String csvFile = "images/WorldMaps/Horisontal world.csv";
     // putting this here allows easier changes
     static boolean death, gameOver;
@@ -29,7 +29,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
 
     //volpy Doors Open
 
-    boolean haveGreenKey=true, haveBlueKey=true, haveYellowKey=true;
+    boolean haveGreenKey=false, haveBlueKey=false, haveYellowKey=false;
 
     //volpy Pause Game
 
@@ -81,6 +81,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                     loadImage("images/Sprites/spikeLeft.png"),//40 need bappy
                     loadImage("images/Sprites/spikeRight.png"),//41 need bappy
                     loadImage("images/Sprites/secretblock1.png"),//42 need bappy
+
+
             };
 
     //------------------------------------------------------
@@ -358,7 +360,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         happyBoxY = happyObj.getHitBoxY();
         life = happyObj.getPlayerLife();
 
-        if (life < 0) {
+        if (life <= 0) {
             gameOver = true;
             gameStates = "GameOver";
         }
@@ -700,7 +702,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         int enemyImage;
         for (int i = 0; i < enemyObj.size(); i++) {
             Image[][] enemyImageArray = enemyObj.get(i).getImageArray();
-            enemyImage = i;
+            enemyImage = enemyObj.get(i).getType() - 24;
             int enemyPosX = enemyObj.get(i).getPosX() - drawX;
             int enemyPosY = enemyObj.get(i).getPosY() - drawY;
             drawImage(enemyImageArray[enemyImage][happyIndex], enemyPosX, enemyPosY, blockSize, blockSize);
@@ -1034,6 +1036,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     //-----------------------------------------------------
     //This function will give Happy a few seconds to pass through objects when get hurt
     public void hitDelay() {
+
         if (!hit && life >= 0) {
             life = happyObj.getPlayerLife();
             life--;
@@ -1046,7 +1049,9 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             public void run() {
                 hit = false;
             }
+
         }, 2000);
+
         System.out.println("hit is " + hit);
     }
 
