@@ -484,22 +484,33 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         //--------------------------------------------
         //Removing the enemies that have been converted to friendlies
         for (EnemyClass enemy : enemiesToRemove) {
+            FriendClass friend = new FriendClass(enemy.getPosX(), enemy.getPosY(), enemy.getType()+3, enemy.getGridLoc());
+            friend.initFriendSprites(this);
+            friend.setFriendSaved();
+            friendObj.add(friend);
             enemyObj.remove(enemy); // Remove enemies from the enemyObj list
             HUDtot[4]--;
         }
 
-        for (BlockClass block : myblocks)
-        {
-            if (block instanceof FriendClass friend)
-            {
-                double distance = distance(happyObj.getPosX(), happyObj.getPosY(), friend.getPosX(), friend.getPosY());
-                if((friend.getSaved())&&(distance > friendFollowDistance))
-                {
-                    friend.Move(happyObj.getPosX(), happyObj.getPosY(), distance);
-                }
-
+        for (FriendClass friendClass : friendObj) {
+            double distance = distance(happyObj.getPosX(), happyObj.getPosY(), friendClass.getPosX(), friendClass.getPosY());
+            if ((friendClass.getSaved()) && (distance > friendFollowDistance)) {
+                friendClass.Move(happyObj.getPosX(), happyObj.getPosY(), distance);
             }
         }
+
+//        for (BlockClass block : myblocks)
+//        {
+//            if (block instanceof FriendClass friend)
+//            {
+//                double distance = distance(happyObj.getPosX(), happyObj.getPosY(), friend.getPosX(), friend.getPosY());
+//                if((friend.getSaved())&&(distance > friendFollowDistance))
+//                {
+//                    friend.Move(happyObj.getPosX(), happyObj.getPosY(), distance);
+//                }
+//
+//            }
+//        }
     }
 
     /*public void setGrid() {
@@ -757,11 +768,14 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         for (int i = 0; i < friendObj.size(); i++) {
             //friend1 = 0, friend1Jump = 1, friend2 = 2, friend2Jump = 3, friend3 = 4, friend3Jump = 5, friend4 = 6, friend4Jump = 7;
             Image[][] friendImageArray = friendObj.get(i).getImageArray();
-            if (jump) {
-                friendImage = i * 2 + 1;
+            if (jump && friendObj.get(i).getSaved()) {
+                //friendImage = i * 2 + 1;
+                friendImage = (friendObj.get(i).getType() - 27) * 2 + 1;
             } else {
-                friendImage = i * 2;
+                //friendImage = i * 2;
+                friendImage = (friendObj.get(i).getType() - 27) * 2;
             }
+            if (i > 3) { friendImage = 0; }
             int friendPosX = friendObj.get(i).getPosX() - drawX;
             int friendPosY = friendObj.get(i).getPosY() - drawY;
             drawImage(friendImageArray[friendImage][happyIndex], friendPosX, friendPosY, blockSize, blockSize);
