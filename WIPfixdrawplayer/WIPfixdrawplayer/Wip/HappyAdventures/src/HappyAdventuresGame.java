@@ -118,7 +118,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         initAudio();// line 109
         initWorld(csvFile);// line 113 .... creates variables for grid class
         initCharacters();// line 145
-        //  initGUI();// line 98
+          initGUI();// line 98
 
         super.mFrame.setSize(frameWidth, frameHeight);
 
@@ -509,7 +509,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     Image cloud1 = loadImage("images/Sprites/clouds1.png");
     Image cloud2 = loadImage("images/Sprites/clouds2.png");
     Image cloud3 = loadImage("images/Sprites/clouds3.png");
-
+    Image sun = loadImage("images/Sprites/sun.png");
     public void moveClouds(double dt) {
         cloudX1 += cloud1VelX * dt;
         cloudX2 += cloud2VelX * dt;
@@ -517,10 +517,12 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     }
 
     public void drawBackground() {
+
         drawImage(bg, 0, 0, frameWidth, frameHeight);
         drawImage(cloud1, cloudX1, 100, 150, 30);
         drawImage(cloud2, cloudX2, 30, 150, 30);
         drawImage(cloud3, cloudX3, 150, 150, 30);
+
         drawImage(bg2, 0, 0, frameWidth, frameHeight);
         if (cloudX1 >= frameWidth) {
             cloudX1 = 1;
