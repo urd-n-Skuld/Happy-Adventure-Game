@@ -1010,16 +1010,11 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                     deleteBlock(block);
                     break;
                 }
-            } else if ((type == 9) || (type == 10) || (type == 11)) {
-//                System.out.println(type);
-//                System.out.println(happyObj.hitBox.getMaxX()+" xhit maxy "+happyObj.hitBox.getMaxY());
-//                System.out.println(happyObj.hitBox.getMinX()+"  xhit miny  "+happyObj.hitBox.getMinY());
-//                System.out.println(happyObj.getPosX()+" xhappyy "+happyObj.getPosY());
-//                System.out.println((happyObj.hitBox.getMaxX() + 2)+" > "+block.getPosX());
-//                System.out.println((happyObj.hitBox.getMaxX() + 2)+" < "+block.getPosX() + blockSize);
-
-                if (keys[type - 9] && (((happyObj.hitBox.getMaxX() + 2 > block.getPosX() && happyObj.hitBox.getMaxX() + 2 < block.getPosX() + blockSize) || (happyObj.hitBox.getMaxY() + 5 > block.getPosY() && happyObj.hitBox.getMaxY() + 2 < block.getPosY() + blockSize))
-                        || ((happyObj.hitBox.getMinX() - 2 < block.getPosX() + blockSize && happyObj.hitBox.getMinX() - 2 > block.getPosX()) || (happyObj.hitBox.getMinY() - 2 < block.getPosY() + blockSize && happyObj.hitBox.getMinY() - 2 > block.getPosY())))) {
+            }
+            else if ((type == 9) || (type == 10) || (type == 11))
+            {
+                if (keys[type - 9] && (distance(happyObj.hitBox.getMinX(), happyObj.hitBox.getMinY(), block.getPosX(), block.getPosY())<28))
+                {
                     deleteBlock(block);
                     break;
                 }
