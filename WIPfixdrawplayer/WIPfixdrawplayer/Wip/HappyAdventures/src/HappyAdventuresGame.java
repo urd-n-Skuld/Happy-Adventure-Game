@@ -23,9 +23,13 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
 
     //volpy HUD variables
     int candy1Total = 0, candy2Total = 0, candy3Total = 0, extraGreenKey = 0, extraYellowKey = 0, extraBlueKey = 0;
-    int score = 0;
+    int totalScore = 0;
+
+
     //volpy HUD IMAGES
+
     Image heart, candy1, candy2, candy3, key1, key2, key3, key4, keyEmpty, hudBG;
+
 
     //volpy Doors Open
 
@@ -34,6 +38,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     //volpy Pause Game
 
     boolean pause=false;
+
+
 
 
     public static Image[] blockIMG =
@@ -198,7 +204,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
 
         //TOTAL SCORE
         changeColor(Color.white);
-        drawBoldText(629, 20, "Total Score: " + score, "arial", 15);
+        drawBoldText(629, 20, "Total Score: " + totalScore, "arial", 15);
 
     }
 
@@ -983,6 +989,18 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                         //candy score
                         happyObj.setPlayerScore(4 * ((type) - 16) ^ 2 + 1);
                         deleteBlock(block);
+                    }
+                    if(type==16){
+                        candy1Total++;
+                        totalScore+=1;
+                    }
+                    if(type==17){
+                        candy2Total++;
+                        totalScore+=5;
+                    }
+                    if(type==18){
+                        candy3Total++;
+                        totalScore+=10;
                     }
                     break;
                 }
