@@ -49,6 +49,9 @@ public class EnemyClass extends BlockClass {
     }
     public Rectangle getHitBox() { return this.hitBox; }
     public Image[][] getImageArray() { return ImageArray; }
+    public int getGridLoc() {
+        return gridLoc;
+    }
 
     // class specific
 

@@ -22,7 +22,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     public boolean softResetIsTrue;
 
     //volpy HUD variables
-    int[] HUDtot = {0, 0, 0, 0};
+    int[] HUDtot = {0, 0, 0, 0, 0};
     int[] KEYtot = {0, 0, 0, 0, 0};
     int score = 0;
     //volpy HUD IMAGES
@@ -36,7 +36,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             loadImage("images/Sprites/heart.png"),
             loadImage("images/Sprites/CANDY1_25PX.png"),
             loadImage("images/Sprites/CANDY2_25PX.png"),
-            loadImage("images/Sprites/CANDY3_25PX.png")};
+            loadImage("images/Sprites/CANDY3_25PX.png"),
+            loadImage("images/Sprites/supersweet.png")};
 
 //volpy Background Variables
 
@@ -118,7 +119,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         initAudio();// line 109
         initWorld(csvFile);// line 113 .... creates variables for grid class
         initCharacters();// line 145
-          initGUI();// line 98
+        initGUI();// line 98
 
         super.mFrame.setSize(frameWidth, frameHeight);
 
@@ -149,10 +150,10 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         //HUD BACKGROUND
         drawImage(hudBG, 0, 0, 750, 28);
         changeColor(Color.white);
-        int[] HUDItemIX = {28, 128, 179, 230};
-        int[] HUDTextTX = {53, 150, 195, 250};
+        int[] HUDItemIX = {28, 128, 179, 230, 280};
+        int[] HUDTextTX = {53, 150, 195, 250, 305};
         HUDtot[0] = life;
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             drawImage(HUDimg[i + 5], HUDItemIX[i], 1, 25, 25);
             changeColor(Color.white);
             drawBoldText(HUDTextTX[i], 20, "x" + HUDtot[i], "arial", 15);
@@ -296,13 +297,15 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
 
     @Override
     public void update(double dt) {//System.out.println("Update called");
-
+        //int removeIndex = -99;
         setDt = dt;
         if (!gameOver) {
             happyIndex = updateAnimationSpeed(15);
             moveClouds(dt);
             updateHappy(dt);
             moveBlocks();
+            //removeIndex = moveBlocks();
+            //deleteEnemy(removeIndex);
         }
 
     }
@@ -435,6 +438,9 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     }
 
     private void moveBlocks() {
+
+        ArrayList<EnemyClass> enemiesToRemove = new ArrayList<>();
+
         if ((posY < 0) || (posX < 0) || (posY > numRows * blockSize) || (posX > numCols * blockSize)) {
             life = happyObj.getPlayerLife();
             life--;
@@ -447,10 +453,27 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             int enemyPosX = enemyClass.getPosX();
             int enemyPosY = enemyClass.getPosY();
             enemyClass.setEnemyHitBox(enemyPosX, enemyPosY, blockSize, blockSize);
-            if (happyObj.hitBox.intersects(enemyClass.hitBox)) {
-                hitDelay();
+
+            //Collision with enemies
+            if (happyObj.hitBox.intersects(enemyClass.hitBox))
+            {
+                if(HUDtot[4] > 0)
+                {
+                    System.out.println(enemyClass.getGridLoc());
+                    enemiesToRemove.add(enemyClass); // Add enemy to the removal list
+                }
+                else
+                {
+                    hitDelay();
+                }
             }
         }
+        //--------------------------------------------
+        //Removing the enemies that have been converted to friendlies
+        for (EnemyClass enemy : enemiesToRemove) {
+            enemyObj.remove(enemy); // Remove enemies from the enemyObj list
+        }
+
         for (FriendClass friendClass : friendObj) {
             friendClass.Move();
             int friendPosX = friendClass.getPosX();
@@ -871,7 +894,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             //System.out.println("blockposX: " + blockposX + " blockposY: " + blockposY);
             //System.out.println("blockminX: " + blockminX + " blockMinY: " + blockMinY + " blockmaxX: " + blockmaxX + " blockMaxY: " + blockMaxY);
 
-            if (((type >= 0) && (type <= 2)) || ((type >= 9) && (type <= 12))) {
+            if (((type >= 0) && (type <= 2)) || ((type >= 9) && (type <= 12))) {  //These are keys and doors
                 //System.out.println("blocktype called");
 
                 if (happyObj.hitBox.intersects(block.hitBox)) {
@@ -991,7 +1014,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 happyObj.setHitBoxXY(posX, posY);
             }
             //Collision for blocks that don't have hitboxes
-            if ((type == 16) || (type == 17) || (type == 18) || (type == 19)) {   //These are candies and hearts
+            if ((type == 16) || (type == 17) || (type == 18) || (type == 19) || (type == 37)) {   //These are candies and hearts
                 if ((((happyObj.hitBox.getMaxX() - 5 > block.getPosX() && happyObj.hitBox.getMaxX() - 5 < block.getPosX() + blockSize)) && (happyObj.hitBox.getMaxY() - 5 > block.getPosY() && happyObj.hitBox.getMaxY() - 5 < block.getPosY() + blockSize))
                         || ((((happyObj.hitBox.getMinX() + 5 > block.getPosX() && happyObj.hitBox.getMinX() + 5 < block.getPosX() + blockSize)) && (happyObj.hitBox.getMinY() + 5 > block.getPosY() && happyObj.hitBox.getMinY() + 5 < block.getPosY() + blockSize)))) {
 
@@ -1003,7 +1026,15 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                         deleteBlock(block);
                     } else {
                         audioObj.playAudioEatCandy(this, audioObj.eatCandy);
-                        HUDtot[type - 15]++;
+                        if(type != 37)
+                        {
+                            HUDtot[type - 15]++;
+                        }
+                        else
+                        {
+                            HUDtot[type - 33]++;
+                        }
+
                         happyObj.setPlayerScore(4 * ((type) - 16) ^ 2 + 1);
                         deleteBlock(block);
                     }
@@ -1057,6 +1088,11 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         gridObj.get(block.getCellIndex()).setBlockType(-1);
         gridObj.get(block.getCellIndex()).setActiveInd(false);
         myblocks.remove(block);
+    }
+    private void deleteEnemy(EnemyClass enemy){
+        gridObj.get(enemy.getCellIndex()).setBlockType(-1);
+        gridObj.get(enemy.getCellIndex()).setActiveInd(false);
+        enemyObj.remove(enemy);
     }
 
     //-----------------------------------------------------

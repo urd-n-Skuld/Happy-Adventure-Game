@@ -22,7 +22,7 @@ public class BlockClass{
     public void setCellIndex(int i) { cellIndex = i; }
     public void setblockHitBox(int x, int y, int w, int h)
     {   //not hitbox properties set for these types: candy, fire, ladder, spike, keys
-        if (((type >= 3) && (type <= 5))||((type >= 13) && (type <= 18)))
+        if (((type >= 3) && (type <= 5))||((type >= 13) && (type <= 18)) || (type == 37))
         {
             hitBox = new Rectangle(0, 0, 0, 0);
         }
