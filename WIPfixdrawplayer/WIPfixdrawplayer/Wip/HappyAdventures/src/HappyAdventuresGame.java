@@ -262,14 +262,14 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 //System.out.println("startPosX " + gridObj.get(i).getPosX() + " RightStop: " + rightStop + " LeftStop: " + leftStop);
                 tempEnemy.setMaxLeft(leftStop, blockSize);
                 tempEnemy.setMaxRight(rightStop, blockSize);
-                tempEnemy.loadEnemySprites(this);
+                tempEnemy.initEnemySprites(this);
                 enemyObj.add(tempEnemy);
             }
             else if (gridObj.get(i).getBlockType() == 27 || gridObj.get(i).getBlockType() == 28 || gridObj.get(i).getBlockType() == 29) //Friends
             {
                 int friendPosX = gridObj.get(i).getPosX(), friendPosY = gridObj.get(i).getPosY();
                 FriendClass tempFriend = new FriendClass(friendPosX, friendPosY, gridObj.get(i).getBlockType(), i);
-                tempFriend.loadFriendSprites(this);
+                tempFriend.initFriendSprites(this);
                 friendObj.add(tempFriend);
             }
         }
@@ -451,7 +451,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             int friendPosY = friendClass.getPosY();
             friendClass.setFriendHitBox(friendPosX, friendPosY, blockSize, blockSize);
             if (happyObj.hitBox.intersects(friendClass.hitBox)) {
-                friendClass.friendSaved();
+                friendClass.setFriendSaved();
             }
         }
     }
