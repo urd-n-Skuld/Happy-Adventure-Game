@@ -15,7 +15,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     public boolean showHitboxes, showGrid = false;
     Timer hitTimer = new Timer();
     String gameStates; // "MenuSystem", "PlayGame", "2Player"
-    String csvFile = "images/WorldMaps/Vertical_world.csv";
+    String csvFile = "images/WorldMaps/Worldmapv2.csv";
     //String csvFile = "images/WorldMaps/Horisontal world.csv";
     // putting this here allows easier changes
     static boolean death, gameOver;
