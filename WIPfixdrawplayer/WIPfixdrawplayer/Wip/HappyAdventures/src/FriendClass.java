@@ -1,10 +1,11 @@
 import java.awt.*;
 
 public class FriendClass extends BlockClass {
-
+    Rectangle hitBox;
     private boolean saved;
-    private int StartX, StartY, posX, posY, gridLoc;
-    private Image[][] ImageArray = new Image[8][15];
+    private int posX, posY;
+    private final int  StartX, StartY, gridLoc;
+    private final Image[][] ImageArray = new Image[8][15];
 
 
 
@@ -34,7 +35,11 @@ public class FriendClass extends BlockClass {
     // set
 
     public void setFriendSaved() { this.saved = true; }
-
+    @Override
+    public void setblockHitBox(int x, int y, int w, int h)
+    {
+            hitBox = new Rectangle(0, 0, 0, 0);
+    }
     //get
     public boolean getSaved() { return this.saved; }
     @Override public int getPosX() { return posX; }

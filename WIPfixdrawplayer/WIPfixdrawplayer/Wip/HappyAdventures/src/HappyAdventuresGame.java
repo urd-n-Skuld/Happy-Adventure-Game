@@ -16,8 +16,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     Timer hitTimer = new Timer();
     String gameStates; // "MenuSystem", "PlayGame", "2Player"
     //String csvFile = "images/WorldMaps/Worldmapv2.csv";
-    //String csvFile = "images/WorldMaps/Horisontal world.csv";
-    String csvFile = "images/WorldMaps/Worldmapv2.csv";
+    String csvFile = "images/WorldMaps/Horisontal world.csv";
+    //String csvFile = "images/WorldMaps/Worldmapv2.csv";
     // putting this here allows easier changes
     static boolean death, gameOver;
     public boolean softResetIsTrue;
@@ -442,6 +442,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     }
 
     private void moveBlocks() {
+        int friendFollowDistance = 40;
 
         ArrayList<EnemyClass> enemiesToRemove = new ArrayList<>();
 
@@ -480,21 +481,15 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             HUDtot[4]--;
         }
 
-        for (FriendClass friendClass : friendObj) {
-            //friendClass.Move();
-            int friendPosX = friendClass.getPosX();
-            int friendPosY = friendClass.getPosY();
-            //friendClass.setFriendHitBox(friendPosX, friendPosY, blockSize, blockSize);
-
-            if (happyObj.hitBox.intersects(friendClass.hitBox)) {
-                friendClass.setFriendSaved();
-            }
-        }
-        for (BlockClass block : myblocks) {
+        for (BlockClass block : myblocks)
+        {
             if (block instanceof FriendClass friend)
             {
                 double distance = distance(happyObj.getPosX(), happyObj.getPosY(), friend.getPosX(), friend.getPosY());
-                if((friend.getSaved())&&(distance>30)){ friend.Move(happyObj.getPosX(), happyObj.getPosY(), distance); }
+                if((friend.getSaved())&&(distance > friendFollowDistance))
+                {
+                    friend.Move(happyObj.getPosX(), happyObj.getPosY(), distance);
+                }
 
             }
         }
@@ -901,12 +896,12 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         for (BlockClass block : myblocks) {
             //System.out.println("for block initiated");
             int type = block.getType();
-            blockposX = block.getPosX();
-            blockposY = block.getPosY();
-            blockminX = block.hitBox.getMinX();
-            blockmaxX = block.hitBox.getMaxX();
-            blockMinY = block.hitBox.getMinY();
-            blockMaxY = block.hitBox.getMaxY();
+            //blockposX = block.getPosX();
+            //blockposY = block.getPosY();
+            //blockminX = block.hitBox.getMinX();
+            //blockmaxX = block.hitBox.getMaxX();
+            //blockMinY = block.hitBox.getMinY();
+            //blockMaxY = block.hitBox.getMaxY();
             //System.out.println("blockposX: " + blockposX + " blockposY: " + blockposY);
             //System.out.println("blockminX: " + blockminX + " blockMinY: " + blockMinY + " blockmaxX: " + blockmaxX + " blockMaxY: " + blockMaxY);
 
@@ -1169,7 +1164,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
 
         }, 2000);
 
-        System.out.println("hit is " + hit);
+        //System.out.println("hit is " + hit);
     }
 
     public boolean checkIsOnGround(int x, int y) {//System.out.println("checkisonground called");
