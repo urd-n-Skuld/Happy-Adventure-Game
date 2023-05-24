@@ -17,7 +17,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     String gameStates; // "MenuSystem", "PlayGame", "2Player"
     //String csvFile = "images/WorldMaps/Worldmapv2.csv";
     //String csvFile = "images/WorldMaps/Horisontal world.csv";
-    String csvFile = "images/WorldMaps/Vertical_world.csv";
+    String csvFile = "images/WorldMaps/Worldmapv2.csv";
     // putting this here allows easier changes
     static boolean death, gameOver;
     public boolean softResetIsTrue;
