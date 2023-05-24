@@ -47,7 +47,6 @@ public class EnemyClass extends BlockClass {
     @Override public int getPosX() {
         return locX;
     }
-    public Rectangle getHitBox() { return this.hitBox; }
     public Image[][] getImageArray() { return ImageArray; }
 
     // class specific

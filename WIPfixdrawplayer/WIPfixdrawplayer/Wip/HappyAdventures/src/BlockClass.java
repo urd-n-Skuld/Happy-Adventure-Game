@@ -8,11 +8,7 @@ public class BlockClass{
 
     // init
 
-    public BlockClass(int x, int y, int type) {
-        this.posX = x;
-        this.posY = y;
-        this.type = type;
-    }
+    public BlockClass(int x, int y, int type) { this.posX = x; this.posY = y; this.type = type; }
 
     //set
 
@@ -22,19 +18,15 @@ public class BlockClass{
     public void setCellIndex(int i) { cellIndex = i; }
     public void setblockHitBox(int x, int y, int w, int h)
     {   //not hitbox properties set for these types: candy, fire, ladder, spike, keys
-        if (((type >= 3) && (type <= 5))||((type >= 13) && (type <= 18)))
+        if (((type >= 3) && (type <= 5))||((type >= 13) && (type <= 18))||((type >= 27) && (type <= 29)))
         {
             hitBox = new Rectangle(0, 0, 0, 0);
         }
-        else
-        {
-            hitBox = new Rectangle(x, y, w, h);
-        }
+        else { hitBox = new Rectangle(x, y, w, h); }
     }
 
     // Get
 
-    public Rectangle getHitBox() { return this.hitBox; }
     public int getPosX() { return posX; }
     public int getPosY() { return posY; }
     public int getType() { return type; }

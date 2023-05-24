@@ -2,10 +2,11 @@ import java.awt.*;
 
 public class FriendClass extends BlockClass {
 
-    Rectangle hitBox;
-    private boolean saved = false;
-    private int posX, posY, gridLoc;
+    private boolean saved;
+    private int StartX, StartY, posX, posY, gridLoc;
     private Image[][] ImageArray = new Image[8][15];
+
+
 
     // init
 
@@ -13,12 +14,14 @@ public class FriendClass extends BlockClass {
         super(x, y, type);
         this.posX = x;
         this.posY = y;
+        this.StartX = x;
+        this.StartY = y;
         this.gridLoc = gridIndex;
+        System.out.println(this.gridLoc+ " new friend");
     }
     public void initFriendSprites(HappyAdventuresGame gameObj)
     {
         Image spriteSheet = gameObj.loadImage("images/Sprites/SPHappFriends.png");
-
         for (int x = 0; x < ImageArray.length; x++)
         {
             for (int y = 0; y < ImageArray[x].length; y++)
@@ -30,22 +33,25 @@ public class FriendClass extends BlockClass {
 
     // set
 
-    public void setFriendSaved() { saved = true; }
-    public void setFriendHitBox(int x, int y, int w, int h)
-    {   //not hitbox properties set for these types: candy, fire, ladder, spike
-        hitBox = new Rectangle(x, y, w, h);
-    }
+    public void setFriendSaved() { this.saved = true; }
 
     //get
-
+    public boolean getSaved() { return this.saved; }
     @Override public int getPosX() { return posX; }
     @Override public int getPosY() { return posY; }
-    public Rectangle getHitBox() { return this.hitBox; }
+    public int getGridIndex() {return this.gridLoc; }
     public Image[][] getImageArray() { return ImageArray; }
 
     // class specific
 
-    public void Move() { if (saved) { } }
 
-
+    public void Move(double HappyX, double HappyY, double distance) {
+        this.posX += ((HappyX - this.posX) / distance) * (distance/5);
+        this.posY += ((HappyY - this.posY) / distance) * (distance/5);
+    }
+    public void softreset(){
+        this.saved = false;
+        this.posX = StartX;
+        this.posY = StartY;
+    }
 }
