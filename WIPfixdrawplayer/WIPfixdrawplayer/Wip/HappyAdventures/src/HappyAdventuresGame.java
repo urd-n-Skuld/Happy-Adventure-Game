@@ -477,6 +477,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         //Removing the enemies that have been converted to friendlies
         for (EnemyClass enemy : enemiesToRemove) {
             enemyObj.remove(enemy); // Remove enemies from the enemyObj list
+            HUDtot[4]--;
         }
 
         for (FriendClass friendClass : friendObj) {
