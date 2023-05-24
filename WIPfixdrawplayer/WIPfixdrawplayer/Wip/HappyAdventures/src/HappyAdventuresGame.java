@@ -36,13 +36,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             loadImage("images/Sprites/heart.png"),
             loadImage("images/Sprites/CANDY1_25PX.png"),
             loadImage("images/Sprites/CANDY2_25PX.png"),
-            loadImage("images/Sprites/CANDY3_25PX.png"),
-    };
-
-    //volpy Doors Open
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    boolean haveGreenKey, haveBlueKey, haveYellowKey;
-
+            loadImage("images/Sprites/CANDY3_25PX.png")};
     //volpy Pause Game
 
     boolean pause=false;
@@ -197,8 +191,6 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             int type = block.getType();
             block.setblockHitBox(x, y, blockSize, blockSize);
         }
-        //System.out.println(" HAG Line 130 " +numRows+ " numRows " + numCols + " numCols");
-        //initEnemyMax();
 
         for (int i = 0; i < gridObj.size() - 1; i++) {
             gridObj.get(i).getBlockType();
