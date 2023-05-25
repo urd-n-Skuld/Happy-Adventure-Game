@@ -2,7 +2,7 @@ import java.awt.*;
 
 public class FriendClass extends BlockClass {
     Rectangle hitBox;
-    private boolean saved;
+    private boolean follow, saved;
     private int posX, posY;
     private final int  StartX, StartY, gridLoc;
     private final Image[][] ImageArray = new Image[8][15];
@@ -34,17 +34,28 @@ public class FriendClass extends BlockClass {
 
     // set
 
-    public void setFriendSaved() { this.saved = true; }
+    public void setFriendFollow() { if(!saved) {this.follow = true;} }
     @Override
     public void setblockHitBox(int x, int y, int w, int h)
     {
             hitBox = new Rectangle(0, 0, 0, 0);
     }
+    public void setSaved(){
+        if(!saved) {
+            this.follow = false;
+            this.saved = true;
+        }
+
+    }
+
     //get
-    public boolean getSaved() { return this.saved; }
+
+
     @Override public int getPosX() { return posX; }
     @Override public int getPosY() { return posY; }
-    public int getGridIndex() {return this.gridLoc; }
+    public boolean getSaved() { return this.saved; }
+    public int getGridIndex() { return this.gridLoc; }
+    public boolean getFollow() { return this.follow; }
     public Image[][] getImageArray() { return ImageArray; }
 
     // class specific
@@ -54,9 +65,12 @@ public class FriendClass extends BlockClass {
         this.posX += ((HappyX - this.posX) / distance) * (distance/5);
         this.posY += ((HappyY - this.posY) / distance) * (distance/5);
     }
-    public void softreset(){
-        this.saved = false;
+    public void softreset() {
+        if (!saved)
+        {
+        this.follow = false;
         this.posX = StartX;
         this.posY = StartY;
+        }
     }
 }

@@ -490,7 +490,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         for (EnemyClass enemy : enemiesToRemove) {
             FriendClass friend = new FriendClass(enemy.getPosX(), enemy.getPosY(), enemy.getType()+3, enemy.getGridLoc());
             friend.initFriendSprites(this);
-            friend.setFriendSaved();
+            friend.setFriendFollow();
             friendObj.add(friend);
             enemyObj.remove(enemy); // Remove enemies from the enemyObj list
             HUDtot[4]--;
@@ -499,7 +499,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         int friendFollowDistance = 40;
         for (int i = 0; i < friendObj.size(); i++) {
             double distance = distance(happyObj.getPosX(), happyObj.getPosY(), friendObj.get(i).getPosX(), friendObj.get(i).getPosY());
-            if ((friendObj.get(i).getSaved()) && (distance > friendFollowDistance + (i*blockSize))) {
+            if ((friendObj.get(i).getFollow()) && (distance > friendFollowDistance + (i*blockSize))) {
                 friendObj.get(i).Move(happyObj.getPosX(), happyObj.getPosY(), distance + (i*blockSize));
             }
         }
@@ -539,6 +539,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         if (life < 0) {
             gameOver = true;
             gameStates = "GameOver";
+            friendSaver();
         } else {
             //Soft Reset only resets the character position and b
             death = false;
@@ -1191,30 +1192,30 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 if (distance(happyObj.hitBox.getMinX(), happyObj.hitBox.getMinY(), block.getPosX(), block.getPosY())<29)
                 {
                     if (block instanceof FriendClass myfriend){
-                        myfriend.setFriendSaved();
+                        myfriend.setFriendFollow();
                     }
 
                     break;
                 }
-            }
-            else if ((type >= 9) && (type <= 11))
-            {// doors
-                if (keys[type - 9] && (distance(happyObj.hitBox.getMinX(), happyObj.hitBox.getMinY(), block.getPosX(), block.getPosY())<28))
-                {
-                    KEYtot[type - 9]--;
-                    if(KEYtot[type - 9]==0){ keys[type - 9] = false; }
-                    deleteBlock(block);
-                    break;
-                }
-            }
-//            else if (type == 7) {
-//                for (FriendClass friend : friendObj) {
-//                    if (distance(friend.getPosX(), friend.getPosY(), block.getPosX(), block.getPosY()) < 50) {
-//                        deleteBlock(friend);
-//                    }
+            }//Duplicated?
+//            else if ((type >= 9) && (type <= 11))
+//            {// doors
+//                if (keys[type - 9] && (distance(happyObj.hitBox.getMinX(), happyObj.hitBox.getMinY(), block.getPosX(), block.getPosY())<28))
+//                {
+//                    KEYtot[type - 9]--;
+//                    if(KEYtot[type - 9]==0){ keys[type - 9] = false; }
+//                    deleteBlock(block);
+//                    break;
 //                }
-//
 //            }
+            else if (type == 7) {
+                for (FriendClass friend : friendObj) {
+                    if (distance(friend.getPosX(), friend.getPosY(), block.getPosX(), block.getPosY()) < 50) {
+                        friend.setSaved();
+                    }
+                }
+
+            }
         }
         return false;
 
