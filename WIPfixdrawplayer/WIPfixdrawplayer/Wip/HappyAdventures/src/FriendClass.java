@@ -9,6 +9,7 @@ public class FriendClass extends BlockClass {
 
 
 
+
     // init
 
     public FriendClass(int x, int y, int type, int gridIndex) {
@@ -43,6 +44,7 @@ public class FriendClass extends BlockClass {
     public void setSaved(){
         if(!saved) {
             this.follow = false;
+
             this.saved = true;
         }
 
