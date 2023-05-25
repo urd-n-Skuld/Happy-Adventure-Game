@@ -449,8 +449,6 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     }
 
     private void moveBlocks() {
-        int friendFollowDistance = 40;
-
         ArrayList<EnemyClass> enemiesToRemove = new ArrayList<>();
 
         if ((posY < 0) || (posX < 0) || (posY > numRows * blockSize) || (posX > numCols * blockSize)) {
@@ -492,12 +490,21 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             HUDtot[4]--;
         }
 
-        for (FriendClass friendClass : friendObj) {
-            double distance = distance(happyObj.getPosX(), happyObj.getPosY(), friendClass.getPosX(), friendClass.getPosY());
-            if ((friendClass.getSaved()) && (distance > friendFollowDistance)) {
-                friendClass.Move(happyObj.getPosX(), happyObj.getPosY(), distance);
+        int friendFollowDistance = 40;
+        for (int i = 0; i < friendObj.size(); i++) {
+            double distance = distance(happyObj.getPosX(), happyObj.getPosY(), friendObj.get(i).getPosX(), friendObj.get(i).getPosY());
+            if ((friendObj.get(i).getSaved()) && (distance > friendFollowDistance + (i*blockSize))) {
+                friendObj.get(i).Move(happyObj.getPosX(), happyObj.getPosY(), distance + (i*blockSize));
             }
         }
+
+//        int friendFollowDistance = 40;
+//        for (FriendClass friendClass : friendObj) {
+//            double distance = distance(happyObj.getPosX(), happyObj.getPosY(), friendClass.getPosX(), friendClass.getPosY());
+//            if ((friendClass.getSaved()) && (distance > friendFollowDistance)) {
+//                friendClass.Move(happyObj.getPosX(), happyObj.getPosY(), distance);
+//            }
+//        }
 
 //        for (BlockClass block : myblocks)
 //        {
