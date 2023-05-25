@@ -53,6 +53,24 @@ public class loadCSV {
                         {
                             myblocks.add(new FriendClass(x, y, type, i));
                         }
+                        if (type == 33)
+                        {//Horisontal floating block
+                                newBlock.setPosX(x);
+                                newBlock.setPosY(y);
+                                newBlock.setCellIndex(i);
+                                newBlock.setType(type);
+                                newBlock.setblockHitBox(x, y, blockSize*3, blockSize);
+                                myblocks.add(newBlock);
+                        }
+                        if (type == 42)
+                        {//Vertical floating block
+                                newBlock.setPosX(x);
+                                newBlock.setPosY(y);
+                                newBlock.setCellIndex(i);
+                                newBlock.setType(type);
+                                newBlock.setblockHitBox(x, y,blockSize*2, blockSize);
+                                myblocks.add(newBlock);
+                        }
                         else
                         {
                             newBlock.setPosX(x);
