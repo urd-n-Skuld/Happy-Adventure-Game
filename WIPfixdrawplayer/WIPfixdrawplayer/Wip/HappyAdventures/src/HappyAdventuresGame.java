@@ -257,19 +257,25 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             {
                 int enemyPosX = gridObj.get(i).getPosX(), enemyPosY = gridObj.get(i).getPosY();
                 EnemyClass tempEnemy = new EnemyClass(enemyPosX, enemyPosY, gridObj.get(i).getBlockType(), i);
-
                 int leftStop = gridObj.get(i).getPosX(), rightStop = gridObj.get(i).getPosX(); //Initialise
-                for (int indx = i + 1; gridObj.get(indx).getBlockType() == -1 || gridObj.get(indx + numCols).getBlockType() != -1; indx++) {
-                    //System.out.println("CycleRight");
-                    if (gridObj.get(indx).getBlockType() != -1 || gridObj.get(indx + numCols).getBlockType() == -1) {
+
+                for (int indx = i + 1;
+                     (gridObj.get(indx).getBlockType() == -1 || (gridObj.get(indx).getBlockType() >= 5 && gridObj.get(indx).getBlockType() <= 8) || (gridObj.get(indx).getBlockType() >= 16 && gridObj.get(indx).getBlockType() <= 19) || (gridObj.get(indx).getBlockType() >= 21 && gridObj.get(indx).getBlockType() <= 26) || (gridObj.get(indx).getBlockType() >= 34 && gridObj.get(indx).getBlockType() <= 37))
+                             || (gridObj.get(indx + numCols).getBlockType() != -1 || !(gridObj.get(indx + numCols).getBlockType() >= 5 && gridObj.get(indx + numCols).getBlockType() <= 8) || !(gridObj.get(indx + numCols).getBlockType() >= 16 && gridObj.get(indx + numCols).getBlockType() <= 19) || !(gridObj.get(indx + numCols).getBlockType() >= 21 && gridObj.get(indx + numCols).getBlockType() <= 26) || !(gridObj.get(indx + numCols).getBlockType() >= 34 && gridObj.get(indx + numCols).getBlockType() <= 37));
+                     indx++) {
+                    if ((gridObj.get(indx).getBlockType() != -1 && !(gridObj.get(indx).getBlockType() >= 5 && gridObj.get(indx).getBlockType() <= 8) && !(gridObj.get(indx).getBlockType() >= 16 && gridObj.get(indx).getBlockType() <= 19) && !(gridObj.get(indx).getBlockType() >= 21 && gridObj.get(indx).getBlockType() <= 26) && !(gridObj.get(indx).getBlockType() >= 34 && gridObj.get(indx).getBlockType() <= 37))
+                            || (gridObj.get(indx + numCols).getBlockType() == -1 || (gridObj.get(indx + numCols).getBlockType() >= 5 && gridObj.get(indx + numCols).getBlockType() <= 8) || (gridObj.get(indx + numCols).getBlockType() >= 16 && gridObj.get(indx + numCols).getBlockType() <= 19) || (gridObj.get(indx + numCols).getBlockType() >= 21 && gridObj.get(indx + numCols).getBlockType() <= 26) || (gridObj.get(indx + numCols).getBlockType() >= 34 && gridObj.get(indx + numCols).getBlockType() <= 37))) {
                         //System.out.println("i " + i + " indx " + indx + " type " + gridObj.get(indx).getBlockType() + " type " + gridObj.get(indx + numCols).getBlockType());
                         rightStop = gridObj.get(indx - 1).getPosX();
                         break;
                     }
                 }
-                for (int indx = i - 1; gridObj.get(indx).getBlockType() == -1 || gridObj.get(indx + numCols).getBlockType() != -1; indx--) {
-                    //System.out.println("CycleLeft");
-                    if (gridObj.get(indx).getBlockType() != -1 || gridObj.get(indx + numCols).getBlockType() == -1) {
+                for (int indx = i - 1;
+                     (gridObj.get(indx).getBlockType() == -1 || (gridObj.get(indx).getBlockType() >= 5 && gridObj.get(indx).getBlockType() <= 8) || (gridObj.get(indx).getBlockType() >= 16 && gridObj.get(indx).getBlockType() <= 19) || (gridObj.get(indx).getBlockType() >= 21 && gridObj.get(indx).getBlockType() <= 26) || (gridObj.get(indx).getBlockType() >= 34 && gridObj.get(indx).getBlockType() <= 37))
+                             || (gridObj.get(indx + numCols).getBlockType() != -1 || !(gridObj.get(indx + numCols).getBlockType() >= 5 && gridObj.get(indx + numCols).getBlockType() <= 8) || !(gridObj.get(indx + numCols).getBlockType() >= 16 && gridObj.get(indx + numCols).getBlockType() <= 19) || !(gridObj.get(indx + numCols).getBlockType() >= 21 && gridObj.get(indx + numCols).getBlockType() <= 26) || !(gridObj.get(indx + numCols).getBlockType() >= 34 && gridObj.get(indx + numCols).getBlockType() <= 37));
+                     indx--) {
+                    if ((gridObj.get(indx).getBlockType() != -1 && !(gridObj.get(indx).getBlockType() >= 5 && gridObj.get(indx).getBlockType() <= 8) && !(gridObj.get(indx).getBlockType() >= 16 && gridObj.get(indx).getBlockType() <= 19) && !(gridObj.get(indx).getBlockType() >= 21 && gridObj.get(indx).getBlockType() <= 26) && !(gridObj.get(indx).getBlockType() >= 34 && gridObj.get(indx).getBlockType() <= 37))
+                            || (gridObj.get(indx + numCols).getBlockType() == -1 || (gridObj.get(indx + numCols).getBlockType() >= 5 && gridObj.get(indx + numCols).getBlockType() <= 8) || (gridObj.get(indx + numCols).getBlockType() >= 16 && gridObj.get(indx + numCols).getBlockType() <= 19) || (gridObj.get(indx + numCols).getBlockType() >= 21 && gridObj.get(indx + numCols).getBlockType() <= 26) || (gridObj.get(indx + numCols).getBlockType() >= 34 && gridObj.get(indx + numCols).getBlockType() <= 37))) {
                         leftStop = gridObj.get(indx + 1).getPosX();
                         break;
                     }
