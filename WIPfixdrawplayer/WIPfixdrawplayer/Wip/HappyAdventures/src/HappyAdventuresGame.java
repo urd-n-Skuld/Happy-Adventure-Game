@@ -706,29 +706,29 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         currentX = frameWidth / 2;
         currentY = tempY;
 
-        if ((happyObj.getPosX() < frameWidth / 2 || happyObj.getPosX() > ((numCols - 15) * blockSize))
-                && (happyObj.getPosY() < frameHeight / 2 || happyObj.getPosY() > ((numRows - 10) * blockSize))) {
+        if ((happyObj.getPosX() < frameWidth / 2 || happyObj.getPosX() > (frameWidth/blockSize/2)
+                && (happyObj.getPosY() < frameHeight / 2 || happyObj.getPosY() > (frameHeight/blockSize/2)))) {
             //NEED TO DO ONLY CORNERs
             if (happyObj.getPosX() < frameWidth / 2 && happyObj.getPosY() < frameHeight / 2) { //top-left corner
                 //System.out.println("TOP-LEFT");
                 drawImage(imageArray[happyImage][happyIndex], happyObj.getPosX(), happyObj.getPosY(), blockSize, blockSize);
                 currentX = happyObj.getPosX();
                 currentY = happyObj.getPosY();
-            } else if (happyObj.getPosX() > ((numCols - 15) * blockSize))  //bottom-right OR top-right corner
+            } else if (happyObj.getPosX() > (frameWidth/blockSize/2))  //bottom-right OR top-right corner
             {
                 //System.out.println("BOTTOM RIGHT or TOP RIGHT");
                 tempX = happyObj.getPosX() - drawX;
                 drawImage(imageArray[happyImage][happyIndex], tempX, tempY, blockSize, blockSize);
                 currentX = tempX;
-            } else if (happyObj.getPosY() > ((numRows - 10) * blockSize)) //Bottom-left corner
+            } else if (happyObj.getPosY() > (frameHeight/blockSize/2)) //Bottom-left corner
             {
                 //System.out.println("BOTTOM LEFT");
                 drawImage(imageArray[happyImage][happyIndex], happyObj.getPosX(), tempY, blockSize, blockSize);
                 currentX = happyObj.getPosX();
             }
 
-        } else if (happyObj.getPosX() >= frameWidth / 2 && happyObj.getPosX() <= ((numCols - 15) * blockSize)) {
-            if (happyObj.getPosY() <= ((numRows - 10) * blockSize) && !(happyObj.getPosY() <= frameHeight / 2)) { //Middle
+        } else if (happyObj.getPosX() >= frameWidth / 2 && happyObj.getPosX() <= (frameWidth/blockSize/2)) {
+            if (happyObj.getPosY() <= (frameHeight/blockSize/2) && !(happyObj.getPosY() <= frameHeight / 2)) { //Middle
                 //System.out.println("MIDDLE");
                 drawImage(imageArray[happyImage][happyIndex], frameWidth / 2, frameHeight / 2, blockSize, blockSize);
                 currentY = frameHeight / 2;
@@ -739,7 +739,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 //System.out.println("BOTTOM");
                 drawImage(imageArray[happyImage][happyIndex], frameWidth / 2, tempY, blockSize, blockSize);
             }
-        } else if (happyObj.getPosY() >= frameHeight / 2 && happyObj.getPosY() <= ((numRows - 10) * blockSize)) {
+        } else if (happyObj.getPosY() >= frameHeight / 2 && happyObj.getPosY() <= (frameHeight/blockSize/2)) {
             //System.out.println("LEFT AND RIGHT");
             tempX = happyObj.getPosX() - drawX;
             drawImage(imageArray[happyImage][happyIndex], tempX, frameHeight / 2, blockSize, blockSize);
