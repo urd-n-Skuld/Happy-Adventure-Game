@@ -5,7 +5,6 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-import javax.swing.*;
 
 public class HappyAdventuresGame extends GameEngine implements ActionListener {
     //------------------------------------------------------
@@ -577,7 +576,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     //Game loop component to draw the graphics
     //------------------------------------------------------
     Image bg = loadImage("images/Sprites/bgA.png");
-    Image bg2 = loadImage("images/Sprites/bgB.png");
+    Image bg2 = loadImage("images/Sprites/bg5.png");
     Image cloud1 = loadImage("images/Sprites/clouds1.png");
     Image cloud2 = loadImage("images/Sprites/clouds2.png");
     Image cloud3 = loadImage("images/Sprites/clouds3.png");
@@ -963,6 +962,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         double collisionVelY;
         int hitBoxX = happyObj.getHitBoxX();
         int hitBoxY = happyObj.getHitBoxY();
+        boolean isSaved=false;
 
         life = happyObj.getPlayerLife();
 
@@ -1143,6 +1143,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                         {
                             HUDtot[type - 33]++;
                             superSweetsEaten++;
+                            playAudio(audioObj.sweetSound);
                             if(superSweetsEaten == 1)
                             {
                                 firstSuperSweetEaten = true;
@@ -1180,6 +1181,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                     keys[type - 13] = true;
                     KEYtot[type - 13]++;
                     KEYtot[3]++;
+                    playAudio(audioObj.KeySound);
                     deleteBlock(block);
                     break;
                 }
@@ -1189,6 +1191,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                     if (KEYtot[type - 9] == 0) {
                         keys[type - 9] = false;
                     }
+                   playAudio(audioObj.doorBell);
                     deleteBlock(block);
                     break;
                 }
@@ -1218,6 +1221,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 for (FriendClass friend : friendObj) {
                     if (distance(friend.getPosX(), friend.getPosY(), block.getPosX(), block.getPosY()) < 50) {
                         friend.setSaved();
+
+
                     }
                 }
 
