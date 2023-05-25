@@ -447,6 +447,11 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             velY = 200;
             velY += accelY * dt;
             posY += velY * dt;
+        }else if(isFloating & jump)
+        {
+            velY = 200;
+            velY += accelY * dt;
+            posY += velY * dt;
         }
         //Update Happy's current position, and hitbox current pos
         happyObj.setAccelY(accelY);
@@ -1031,11 +1036,14 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
 
                     //------------------------------------------------------
                     //Floating block collision settings
-                    if((type != 33) || (type != 42)){
+                    if((type != 33) && (type != 42))
+                    {
+System.out.println("Collision with non floating blocks " + type);
                         isFloating = false;
                         System.out.println("is floating: " + isFloating);
                     }
                     if((type == 33) || (type == 42)){
+System.out.println("Collision with floating blocks" + type);
                         isFloating = true;
                         System.out.println("is floating: " + isFloating);
                     }
@@ -1046,7 +1054,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                             posX += blockVelX * dt;
                             happyObj.setPosX(posX);
                         }
-                        else
+                        else if ((type == 42))
                         {
                             posY += blockVelY * dt;
                             happyObj.setPosY(posY);
@@ -1142,8 +1150,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                         //System.out.println("collisionVelX: " + collisionVelX + " collisionVelY: " + collisionVelY + " ollisioinHappyPosX: " + collisionHappyPosX + " collisionHappyPosY: " + collisionHappyPosY);
                         //System.out.println("collisionboxX: " + collisionBoxPosX + " collisionboxY: " + collisionBoxPosY);
                         //Adding some random VelX and VelY to force another collision -- really dumb hack
-                        velX = -100;
-                        velY = 100;
+                        //velX = -100;
+                        //velY = 100;
                     }
 
                     if ((!canMoveLeft && (rightKey || velX == 0))) {
@@ -1384,10 +1392,10 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             }
             else if (block.getType() == 42)
             {//These are vertical moving floating blocks
-                blockY += blockVelY * dt;
-                block.setPosY(blockY);
                 block.hitBox.y = blockY;
                 block.hitBox.x = blockX;
+                blockY += blockVelY * dt;
+                block.setPosY(blockY);
 
                 if (blockY < maxTop)
                 {//If right side of block reaches maxtop
@@ -1396,8 +1404,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                     blockVelY *= -1;
                     block.hitBox.y = blockY;
                     block.hitBox.x = blockX;
-System.out.println(block.getCellIndex() + " maxtop reached! x: " + blockY + " " + maxTop + " " + maxBottom);
-System.out.println(block.hitBox.getMinY() + " " + block.hitBox.getMaxY() + " " + block.hitBox.getMinX());
+System.out.println(block.getCellIndex() + " maxtop reached! y: " + blockY + " " + maxTop + " " + maxBottom);
+System.out.println(block.hitBox.getMinX() + " " + block.hitBox.getMaxX() + " " + block.hitBox.getMinY());
                 }
                 if (blockY > maxBottom)
                 {//If left side of the block reaches maxLeft
@@ -1406,8 +1414,8 @@ System.out.println(block.hitBox.getMinY() + " " + block.hitBox.getMaxY() + " " +
                     blockVelY *= -1;
                     block.hitBox.y = blockY;
                     block.hitBox.x = blockX;
-System.out.println(block.getCellIndex() + " maxbottom reached! x: " + blockY + " " + maxTop + " " + maxBottom);
-System.out.println(block.hitBox.getMinY() + " " + block.hitBox.getMaxY() + " " + block.hitBox.getMinX());
+System.out.println(block.getCellIndex() + " maxbottom reached! x: " + blockX + " y: " + blockY + " " + maxTop + " " + maxBottom);
+System.out.println(block.hitBox.getMinX() + " " + block.hitBox.getMaxX() + " " + block.hitBox.getMinY());
                 }
                 block.hitBox.y = blockY;
                 block.hitBox.x = blockX;
