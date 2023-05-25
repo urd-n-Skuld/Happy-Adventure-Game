@@ -15,6 +15,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     public boolean showHitboxes, showGrid = false;
     Timer hitTimer = new Timer();
     String gameStates; // "MenuSystem", "PlayGame", "2Player", "Paused"
+    String message;
 
     String csvFile = "images/WorldMaps/Worldmapv3.csv";
     //String csvFile = "images/WorldMaps/Horisontal world.csv";
@@ -97,7 +98,11 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                     loadImage("images/Sprites/enemy4.png"),//43
                     loadImage("images/Sprites/enemy5.png"),//44
                     loadImage("images/Sprites/enemy6.png"),//45
-                    loadImage("images/Sprites/blockBGPurple25px.png"),//46
+                    loadImage("images/Sprites/enemy7.png"),//46
+                    loadImage("images/Sprites/enemy8.png"),//47
+                    loadImage("images/Sprites/blockBGPurple25px.png"),//48
+                    loadImage("images/Sprites/exitcheckpoint.png"),//49
+                    loadImage("images/Sprites/secretblock1.png"),//50
             };
 
     //------------------------------------------------------
@@ -264,7 +269,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 happyObj.createHitBox(startPosX, startPosY, blockSize);
                 happyObj.loadPlayerSprites(this);
                 happyObj.setCellIndex(gridObj.get(i).getCellIndex());
-            } else if (gridObj.get(i).getBlockType() == 24 || gridObj.get(i).getBlockType() == 25 || gridObj.get(i).getBlockType() == 26) //Enemies
+            } else if ((gridObj.get(i).getBlockType() >= 24 && gridObj.get(i).getBlockType() <= 26) || (gridObj.get(i).getBlockType() >= 43 && gridObj.get(i).getBlockType() <= 47)) //Enemies
             {
                 int enemyPosX = gridObj.get(i).getPosX(), enemyPosY = gridObj.get(i).getPosY();
                 EnemyClass tempEnemy = new EnemyClass(enemyPosX, enemyPosY, gridObj.get(i).getBlockType(), i);
@@ -631,7 +636,6 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         }
         drawHitBoxes();
         drawHUD();
-
     }
 
     public void gameReset() {
@@ -690,7 +694,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
 
                 //System.out.println("index: " + index + " row" + row + " col: " + col + " numCols: " + numCols + " numRows: " + numRows + " arraysize: " + gridObj.size() + " type: " + gridObj.get(index).getBlockType() );
                 //if (type != -1 && type != 31 && type != 24 && type != 25 && type != 26 && type != 27 && type != 28 && type != 29)
-                if (type != -1 && type != 31 && !(type >= 24 && type <= 29) && (type != 4) && (type != 19) && (type != 33) && (type != 42)) //Not air, happy, enemies, friends, fire, hearts, or floating blocks
+                if (type != -1 && type != 31 && !(type >= 24 && type <= 29) && (type != 4) && (type != 19) && (type != 33) && (type != 42) && !(type >= 43 && type <= 47)) //Not air, happy, enemies, friends, fire, hearts, or floating blocks
                 {
                     if (x >= minDrawPosX && x <= maxDrawPosX && y >= minDrawPosY && y <= maxDrawPosY) {
                         drawImage(blockIMG[type], x, y, blockSize, blockSize);
@@ -783,14 +787,21 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     }
 
     public void drawEnemies(int drawX, int drawY) {
-        int enemyImage;
+        int enemyImage = 0;
         for (int i = 0; i < enemyObj.size(); i++) {
             Image[][] enemyImageArray = enemyObj.get(i).getImageArray();
-            enemyImage = enemyObj.get(i).getType() - 24;
+            if((enemyObj.get(i).getType() >= 24 && enemyObj.get(i).getType() <= 26) )
+            {
+                enemyImage = enemyObj.get(i).getType() - 24;
+            }
+            //Additional enemies aren't drawing
+            else if (enemyObj.get(i).getType() >= 43 && enemyObj.get(i).getType() <= 47)
+            {
+                enemyImage = enemyObj.get(i).getType() - 40;
+            }
             int enemyPosX = enemyObj.get(i).getPosX() - drawX;
             int enemyPosY = enemyObj.get(i).getPosY() - drawY;
             drawImage(enemyImageArray[enemyImage][happyIndex], enemyPosX, enemyPosY, blockSize, blockSize);
-
         }
     }
 
@@ -1001,7 +1012,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             //System.out.println("blockminX: " + blockminX + " blockMinY: " + blockMinY + " blockmaxX: " + blockmaxX + " blockMaxY: " + blockMaxY);
 
 
-            if (((type >= 0) && (type <= 2)) || ((type >= 9) && (type <= 12)) || (type == 33) || (type == 42) || (type == 46))
+            if (((type >= 0) && (type <= 2)) || ((type >= 9) && (type <= 12)) || (type == 33) || (type == 42) || (type == 48))
             {
                 //System.out.println("blocktype called");
 
@@ -1216,6 +1227,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                     KEYtot[type - 9]--;
                     if (KEYtot[type - 9] == 0) {
                         keys[type - 9] = false;
+                        message = "You need to find the right key...";
                     }
                    playAudio(audioObj.doorBell);
                     deleteBlock(block);
@@ -1410,6 +1422,8 @@ System.out.println(block.hitBox.getMinY() + " " + block.hitBox.getMaxY() + " " +
     {
         gamePause = false;
     }
+
+
 }
 
 
