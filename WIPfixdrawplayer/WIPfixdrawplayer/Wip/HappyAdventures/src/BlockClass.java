@@ -8,7 +8,7 @@ public class BlockClass{
     private Image[][] blockAnimArray = new Image[2][15];
     // init
 
-    public BlockClass(int x, int y, int type) { this.posX = x; this.posY = y; this.type = type; }
+    public BlockClass(int x, int y, int type) { this.posX = x; this.posY = y; this.type = type; this.startX = x; this.startY = y; }
 
     //set
 
