@@ -78,7 +78,6 @@ public class loadCSV {
                             newBlock.setCellIndex(i);
                             newBlock.setType(type);
                             newBlock.setblockHitBox(x, y, blockSize, blockSize);
-
                             myblocks.add(newBlock);
                         }
 
