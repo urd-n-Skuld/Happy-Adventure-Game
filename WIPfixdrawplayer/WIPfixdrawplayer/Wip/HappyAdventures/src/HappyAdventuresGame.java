@@ -12,12 +12,12 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     //Global generic variables
     //------------------------------------------------------
     int numCols, numRows, superSweetsEaten;       //These values are initialised when the world map is loaded (See loadBlocks())
-    static int blockSize = 25, blockVelX = 100;
+    static int blockSize = 25, blockVelX = 50;
     public boolean showHitboxes, showGrid = false;
     Timer hitTimer = new Timer();
     String gameStates; // "MenuSystem", "PlayGame", "2Player", "Paused"
 
-    String csvFile = "images/WorldMaps/Worldmapv2.csv";
+    String csvFile = "images/WorldMaps/Worldmapv3.csv";
     //String csvFile = "images/WorldMaps/Horisontal world.csv";
 
     // putting this here allows easier changes
@@ -91,10 +91,10 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                     loadImage("images/Sprites/vine.png"),//36
                     loadImage("images/Sprites/supersweet.png"),//37
                     loadImage("images/Sprites/disappearingBlock.png"),//38    might need a sprite for this one
-                    loadImage("images/Sprites/spikeBottom.png"),//39 need bappy
-                    loadImage("images/Sprites/spikeLeft.png"),//40 need bappy
-                    loadImage("images/Sprites/spikeRight.png"),//41 need bappy
-                    loadImage("images/Sprites/secretblock1.png"),//42 need bappy
+                    loadImage("images/Sprites/spikeBottom.png"),//39
+                    loadImage("images/Sprites/spikeLeft.png"),//40
+                    loadImage("images/Sprites/spikeRight.png"),//41
+                    loadImage("images/Sprites/block_float25x75.png"),//42
             };
 
     //------------------------------------------------------
@@ -204,6 +204,10 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             else if ((type == 4) || (type == 19))
             {
                 block.initBlockAnimSprites(this);
+            }
+            else if ((type == 33) || (type == 42))
+            {
+                block.setblockHitBox(block.getStartX(), block.getStartY(), 75, 25);
             }
         }
 
@@ -1303,21 +1307,34 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             BlockClass block = myblocks.get(i);
             int blockX = block.getPosX();
             int blockY = block.getPosY();
+            int maxRight = block.getStartX() + 2*blockSize;    //Can only move 3 blocks to the right
+            int maxLeft = block.getStartX() - 2*blockSize -25;  //Can only move 3 blocks to the left
 
-            if (block.getType() == 33) {
+            if (block.getType() == 33)
+            {
+//System.out.println(block.getCellIndex() + " x: " + blockX + " y: " + blockY + " " + block.getStartX() + " " + block.getStartY() + " " + maxRight + " " + maxLeft);
+//System.out.println(block.getCellIndex() + " x: " + blockX + " " + maxRight + " " + maxLeft);
+
                 block.hitBox.y = blockY;
                 block.hitBox.x = blockX;
                 blockX += blockVelX * dt;
                 block.setPosX(blockX);
-                if (blockX + 75 >= block.getStartX() + 225)
-                {
-                    blockVelX = -Math.abs(blockVelX);
+                if (blockX > maxRight)
+                {//If right side of block reaches maxRight
+
+                    blockX = maxRight-1;     //reposition so that it doesn't lose space
+                    block.setPosX(blockX);
+                    blockVelX *= -1;
                     block.hitBox.y = blockY;
                     block.hitBox.x = blockX;
+System.out.println(block.getCellIndex() + " maxright reached! x: " + blockX + " " + maxRight + " " + maxLeft);
+System.out.println(block.hitBox.getMinX() + " " + block.hitBox.getMaxX() + " " + block.hitBox.getMinY());
                 }
-                if (blockX <= block.getStartX() - 150)
-                {
-                    blockVelX = Math.abs(blockVelX);
+                if (blockX < maxLeft)
+                {//If left side of the block reaches maxLeft
+                    blockX = maxLeft +1;     //reposition so that it doesn't lose space
+                    block.setPosX(blockX);
+                    blockVelX *= -1;
                     block.hitBox.y = blockY;
                     block.hitBox.x = blockX;
                 }
