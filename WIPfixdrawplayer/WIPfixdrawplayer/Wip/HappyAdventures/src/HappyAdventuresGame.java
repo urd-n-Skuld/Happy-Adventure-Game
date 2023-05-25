@@ -12,7 +12,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     //Global generic variables
     //------------------------------------------------------
     int numCols, numRows, superSweetsEaten;       //These values are initialised when the world map is loaded (See loadBlocks())
-    static int blockSize = 25, blockVelX = 80;
+    static int blockSize = 25, blockVelX = 50;
     public boolean showHitboxes, showGrid = false;
     Timer hitTimer = new Timer();
     String gameStates; // "MenuSystem", "PlayGame", "2Player", "Paused"
@@ -94,7 +94,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                     loadImage("images/Sprites/spikeBottom.png"),//39
                     loadImage("images/Sprites/spikeLeft.png"),//40
                     loadImage("images/Sprites/spikeRight.png"),//41
-                    loadImage("images/Sprites/secretblock1.png"),//42
+                    loadImage("images/Sprites/block_float25x75.png"),//42
             };
 
     //------------------------------------------------------
@@ -204,6 +204,10 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             else if ((type == 4) || (type == 19))
             {
                 block.initBlockAnimSprites(this);
+            }
+            else if ((type == 33) || (type == 42))
+            {
+                block.setblockHitBox(block.getStartX(), block.getStartY(), 75, 25);
             }
         }
 
@@ -1309,7 +1313,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             if (block.getType() == 33)
             {
 //System.out.println(block.getCellIndex() + " x: " + blockX + " y: " + blockY + " " + block.getStartX() + " " + block.getStartY() + " " + maxRight + " " + maxLeft);
-System.out.println(block.getCellIndex() + " x: " + blockX + " " + maxRight + " " + maxLeft);
+//System.out.println(block.getCellIndex() + " x: " + blockX + " " + maxRight + " " + maxLeft);
+
                 block.hitBox.y = blockY;
                 block.hitBox.x = blockX;
                 blockX += blockVelX * dt;
@@ -1319,10 +1324,11 @@ System.out.println(block.getCellIndex() + " x: " + blockX + " " + maxRight + " "
 
                     blockX = maxRight-1;     //reposition so that it doesn't lose space
                     block.setPosX(blockX);
-System.out.println(block.getCellIndex() + " maxright reached! x: " + blockX + " " + maxRight + " " + maxLeft);
                     blockVelX *= -1;
                     block.hitBox.y = blockY;
                     block.hitBox.x = blockX;
+System.out.println(block.getCellIndex() + " maxright reached! x: " + blockX + " " + maxRight + " " + maxLeft);
+System.out.println(block.hitBox.getMinX() + " " + block.hitBox.getMaxX() + " " + block.hitBox.getMinY());
                 }
                 if (blockX < maxLeft)
                 {//If left side of the block reaches maxLeft
