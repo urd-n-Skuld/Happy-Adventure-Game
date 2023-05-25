@@ -5,22 +5,23 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import javax.swing.*;
 
 public class HappyAdventuresGame extends GameEngine implements ActionListener {
     //------------------------------------------------------
     //Global generic variables
     //------------------------------------------------------
-    int numCols, numRows;       //These values are initialised when the world map is loaded (See loadBlocks())
+    int numCols, numRows, superSweetsEaten;       //These values are initialised when the world map is loaded (See loadBlocks())
     static int blockSize = 25, blockVelX = 100;
     public boolean showHitboxes, showGrid = false;
     Timer hitTimer = new Timer();
-    String gameStates; // "MenuSystem", "PlayGame", "2Player"
+    String gameStates; // "MenuSystem", "PlayGame", "2Player", "Paused"
 
     String csvFile = "images/WorldMaps/Worldmapv2.csv";
     //String csvFile = "images/WorldMaps/Horisontal world.csv";
 
     // putting this here allows easier changes
-    static boolean death, gameOver;
+    static boolean death, gameOver, gamePause, firstSuperSweetEaten;
     public boolean softResetIsTrue;
 
     //volpy HUD variables
@@ -114,9 +115,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         setWindowSize(frameWidth, frameHeight);
 
         gameStates = "MenuSystem";    //Change this to "MenuSystem" if you want to turn on game menus
-        showHitboxes = false;
-        death = false;
-        gameOver = false;
+        showHitboxes = death = gameOver = gamePause = firstSuperSweetEaten = false;
+        superSweetsEaten = 0;
 
         initAudio();// line 109
         initWorld(csvFile);// line 176 .... creates variables for grid class
@@ -124,7 +124,6 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         initGUI();// line 98
 
         super.mFrame.setSize(frameWidth, frameHeight);
-
     }
 
     //------------------------------------------------------
@@ -311,7 +310,14 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     public void update(double dt) {//System.out.println("Update called");
 
         setDt = dt;
-        if (!gameOver) {
+        if(gamePause && superSweetsEaten == 1 && firstSuperSweetEaten)
+        {
+            gamePause = true;
+            menuObj.SuperSweetTutorialMenuPanel.setVisible(true);
+            menuObj.SuperSweetTutorialbuttonPanel.setVisible(true);
+        }
+        if ((!gameOver) && (!gamePause))
+        {
             happyIndex = updateAnimationSpeed(15);
             moveClouds(dt);
             updateHappy(dt);
@@ -1122,6 +1128,12 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                         else
                         {
                             HUDtot[type - 33]++;
+                            superSweetsEaten++;
+                            if(superSweetsEaten == 1)
+                            {
+                                firstSuperSweetEaten = true;
+                                pauseGame();
+                            }
                         }
 
                         happyObj.setPlayerScore(4 * ((type) - 16) ^ 2 + 1);
@@ -1299,6 +1311,14 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 block.hitBox.x = blockX;
             }
         }
+    }
+    public void pauseGame()
+    {
+        gamePause = true;
+    }
+    public void unPauseGame()
+    {
+        gamePause = false;
     }
 }
 
