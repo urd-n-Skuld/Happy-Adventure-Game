@@ -1,9 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class loadCSV {
     private static int numCols;
@@ -50,6 +48,10 @@ public class loadCSV {
                         if ((type >= 24) && (type <= 26))
                         {
                             myblocks.add(new EnemyClass(x, y, type, i));
+                        }
+                        if ((type >= 27) && (type <= 29))
+                        {
+                            myblocks.add(new FriendClass(x, y, type, i));
                         }
                         else
                         {

@@ -14,8 +14,8 @@ public class AudioClass
         jumpFX = game.loadAudio("audio/jump.wav");
         revive = game.loadAudio("audio/revive.wav");
         eatCandy = game.loadAudio("audio/candy.wav");
-        wasHit = game.loadAudio("Hit.wav");
-        extraLife = game.loadAudio("extraHeart.wav");
+        wasHit = game.loadAudio("audio/Hit.wav");
+        extraLife = game.loadAudio("audio/extraHeart.wav");
     }
 
     public void playAudioJump(HappyAdventuresGame game, GameEngine.AudioClip jump)
