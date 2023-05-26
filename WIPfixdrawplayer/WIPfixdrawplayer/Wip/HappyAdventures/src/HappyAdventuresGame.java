@@ -317,9 +317,9 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         //Bappy Placeholder
         //if (gridObj.getBlockType(i) == 32) {}
 
-        idle = isOnGround = canJump = canMoveLeft = canMoveRight = true;
-        leftKey = rightKey = upKey = downKey = jumpKey = jump = hit = false;
-        isJumping = isFalling = isClimbing = collided = isFloating =  false;
+        idle = true; isOnGround = true; canJump = true; canMoveLeft = true; canMoveRight = true;
+        leftKey = false; rightKey = false; upKey = false; downKey = false; jumpKey = false; jump = false; hit = false;
+        isJumping = false; isFalling = false; isClimbing = false; collided = false; isFloating =  false;
     }
 
     //------------------------------------------------------
@@ -531,35 +531,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             }
         }
 
-//        int friendFollowDistance = 40;
-//        for (FriendClass friendClass : friendObj) {
-//            double distance = distance(happyObj.getPosX(), happyObj.getPosY(), friendClass.getPosX(), friendClass.getPosY());
-//            if ((friendClass.getSaved()) && (distance > friendFollowDistance)) {
-//                friendClass.Move(happyObj.getPosX(), happyObj.getPosY(), distance);
-//            }
-//        }
-
-//        for (BlockClass block : myblocks)
-//        {
-//            if (block instanceof FriendClass friend)
-//            {
-//                double distance = distance(happyObj.getPosX(), happyObj.getPosY(), friend.getPosX(), friend.getPosY());
-//                if((friend.getSaved())&&(distance > friendFollowDistance))
-//                {
-//                    friend.Move(happyObj.getPosX(), happyObj.getPosY(), distance);
-//                }
-//
-//            }
-//        }
     }
 
-    /*public void setGrid() {
-        for (int i = 0; i < frameWidth / blockSize; i++) {
-            changeColor(Color.magenta);
-            drawLine(i * blockSize, 0, i * blockSize, frameHeight);
-            drawLine(0, i * blockSize, frameWidth, i * blockSize);
-        }
-    }*/
     public void softReset() {
         life = happyObj.getPlayerLife();
 
@@ -1005,110 +978,43 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
 
         //Collision with blocks that have a hitBox
         for (BlockClass block : myblocks) {
-            //System.out.println("for block initiated");
+
             int type = block.getType();
-            //blockposX = block.getPosX();
-            //blockposY = block.getPosY();
-            //blockminX = block.hitBox.getMinX();
-            //blockmaxX = block.hitBox.getMaxX();
-            //blockMinY = block.hitBox.getMinY();
-            //blockMaxY = block.hitBox.getMaxY();
-            //System.out.println("blockposX: " + blockposX + " blockposY: " + blockposY);
-            //System.out.println("blockminX: " + blockminX + " blockMinY: " + blockMinY + " blockmaxX: " + blockmaxX + " blockMaxY: " + blockMaxY);
 
-
-            if (((type >= 0) && (type <= 2)) || ((type >= 9) && (type <= 12)) || (type == 33) || (type == 42) || (type == 48))
+            if (isBlock(type) || isDoor(type)|| isFloat(type) || (type == 48))
             {
                 //System.out.println("blocktype called");
 
                 if (happyObj.hitBox.intersects(block.hitBox)) {
-                    //System.out.println("668 HAG Collision true, BlockType: " + block.getType() );
                     collided = true;
                     isClimbing = false;
                     isOnGround = true;
-                    //Estimate position of actual collision
-                    collisionHappyPosX = happyObj.getPosX();
-                    collisionHappyPosY = happyObj.getPosY();
-                    collisionBoxPosX = block.hitBox.x;
-                    collisionBoxPosY = block.hitBox.y;
-                    collisionVelX = happyObj.getVelX();
-                    collisionVelY = happyObj.getVelY();
-
-                    //------------------------------------------------------
                     //Floating block collision settings
-                    if((type != 33) && (type != 42))
+                    if (isFloat(type))
                     {
-System.out.println("Collision with non floating blocks " + type);
-                        isFloating = false;
-                        System.out.println("is floating: " + isFloating);
+                        if (type == 33) { posX += blockVelX * dt; happyObj.setPosX(posX); }
+                        else{ posY += blockVelY * dt; happyObj.setPosY(posY); }
                     }
-                    if((type == 33) || (type == 42)){
-System.out.println("Collision with floating blocks" + type);
-                        isFloating = true;
-                        System.out.println("is floating: " + isFloating);
-                    }
-                    if(isFloating && isOnGround)
-                    {
-                        if(type == 33)
-                        {
-                            posX += blockVelX * dt;
-                            happyObj.setPosX(posX);
-                        }
-                        else if ((type == 42))
-                        {
-                            posY += blockVelY * dt;
-                            happyObj.setPosY(posY);
-                        }
-
-                    }
-                    //---------------------------------------------------
-
                     if (velY > 0 && happyObj.hitBox.getMaxY() >= block.hitBox.getMinY()) //Happy Top Collision
                     {
-                        //Happy is falling down to the ground, his feet is going through the nearest block below
-                        //System.out.println("833 HAG Condition 1 is true");
-                        //System.out.println("velX: " + velX + " velY: " + velY + "  posX: " + posX + " posY: " + posY);
-                        //System.out.println("collisionVelX: " + collisionVelX + " collisionVelY: " + collisionVelY + " ollisioinHappyPosX: " + collisionHappyPosX + " collisionHappyPosY: " + collisionHappyPosY);
-                        //System.out.println("collisionboxX: " + collisionBoxPosX + " collisionboxY: " + collisionBoxPosY);
                         posY = (int) (block.hitBox.getMinY() - happyObj.hitBox.height);
                         velY = 0;
                         isJumping = false;
                         collided = false;
                         isOnGround = checkIsOnGround(posX, posY);
-                        //System.out.println("isOnGround: " + isOnGround);
-
-                        if (!isOnGround) {
-                            canJump = false;
-                        } else {
-                            canJump = true;
-                        }
-                    } else if (velY < 0 && happyObj.hitBox.getMinY() <= block.hitBox.getMaxY()) //Happy Bottom Collision
-                    {   //Happy is going upwards, his head is going through the block above
-                        //System.out.println(" 849 HAG Condition 2 is true");
-                        // System.out.println("velX: " + velX + " velY: " + velY + "  posX: " + posX + " posY: " + posY);
-                        //System.out.println("collisionVelX: " + collisionVelX + " collisionVelY: " + collisionVelY + " ollisioinHappyPosX: " + collisionHappyPosX + " collisionHappyPosY: " + collisionHappyPosY);
-                        //System.out.println("collisionboxX: " + collisionBoxPosX + " collisionboxY: " + collisionBoxPosY);
+                        canJump = isOnGround;
+                    }
+                    else if (velY < 0 && happyObj.hitBox.getMinY() <= block.hitBox.getMaxY()) //Happy Bottom Collision
+                    {
                         posY = (int) (block.hitBox.getMaxY() + 1);
                         velY *= -1;
                         isJumping = false;
                         collided = false;
                         isOnGround = checkIsOnGround(posX, posY);
-
-                        if (!isOnGround) {
-                            canJump = false;
-                        } else {
-                            canJump = true;
-                        }
-                    } else if (velX > 0 && happyObj.hitBox.getMaxX() >= block.hitBox.getMinX()) //Happy Right Side Collision
-                    {   //Happy is moving to the right, his right side is going through the block on the right
-                        //System.out.println("866 HAG Condition 3 is true");
-                        //System.out.println("velX: " + velX + " velY: " + velY + "  posX: " + posX + " posY: " + posY);
-                        //System.out.println("collisionVelX: " + collisionVelX + " collisionVelY: " + collisionVelY + " ollisioinHappyPosX: " + collisionHappyPosX + " collisionHappyPosY: " + collisionHappyPosY);
-                        //System.out.println("collisionboxX: " + collisionBoxPosX + " collisionboxY: " + collisionBoxPosY);
-                        System.out.println("Happy Right Side Collision");
-                        //blockAboveRightIndex = myblocks.indexOf(block) - numCols + 1;
-                        //if (myblocks.get(blockAboveRightIndex).getType() != -1)
-                        //{
+                        canJump = isOnGround;
+                    }
+                    else if (velX > 0 && happyObj.hitBox.getMaxX() >= block.hitBox.getMinX()) //Happy Right Side Collision
+                    {
                         canMoveRight = false;
                         rightKey = false;
                         //}
@@ -1168,7 +1074,7 @@ System.out.println("Collision with floating blocks" + type);
                 happyObj.setHitBoxXY(posX, posY);
             }
             //Collision for blocks that don't have hitboxes
-            if ((type == 16) || (type == 17) || (type == 18) || (type == 19) || (type == 37)) {   //These are candies and hearts
+            if (isCandy(type)) {   //These are candies and hearts
                 if ((((happyObj.hitBox.getMaxX() - 5 > block.getPosX() && happyObj.hitBox.getMaxX() - 5 < block.getPosX() + blockSize)) && (happyObj.hitBox.getMaxY() - 5 > block.getPosY() && happyObj.hitBox.getMaxY() - 5 < block.getPosY() + blockSize))
                         || ((((happyObj.hitBox.getMinX() + 5 > block.getPosX() && happyObj.hitBox.getMinX() + 5 < block.getPosX() + blockSize)) && (happyObj.hitBox.getMinY() + 5 > block.getPosY() && happyObj.hitBox.getMinY() + 5 < block.getPosY() + blockSize)))) {
 
@@ -1252,17 +1158,7 @@ System.out.println("Collision with floating blocks" + type);
 
                     break;
                 }
-            }//Duplicated?
-//            else if ((type >= 9) && (type <= 11))
-//            {// doors
-//                if (keys[type - 9] && (distance(happyObj.hitBox.getMinX(), happyObj.hitBox.getMinY(), block.getPosX(), block.getPosY())<28))
-//                {
-//                    KEYtot[type - 9]--;
-//                    if(KEYtot[type - 9]==0){ keys[type - 9] = false; }
-//                    deleteBlock(block);
-//                    break;
-//                }
-//            }
+            }
             else if (type == 7) {
                 for (FriendClass friend : friendObj) {
                     if (distance(friend.getPosX(), friend.getPosY(), block.getPosX(), block.getPosY()) < 50) {
@@ -1275,8 +1171,14 @@ System.out.println("Collision with floating blocks" + type);
             }
         }
         return false;
-
     }
+    private boolean isCandy(int type) { return type >= 16 && type <= 18 || type == 37; }
+    private boolean isBlock(int type) { return type >= 0 && type <= 2; }
+    private boolean isDoor(int type) { return type >= 9 && type <= 11; }
+    private boolean isFloat(int type) { return type == 33 && type == 42; }
+    private boolean isKey(int type) { return type >= 13 && type <= 15; }
+    private boolean isFriend(int type) { return type >= 27 && type <= 29; }
+    private boolean isDeadly(int type) { return type >= 3 && type <= 4 || type == 39 || type == 40 || type == 41; }
 
     private void deleteBlock(BlockClass block) {
         gridObj.get(block.getCellIndex()).setBlockType(-1);
