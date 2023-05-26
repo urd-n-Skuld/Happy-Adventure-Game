@@ -110,6 +110,73 @@ public class loadCSV {
         return new Object[] { myblocks, gridArr };
     //----------------------------------------------------------------------
     }
+
+    public Object[] loadSecretAreas(String csv, int blockSize)
+    {
+        ArrayList<GridClass> secretBlocks= new ArrayList<>();
+        BufferedReader br = null;
+        String line = "";
+        String cvsSplitBy = ",";
+
+        try {
+            br = new BufferedReader(new FileReader(csv));
+            int row = 0;
+            int i = 0;
+            int type;
+
+            while ((line = br.readLine()) != null)
+            {
+                String[] columns = line.split(cvsSplitBy);
+                int column = 0;
+
+                for (String col : columns)
+                {
+                    int x = column * blockSize;
+                    int y = row * blockSize;
+                    type = Integer.parseInt(col);
+
+                    //Creating a gridObj
+                    GridClass gridObj = new GridClass();
+
+                    gridObj.setCellIndex(i);
+                    gridObj.setPosX(x);
+                    gridObj.setPosY(y);
+                    gridObj.setBlockType(type);
+
+                    if (type >= 0)
+                    {
+                        gridObj.setActiveInd(true);
+                    }
+                    else
+                    {
+                        gridObj.setActiveInd(false);
+                    }
+
+                    secretBlocks.add(gridObj);
+                    i++;
+                    column++;
+                }
+                numCols = column;
+                row++;
+            }
+            numRows = row;
+        }
+        catch (IOException e) { e.printStackTrace(); System.out.println("Error loading the CSV file. Location: loadBlocks()");}
+        finally
+        {
+            if (br != null)
+            {
+                try { br.close(); }
+                catch (IOException e) { e.printStackTrace(); }
+            }
+        }
+        //System.out.println("CSV finished loading");
+        //----------------------------------------------------------------------
+        // Returning both blocks arraylist and grid array list here!!!
+        //----------------------------------------------------------------------
+        return new Object[] { secretBlocks };
+        //----------------------------------------------------------------------
+    }
     public static int getCol()
     {
         //System.out.println(" loadBlocks Line 81 " +numCols+ " numCols ");
