@@ -124,8 +124,9 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         setWindowSize(frameWidth, frameHeight);
 
         gameStates = "MenuSystem";    //Change this to "MenuSystem" if you want to turn on game menus
-        showHitboxes = death = gameOver = gamePause = firstSuperSweetEaten = false;
+        showHitboxes = death = gameOver = firstSuperSweetEaten = false;
         superSweetsEaten = 0;
+        gamePause = true;
 
         initAudio();// line 109
         initWorld(csvFile, secretCSV);// line 176 .... creates variables for grid class
@@ -133,6 +134,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         initGUI();// line 98
 
         super.mFrame.setSize(frameWidth, frameHeight);
+        super.mFrame.setVisible(true);
     }
 
     //------------------------------------------------------
@@ -333,7 +335,6 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     //------------------------------------------------------
     int happyIndex, happyIdle = 0, happyJump = 1, happyHit = 2;
     double setDt;
-
     @Override
     public void update(double dt) {//System.out.println("Update called");
 

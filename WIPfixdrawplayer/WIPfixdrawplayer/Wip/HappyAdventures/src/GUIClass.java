@@ -348,6 +348,7 @@ public class GUIClass
             {System.out.println("Main Menu Single Player button pressed");
                 game.gameOver = false;
                 game.gameStates = "PlayGame";
+                game.unPauseGame();
                 //game.score = 0;
                 MainMenuPanel.setVisible(false);
                 MMbuttonPanel.setVisible(false);

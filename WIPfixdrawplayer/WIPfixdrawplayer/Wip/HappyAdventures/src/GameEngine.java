@@ -107,7 +107,7 @@ public abstract class GameEngine implements KeyListener, MouseListener, MouseMot
                 mFrame.setSize(mWidth + insets.left + insets.right, mHeight + insets.top + insets.bottom);
             }
         });
-        mFrame.setVisible(true);
+        mFrame.setVisible(false);
         // Resize the window
         mPanel.setPreferredSize(new Dimension(mWidth, mHeight));
         mFrame.setResizable(false);
