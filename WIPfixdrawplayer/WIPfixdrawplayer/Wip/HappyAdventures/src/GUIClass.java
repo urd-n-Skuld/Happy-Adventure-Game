@@ -37,13 +37,13 @@ public class GUIClass
         frame.add(mPanel, BorderLayout.CENTER);
 
         //Load the images for all the menuPanels and buttons
-        Image MMBackgroundImage = game.loadImage("images/Menus/MainMenuBG.png");
-        Image CRBackgroundImage = game.loadImage("images/Menus/CreditsMenuBG.png");
-        Image HTPBackgroundImage = game.loadImage("images/Menus/HowToPlayMenuBG.png");
-        Image PABackgroundImage = game.loadImage("images/Menus/PauseMenuBG.png");
-        Image QUBackgroundImage = game.loadImage("images/Menus/QuitMenuBG.png");
-        Image RTBackgroundImage = game.loadImage("images/Menus/RetryMenuBG.png");
-        Image SSTBackgroundImage = game.loadImage("images/Menus/supersweetpopup.png");
+        Image MMBackgroundImage = GameEngine.loadImage("images/Menus/MainMenuBG.png");
+        Image CRBackgroundImage = GameEngine.loadImage("images/Menus/CreditsMenuBG.png");
+        Image HTPBackgroundImage = GameEngine.loadImage("images/Menus/HowToPlayMenuBG.png");
+        Image PABackgroundImage = GameEngine.loadImage("images/Menus/PauseMenuBG.png");
+        Image QUBackgroundImage = GameEngine.loadImage("images/Menus/QuitMenuBG.png");
+        Image RTBackgroundImage = GameEngine.loadImage("images/Menus/RetryMenuBG.png");
+        Image SSTBackgroundImage = GameEngine.loadImage("images/Menus/supersweetpopup.png");
         Image FFKBackgroundImage = game.loadImage("images/Menus/keypopup.png");
         ImageIcon playButtonIm = new ImageIcon("images/Menus/PlayBTN.png");
         ImageIcon playHoverButtonIm = new ImageIcon("images/Menus/PlayHoverBTN.png");
@@ -357,7 +357,7 @@ public class GUIClass
             @Override
             public void actionPerformed(ActionEvent e)
             {System.out.println("Main Menu Single Player button pressed");
-                game.gameOver = false;
+                HappyAdventuresGame.gameOver = false;
                 game.gameStates = "PlayGame";
                 game.unPauseGame();
                 //game.score = 0;
@@ -384,7 +384,7 @@ public class GUIClass
             @Override
             public void actionPerformed(ActionEvent e)
             {System.out.println("Main Menu MultiPlayer button pressed");
-                game.gameOver = false;
+                HappyAdventuresGame.gameOver = false;
                 game.gameStates = "2Player";
                 //game.score = 0; //Add a new score for 2nd player
                 MainMenuPanel.setVisible(false);
@@ -446,7 +446,7 @@ public class GUIClass
             public void actionPerformed(ActionEvent e)
             {
                 game.gameStates = "PlayGame";
-                game.gameOver = false;
+                HappyAdventuresGame.gameOver = false;
                 game.softResetIsTrue = false;
                 game.gameReset();
                 RetryMenuPanel.setVisible(false);

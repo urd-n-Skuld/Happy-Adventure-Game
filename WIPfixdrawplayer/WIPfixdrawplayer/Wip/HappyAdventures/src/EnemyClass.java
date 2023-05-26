@@ -5,9 +5,11 @@ public class EnemyClass extends BlockClass {
 
     Rectangle hitBox;
     private double VelX = 2;
-    private int locX, locY, gridLoc;
+    private int locX;
+    private final int locY;
+    private final int gridLoc;
     private int leftTravelMax, rightTravelMax;
-    private Image[][] ImageArray = new Image[8][15];
+    private final Image[][] ImageArray = new Image[8][15];
 
     // init
 
@@ -19,13 +21,13 @@ public class EnemyClass extends BlockClass {
     }
     public void initEnemySprites(HappyAdventuresGame gameObj)
     {
-        Image spriteSheet = gameObj.loadImage("images/Sprites/MonterSprites.png");
+        Image spriteSheet = GameEngine.loadImage("images/Sprites/MonterSprites.png");
 
         for (int x = 0; x < ImageArray.length; x++)
         {
             for (int y = 0; y < ImageArray[x].length; y++)
             {
-                ImageArray[x][y] = gameObj.subImage(spriteSheet, y * 50, x * 50, 50, 50);
+                ImageArray[x][y] = GameEngine.subImage(spriteSheet, y * 50, x * 50, 50, 50);
             }
         }
     }

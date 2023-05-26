@@ -21,14 +21,26 @@ public class FriendClass extends BlockClass {
         this.gridLoc = gridIndex;
         System.out.println(this.gridLoc+ " new friend");
     }
-    public void initFriendSprites(HappyAdventuresGame gameObj)
+    public FriendClass(EnemyClass enemy) {
+        super(enemy.getPosX(), enemy.getPosY(), enemy.getType()+3);
+        this.posX = enemy.getPosX();
+        this.posY = enemy.getPosY();
+        this.StartX = this.posX;
+        this.StartY = this.posY;
+        this.gridLoc = enemy.getGridLoc();
+        this.follow = true;
+        initFriendSprites();
+    }
+
+
+    public void initFriendSprites()
     {
-        Image spriteSheet = gameObj.loadImage("images/Sprites/SPHappFriends.png");
+        Image spriteSheet = GameEngine.loadImage("images/Sprites/SPHappFriends.png");
         for (int x = 0; x < ImageArray.length; x++)
         {
             for (int y = 0; y < ImageArray[x].length; y++)
             {
-                ImageArray[x][y] = gameObj.subImage(spriteSheet, y * 50, x * 50, 50, 50);
+                ImageArray[x][y] = GameEngine.subImage(spriteSheet, y * 50, x * 50, 50, 50);
             }
         }
     }

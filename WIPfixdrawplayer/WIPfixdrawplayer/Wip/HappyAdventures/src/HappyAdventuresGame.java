@@ -239,7 +239,6 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             //System.out.println("HAG 144 type: " + gridObj.get(i).getBlockType());
         }*/
 
-        ;
     }
 
     //------------------------------------------------------
@@ -318,7 +317,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                     if (block instanceof FriendClass friend)
                     {
                         if (i==friend.getGridIndex()){
-                            friend.initFriendSprites(this);
+                            friend.initFriendSprites();
                             friendObj.add(friend);
                         }
                     }
@@ -481,7 +480,9 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     //------------------------------------------------------
     //Updating animation speed for Happy's sprites
     //------------------------------------------------------
-    private int aniCounter, aniIndex, aniSpeed = 4;
+    private int aniCounter;
+    private int aniIndex;
+    private final int aniSpeed = 4;
 
     public int updateAnimationSpeed(int frameAmount) {
         aniCounter++;
@@ -496,7 +497,6 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     }
 
     private void moveBlocks() {
-        ArrayList<EnemyClass> enemiesToRemove = new ArrayList<>();
 
         if ((posY < 0) || (posX < 0) || (posY > numRows * blockSize) || (posX > numCols * blockSize)) {
             life = happyObj.getPlayerLife();
@@ -516,8 +516,11 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             {
                 if(HUDtot[4] > 0)
                 {
-                    System.out.println(enemyClass.getGridLoc());
-                    enemiesToRemove.add(enemyClass); // Add enemy to the removal list
+                    FriendClass friend = new FriendClass(enemyClass);
+                    friendObj.add(friend);
+                    enemyObj.remove(enemyClass);
+                    HUDtot[4]--;
+                    break;
                 }
                 else
                 {
@@ -528,14 +531,14 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
 
         //--------------------------------------------
         //Removing the enemies that have been converted to friendlies
-        for (EnemyClass enemy : enemiesToRemove) {
-            FriendClass friend = new FriendClass(enemy.getPosX(), enemy.getPosY(), enemy.getType()+3, enemy.getGridLoc());
-            friend.initFriendSprites(this);
-            friend.setFriendFollow();
-            friendObj.add(friend);
-            enemyObj.remove(enemy); // Remove enemies from the enemyObj list
-            HUDtot[4]--;
-        }
+//        for (EnemyClass enemy : enemiesToRemove) {
+//            FriendClass friend = new FriendClass(enemy.getPosX(), enemy.getPosY(), enemy.getType()+3, enemy.getGridLoc());
+//            friend.initFriendSprites(this);
+//            friend.setFriendFollow();
+//            friendObj.add(friend);
+//            enemyObj.remove(enemy); // Remove enemies from the enemyObj list
+//            HUDtot[4]--;
+//        }
 
         int friendFollowDistance = 40;
         for (int i = 0; i < friendObj.size(); i++) {
@@ -656,26 +659,23 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     public void drawBlocks() {
         int minDrawPosX, minDrawPosY, maxDrawPosX, maxDrawPosY, type;
         int drawX = happyObj.getPosX() - (frameWidth / 2);
-        int drawY = happyObj.getPosY() - (frameHeight / 2); //CHECK
+        int drawY = happyObj.getPosY() - (frameHeight / 2);
         posX = happyObj.getPosX();
         posY = happyObj.getPosY();
         minDrawPosX = -blockSize;
         minDrawPosY = -blockSize;
         maxDrawPosX = frameWidth;
-        maxDrawPosY = frameHeight; //(numRows * blockSize) - frameHeight
-        //System.out.println("posX: " + posX + " posY: " + posY + "drawX: " + drawX + " drawY: " + drawY);
-        //System.out.println(" minDrawPosX: " + minDrawPosX + " minDrawPosY: " + minDrawPosY +" maxDrawPosX: " + maxDrawPosX +" maxDrawPosY: " + maxDrawPosY);
-        if (drawX < 0) {
-            drawX = 0;
-        } else if (drawX > (numCols * blockSize) - frameWidth) {
+        maxDrawPosY = frameHeight;
+        if (drawX < 0) { drawX = 0; }
+        else if (drawX > (numCols * blockSize) - frameWidth)
+        {
             drawX = (numCols * blockSize) - frameWidth;
         }
         if (drawY > (numRows * blockSize) - frameHeight) //CHECK
         {
             drawY = (numRows * blockSize) - frameHeight;
-        } else if (drawY < 0) {
-            drawY = 0;
         }
+        else if (drawY < 0) { drawY = 0; }
 
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numCols; col++) {
@@ -723,7 +723,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             happyImage = happyIdle;
         } else if (jump && idle && !hit) {
             happyImage = happyJump;
-        } else if ((jump && idle && hit) || (!jump && idle && hit)) {
+        } else if ((jump && idle) || (!jump && idle)) {
             happyImage = happyHit;
         }
 
@@ -781,27 +781,26 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
 
     public void drawEnemies(int drawX, int drawY) {
         int enemyImage = 0;
-        for (int i = 0; i < enemyObj.size(); i++) {
-            Image[][] enemyImageArray = enemyObj.get(i).getImageArray();
-            if((enemyObj.get(i).getType() >= 24 && enemyObj.get(i).getType() <= 26) )
-            {
-                enemyImage = enemyObj.get(i).getType() - 24;
+        for (EnemyClass enemyClass : enemyObj) {
+            Image[][] enemyImageArray = enemyClass.getImageArray();
+            if ((enemyClass.getType() >= 24 && enemyClass.getType() <= 26)) {
+                enemyImage = enemyClass.getType() - 24;
             }
             //Additional enemies aren't drawing
-            else if (enemyObj.get(i).getType() >= 43 && enemyObj.get(i).getType() <= 47)
-            {
-                enemyImage = enemyObj.get(i).getType() - 40;
+            else if (enemyClass.getType() >= 43 && enemyClass.getType() <= 47) {
+                enemyImage = enemyClass.getType() - 40;
             }
-            int enemyPosX = enemyObj.get(i).getPosX() - drawX;
-            int enemyPosY = enemyObj.get(i).getPosY() - drawY;
-            drawImage(enemyImageArray[enemyImage][happyIndex], enemyPosX, enemyPosY, blockSize, blockSize);
+            int enemyPosX = enemyClass.getPosX() - drawX;
+            int enemyPosY = enemyClass.getPosY() - drawY;
+            //drawImage(enemyImageArray[enemyImage][happyIndex], enemyPosX, enemyPosY, blockSize, blockSize);
+            drawImage(enemyImageArray[1][1], enemyPosX, enemyPosY, blockSize, blockSize);
         }
     }
-
+    //friend1 = 0, friend1Jump = 1, friend2 = 2, friend2Jump = 3, friend3 = 4, friend3Jump = 5, friend4 = 6, friend4Jump = 7;
     public void drawFriends(int drawX, int drawY) {
         int friendImage;
-        for (int i = 0; i < friendObj.size(); i++) {
-            //friend1 = 0, friend1Jump = 1, friend2 = 2, friend2Jump = 3, friend3 = 4, friend3Jump = 5, friend4 = 6, friend4Jump = 7;
+        int i;
+        for (i = 0; i < friendObj.size(); i++) {
             Image[][] friendImageArray = friendObj.get(i).getImageArray();
             if (jump && friendObj.get(i).getSaved()) {
                 //friendImage = i * 2 + 1;
@@ -813,46 +812,41 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             if (i > 3) { friendImage = 0; }
             int friendPosX = friendObj.get(i).getPosX() - drawX;
             int friendPosY = friendObj.get(i).getPosY() - drawY;
-            drawImage(friendImageArray[friendImage][happyIndex], friendPosX, friendPosY, blockSize, blockSize);
+            //drawImage(friendImageArray[friendImage][happyIndex], friendPosX, friendPosY, blockSize, blockSize);
+            drawImage(friendImageArray[1][1], friendPosX, friendPosY, blockSize, blockSize);
         }
     }
     public void drawBlockAnimations(int drawX, int drawY) {
         int blockImage = 0;
         int type, blockPosX, blockPosY;
-        for (int i = 0; i < myBlocks.size(); i++) {
-            Image[][] blockAnimArray = myBlocks.get(i).getImageArray();
-            type = myBlocks.get(i).getType();
-            if((type == 4) || (type == 19))
-            {
-                if (type == 4)
-                {//This is fire
+        for (BlockClass myBlock : myBlocks) {
+            Image[][] blockAnimArray = myBlock.getImageArray();
+            type = myBlock.getType();
+            if ((type == 4) || (type == 19)) {
+                if (type == 4) {//This is fire
                     blockImage = 0;
                 }
-                if(type == 19)
-                {//This is heart
+                if (type == 19) {//This is heart
                     blockImage = 1;
                 }
-                blockPosX = myBlocks.get(i).getPosX() - drawX;
-                blockPosY = myBlocks.get(i).getPosY() - drawY;
-                drawImage(blockAnimArray[blockImage][happyIndex], blockPosX, blockPosY, blockSize, blockSize);
+                blockPosX = myBlock.getPosX() - drawX;
+                blockPosY = myBlock.getPosY() - drawY;
+                drawImage(blockAnimArray[blockImage][1], blockPosX, blockPosY, blockSize, blockSize);
             }
         }
     }
 
     public void drawFloatingBlocks(int drawX, int drawY)
     {
-        for (int i = 0; i < myBlocks.size(); i++)
-        {
-            if(myBlocks.get(i).getType() == 33)
-            {
-                int blockPosX = myBlocks.get(i).getPosX() - drawX;
-                int blockPosY = myBlocks.get(i).getPosY() - drawY;
+        for (BlockClass myBlock : myBlocks) {
+            if (myBlock.getType() == 33) {
+                int blockPosX = myBlock.getPosX() - drawX;
+                int blockPosY = myBlock.getPosY() - drawY;
                 drawImage(blockIMG[33], blockPosX, blockPosY, 75, 25);
             }
-            if(myBlocks.get(i).getType() == 42)
-            {
-                int blockPosX = myBlocks.get(i).getPosX() - drawX;
-                int blockPosY = myBlocks.get(i).getPosY() - drawY;
+            if (myBlock.getType() == 42) {
+                int blockPosX = myBlock.getPosX() - drawX;
+                int blockPosY = myBlock.getPosY() - drawY;
                 drawImage(blockIMG[42], blockPosX, blockPosY, 50, 25);
             }
         }
@@ -860,26 +854,18 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
 
     public void drawSecretAreas(int drawX, int drawY)
     {
-        for (int i = 0; i < secretAreas.size(); i++)
-        {
-            if (secretAreas.get(i).getBlockType() > 0)
-            {
-                int blockPosX = secretAreas.get(i).getPosX() - drawX;
-                int blockPosY = secretAreas.get(i).getPosY() - drawY;
+        for (GridClass secretArea : secretAreas) {
+            if (secretArea.getBlockType() > 0) {
+                int blockPosX = secretArea.getPosX() - drawX;
+                int blockPosY = secretArea.getPosY() - drawY;
                 drawImage(blockIMG[50], blockPosX, blockPosY, 25, 25);
             }
         }
     }
-    //------------------------------------------------------
-    //Creating the sprite array from the spritesheet
-    //------------------------------------------------------
-    public void loadBlockImages() {
-        try {
-            //Placeholder for the image sprites to be loaded into an array
-        } catch (Exception e) {
-            System.out.println("HAG Line 600 Issues with loading images for Blocks. Error location: BlockClass.loadBlockImages");
-        }
-    }
+    // ------------------------------------------------------
+    // Creating the sprite array from the spritesheet
+    // ------------------------------------------------------
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -890,28 +876,14 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         super.keyPressed(event);
         //Volpy pause
 
-        if (event.getKeyCode() == KeyEvent.VK_LEFT) {
-            if (canMoveLeft) {
-                leftKey = true;
-            } /*System.out.println("Hag 611 leftkey: " + leftKey);*/
-        }
-        if (event.getKeyCode() == KeyEvent.VK_RIGHT) {
-            if (canMoveRight) {
-                rightKey = true;
-            } /*System.out.println("Hag 612 rightKey: " + rightKey);*/
-        }
-        if (event.getKeyCode() == KeyEvent.VK_DOWN) {
-            downKey = true; /*System.out.println("Hag 613 downKey: " + downKey);*/
-        }
-        if (event.getKeyCode() == KeyEvent.VK_UP) {
-            upKey = true; /*System.out.println("Hag 614 upKey: " + upKey);*/
-        }
+        if (event.getKeyCode() == KeyEvent.VK_LEFT) { leftKey = true; }
+        if (event.getKeyCode() == KeyEvent.VK_RIGHT)  { rightKey = true; }
+        if (event.getKeyCode() == KeyEvent.VK_DOWN) { downKey = true; }
+        if (event.getKeyCode() == KeyEvent.VK_UP) { upKey = true; }
         if (event.getKeyCode() == KeyEvent.VK_SPACE) {
             jumpKey = true;
             jump = true;
-            //System.out.println("HAG Line 619 jumpKey: " + jumpKey + " " + isOnGround);
 
-            if (jump) {
                 if (canJump) {
                     audioObj.playAudioJump(this, audioObj.jumpFX);
                     isJumping = true;
@@ -926,14 +898,13 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                     //System.out.println("HAG line 635 " + happyObj.getVelY() + " " + happyObj.getAccelY());
                 }
 
-            }
+
         }
         if (event.getKeyCode() == KeyEvent.VK_H) {
-            if (showHitboxes) showHitboxes = false;
-            else showHitboxes = true;
+            showHitboxes = !showHitboxes;
         }
         if (event.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            if (gameStates == "PlayGame") {
+            if (gameStates.equals("PlayGame")) {
                 if (menuObj.PauseMenuPanel.isVisible()) {
                     menuObj.PauseMenuPanel.setVisible(false);
                     menuObj.PAbuttonPanel.setVisible(false);
@@ -962,36 +933,21 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         }
         if (event.getKeyCode() == KeyEvent.VK_UP) {
             upKey = false;
-            if (isClimbing) {
-                velY = 0;
-                happyObj.setVelY(0);
-            }
-
-            /* System.out.println("upKey: " + upKey);*/
+            if (isClimbing) { velY = 0; happyObj.setVelY(0); }
         }
-        if (event.getKeyCode() == KeyEvent.VK_RIGHT) {
-            rightKey = false;/* System.out.println("rightKey: " + rightKey);*/
-        }
-        if (event.getKeyCode() == KeyEvent.VK_DOWN) {
-            downKey = false;/* System.out.println("downKey: " + downKey);*/
-        }
-        if (event.getKeyCode() == KeyEvent.VK_SPACE) {
-            jumpKey = jump = false;// System.out.println("HAG Line 652 jumpKey: " + jumpKey);
-        }
+        if (event.getKeyCode() == KeyEvent.VK_RIGHT) { rightKey = false; }
+        if (event.getKeyCode() == KeyEvent.VK_DOWN) { downKey = false; }
+        if (event.getKeyCode() == KeyEvent.VK_SPACE) { jumpKey = jump = false; }
     }
 
-    double[] BHB = new double[4];// Block Hit Box
-    //double[] BP = new double[4]; // Block Position
-    double[] HHB = new double[4];// Happy Hit Box
 
     public void collisionCheck(double dt)
     {
         int posX = happyObj.getPosX();
         int posY = happyObj.getPosY();
-        HHB[0] = happyObj.hitBox.getMinX();
-        HHB[1] = happyObj.hitBox.getMinY();
-        HHB[2] = happyObj.hitBox.getMaxX();
-        HHB[3] = happyObj.hitBox.getMaxY();
+
+        double[] HHB = {happyObj.hitBox.getMinX(), happyObj.hitBox.getMinY(), happyObj.hitBox.getMaxX(), happyObj.hitBox.getMaxY()};
+
         double velX = happyObj.getVelX();
         double velY = happyObj.getVelY();
 
@@ -999,10 +955,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             int type = block.getType();
 
             if (isBlock(type) || isDoor(type) || isFloat(type) || (type == 48)) {
-                BHB[0] = block.hitBox.getMinX();
-                BHB[1] = block.hitBox.getMinY();
-                BHB[2] = block.hitBox.getMaxX();
-                BHB[3] = block.hitBox.getMaxY();
+                double[] BHB = {block.hitBox.getMinX(), block.hitBox.getMinY(), block.hitBox.getMaxX(), block.hitBox.getMaxY()};
 
                 if (happyObj.hitBox.intersects(block.hitBox)) {
                     isClimbing = false;
@@ -1017,47 +970,34 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                             happyObj.setPosY(posY);
                         }
                     }
-                    if (velY > 0 && HHB[3] >= BHB[1]) //Happy Top Collision
-                    {
-                        posY = (int) (BHB[1] - happyObj.hitBox.height);
-                        velY = 0;
+                    if (velY > 0 && HHB[3] >= BHB[1]) {// going down HBB lower than bt
+                        happyObj.setPosY((int) BHB[1] - happyObj.hitBox.height);
+                        happyObj.setVelY(0);
                         isJumping = false;
-                        canJump = checkIsOnGround(posX, posY);
-                    } else if (velY < 0 && HHB[1] <= BHB[3]) //Happy Bottom Collision
-                    {
-                        posY = (int) (BHB[2] + 1);
-                        velY *= -1;
+                        canJump = checkIsOnGround();
+                    } else if (velY < 0 && HHB[1] <= BHB[3]) {// going up HTB higher than BB
+                        happyObj.setPosY((int) BHB[3] + 1);
+                        happyObj.setVelY(0);
                         isJumping = false;
-                        canJump = checkIsOnGround(posX, posY);
-                    } else if (velX > 0 && HHB[2] >= BHB[0]) //Happy Right Side Collision
-                    {
-                        HappyAdventuresGame.canMoveRight = false;
-                        HappyAdventuresGame.rightKey = false;
-                        velX = 0;
-                        posX = (int) BHB[0] - 1 - blockSize;
-                        canJump = checkIsOnGround(posX, posY);
-                    } else if (velX < 0 && HHB[0] <= BHB[2]) //Happy Left Side Collision
-                    {
+                        canJump = checkIsOnGround();
+                    } else if (velX > 0 && HHB[2] >= BHB[0]) {// going right HR more right than block left
+                        happyObj.setVelX(0);
+                        happyObj.setPosX((int) BHB[0] - blockSize - 1);
+                        isJumping = false;
+                        canJump = checkIsOnGround();
+                        canMoveRight = false;
+                        rightKey = false;
+                    } else if (velX < 0 && HHB[0] <= BHB[2]) {// going left HL more left than block right
+                        happyObj.setVelX(0);
+                        happyObj.setPosX((int) BHB[2] + 1);
+                        isJumping = false;
+                        canJump = checkIsOnGround();
                         canMoveLeft = false;
                         leftKey = false;
-                        velX = 0;
-                        posX = (int) BHB[2] + 1;
-                        canJump = checkIsOnGround(posX, posY);
-                    }
-                    if ((!canMoveLeft && (rightKey || velX == 0))) {
-                        canMoveLeft = true;
-                    }
-                    if ((!canMoveRight && (leftKey || velX == 0))) {
-                        canMoveRight = true;
                     }
                 }
-                happyObj.setVelY(velY);
-                happyObj.setVelX(velX);
-                happyObj.setPosY(posY);
-                happyObj.setPosX(posX);
-                happyObj.setHitBoxXY(posX, posY);
             }
-            if (contact(block))
+            if (contact(block, HHB))
             {
                 if (isHeart(type))
                 {
@@ -1150,7 +1090,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         }// end blocks loop
 
     }
-    private boolean contact(BlockClass block){
+    private boolean contact(BlockClass block, double[] HHB){
         double[] BP = new double[4]; // Block Position
         BP[0] = block.getPosX(); BP[1] = block.getPosY();
         BP[2] = BP[0] + blockSize; BP[3] = BP[1] + blockSize;
@@ -1191,10 +1131,9 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     //This function will give Happy a few seconds to pass through objects when get hurt
     public void hitDelay() {
 
-        if (!hit && life >= 0) {
-            life = happyObj.getPlayerLife();
-            life--;
-            happyObj.setPlayerLife(life);
+        if (!hit && happyObj.getPlayerLife() >= 0)
+        {
+            happyObj.setPlayerLife(happyObj.getPlayerLife()-1);
             audioObj.playAudioWasHit(this, audioObj.wasHit);
         }
         hit = true;
@@ -1205,123 +1144,96 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             }
 
         }, 2000);
-
-        //System.out.println("hit is " + hit);
     }
 
-    public boolean checkIsOnGround(int x, int y) {//System.out.println("checkisonground called");
+    public boolean checkIsOnGround() {
         for (BlockClass block : myBlocks) {
-            if ((x >= block.hitBox.getMinX()) && (x <= block.hitBox.getMaxX()) && (y + 26 >= block.hitBox.getMinY())) {
+            if (block.hitBox != null && ((happyObj.hitBox.getMinX() >= block.hitBox.getMinX()) &&
+                    (happyObj.hitBox.getMinX() <= block.hitBox.getMaxX()) && (happyObj.hitBox.getMaxX() + 1 >= block.hitBox.getMinY()))) {
                 return true;
             }
         }
         return false;
     }
 
-    public void drawHitBoxes() {//System.out.println("drawhitboxes called");
+    public void drawHitBoxes() {
         if (showHitboxes) {
             //Draw Happy
             changeColor(Color.green);
-            drawLine(happyObj.hitBox.getMinX(), happyObj.hitBox.getMinY(), happyObj.hitBox.getMaxX(), happyObj.hitBox.getMinY());
-            drawLine(happyObj.hitBox.getMinX(), happyObj.hitBox.getMinY(), happyObj.hitBox.getMinX(), happyObj.hitBox.getMaxY());
-            drawLine(happyObj.hitBox.getMaxX(), happyObj.hitBox.getMinY(), happyObj.hitBox.getMaxX(), happyObj.hitBox.getMaxY());
-            drawLine(happyObj.hitBox.getMinX(), happyObj.hitBox.getMaxY(), happyObj.hitBox.getMaxX(), happyObj.hitBox.getMaxY());
-
-            //Draw all other world objects
+            drawsquare(happyObj.hitBox.getMinX(), happyObj.hitBox.getMinY(), happyObj.hitBox.getMaxX(), happyObj.hitBox.getMinY());
             for (BlockClass block : myBlocks) {
-                drawLine(block.hitBox.getMinX(), block.hitBox.getMinY(), block.hitBox.getMaxX(), block.hitBox.getMinY());
-                drawLine(block.hitBox.getMinX(), block.hitBox.getMinY(), block.hitBox.getMinX(), block.hitBox.getMaxY());
-                drawLine(block.hitBox.getMaxX(), block.hitBox.getMinY(), block.hitBox.getMaxX(), block.hitBox.getMaxY());
-                drawLine(block.hitBox.getMinX(), block.hitBox.getMaxY(), block.hitBox.getMaxX(), block.hitBox.getMaxY());
+                drawsquare(block.hitBox.getMinX(), block.hitBox.getMinY(), block.hitBox.getMaxX(), block.hitBox.getMinY());
             }
         }
+    }
+    private void drawsquare(double x1, double y1, double x2, double y2){
+        drawLine(x1, y1, x2, y1);
+        drawLine(x1, y1, x1, y2);
+        drawLine(x2, y1, x2, y2);
+        drawLine(x1, y2, x2, y2);
     }
 
     public void updateFloatingBlock(double dt)
     {
-        for (int i = 0; i < myBlocks.size(); i++)
-        {
-            BlockClass block = myBlocks.get(i);
-            int blockX = block.getPosX();
-            int blockY = block.getPosY();
-            int maxRight = block.getStartX() + 2*blockSize;    //Can only move 3 blocks to the right
-            int maxLeft = block.getStartX() - 2*blockSize - 25;  //Can only move 3 blocks to the left
-            int maxTop = block.getStartY() - 7*blockSize;
-            int maxBottom = block.getStartY() + 7*blockSize - 25;
+        for (BlockClass block : myBlocks) {
+            if ((block.getType() == 42)||(block.getType() ==33))
+            {
+                int blockX = block.getPosX();
+                int blockY = block.getPosY();
+                int maxRight = block.getStartX() + 2 * blockSize;    //Can only move 3 blocks to the right
+                int maxLeft = block.getStartX() - 2 * blockSize - 25;  //Can only move 3 blocks to the left
+                int maxTop = block.getStartY() - 7 * blockSize;
+                int maxBottom = block.getStartY() + 7 * blockSize - 25;
 
-            if (block.getType() == 33)
-            {//These are horisontal moving floating blocks
-//System.out.println(block.getCellIndex() + " x: " + blockX + " y: " + blockY + " " + block.getStartX() + " " + block.getStartY() + " " + maxRight + " " + maxLeft);
-//System.out.println(block.getCellIndex() + " x: " + blockX + " " + maxRight + " " + maxLeft);
-
-                block.hitBox.y = blockY;
-                block.hitBox.x = blockX;
-                blockX += blockVelX * dt;
-                block.setPosX(blockX);
-                if (blockX > maxRight)
-                {//If right side of block reaches maxRight
-
-                    blockX = maxRight-1;     //reposition so that it doesn't lose space
+                if (block.getType() == 33) {
+                    block.hitBox.y = blockY;
+                    block.hitBox.x = blockX;
+                    blockX += blockVelX * dt;
                     block.setPosX(blockX);
-                    blockVelX *= -1;
+                    if (blockX > maxRight) {
+                        blockX = maxRight - 1;
+                        block.setPosX(blockX);
+                        blockVelX *= -1;
+                        block.hitBox.y = blockY;
+                        block.hitBox.x = blockX;
+                    }
+                    if (blockX < maxLeft) {
+                        blockX = maxLeft + 1;
+                        block.setPosX(blockX);
+                        blockVelX *= -1;
+                    }
                     block.hitBox.y = blockY;
                     block.hitBox.x = blockX;
-//System.out.println(block.getCellIndex() + " maxright reached! x: " + blockX + " " + maxRight + " " + maxLeft);
-//System.out.println(block.hitBox.getMinX() + " " + block.hitBox.getMaxX() + " " + block.hitBox.getMinY());
                 }
-                if (blockX < maxLeft)
-                {//If left side of the block reaches maxLeft
-                    blockX = maxLeft +1;     //reposition so that it doesn't lose space
-                    block.setPosX(blockX);
-                    blockVelX *= -1;
+                else
+                {
                     block.hitBox.y = blockY;
                     block.hitBox.x = blockX;
-                }
-                block.hitBox.y = blockY;
-                block.hitBox.x = blockX;
-            }
-            else if (block.getType() == 42)
-            {//These are vertical moving floating blocks
-                block.hitBox.y = blockY;
-                block.hitBox.x = blockX;
-                blockY += blockVelY * dt;
-                block.setPosY(blockY);
+                    blockY += blockVelY * dt;
+                    block.setPosY(blockY);
 
-                if (blockY < maxTop)
-                {//If right side of block reaches maxtop
-                    blockY = maxTop+1;     //reposition so that it doesn't lose space
-                    block.setPosY(blockY);
-                    blockVelY *= -1;
+                    if (blockY < maxTop) {
+                        blockY = maxTop + 1;
+                        block.setPosY(blockY);
+                        blockVelY *= -1;
+                        block.hitBox.y = blockY;
+                        block.hitBox.x = blockX;
+
+                    }
+                    if (blockY > maxBottom) {
+                        blockY = maxBottom - 1;
+                        block.setPosY(blockY);
+                        blockVelY *= -1;
+                    }
                     block.hitBox.y = blockY;
                     block.hitBox.x = blockX;
-System.out.println(block.getCellIndex() + " maxtop reached! y: " + blockY + " " + maxTop + " " + maxBottom);
-System.out.println(block.hitBox.getMinX() + " " + block.hitBox.getMaxX() + " " + block.hitBox.getMinY());
-                }
-                if (blockY > maxBottom)
-                {//If left side of the block reaches maxLeft
-                    blockY = maxBottom -1;     //reposition so that it doesn't lose space
-                    block.setPosY(blockY);
-                    blockVelY *= -1;
-                    block.hitBox.y = blockY;
-                    block.hitBox.x = blockX;
-System.out.println(block.getCellIndex() + " maxbottom reached! x: " + blockX + " y: " + blockY + " " + maxTop + " " + maxBottom);
-System.out.println(block.hitBox.getMinX() + " " + block.hitBox.getMaxX() + " " + block.hitBox.getMinY());
-                }
-                block.hitBox.y = blockY;
-                block.hitBox.x = blockX;
+                    }
             }
+
         }
     }
-    public void pauseGame()
-    {
-        gamePause = true;
-    }
-    public void unPauseGame()
-    {
-        gamePause = false;
-    }
-
-
+    public void pauseGame() { gamePause = true; }
+    public void unPauseGame() { gamePause = false; }
 }
 
 
