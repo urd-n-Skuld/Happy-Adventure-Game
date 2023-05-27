@@ -3,7 +3,7 @@ import java.util.TimerTask;
 
 public class PlayerCharacterClass
 {
-    private final Image[][] ImageArray = new Image[8][15];
+    private Image[][] ImageArray = new Image[8][15];
     Image playerIm;
     private int posX, posY, size, score, type, cellIndex;
     private double velX, velY;
@@ -44,7 +44,7 @@ public class PlayerCharacterClass
     {
         if (type == 31)
         {
-            return GameEngine.loadImage("images/Sprites/happy.png");
+            return gameObj.loadImage("images/Sprites/happy.png");
         }
         else if (type == 32)
         {
@@ -54,13 +54,13 @@ public class PlayerCharacterClass
     }
     public void loadPlayerSprites(HappyAdventuresGame gameObj)
     {
-        Image spriteSheet = GameEngine.loadImage("images/Sprites/SPHappy.png");
+        Image spriteSheet = gameObj.loadImage("images/Sprites/SPHappy.png");
 
         for (int x = 0; x < ImageArray.length; x++)
         {
             for (int y = 0; y < ImageArray[x].length; y++)
             {
-                ImageArray[x][y] = GameEngine.subImage(spriteSheet, y * 50, x * 50, 50, 50);
+                ImageArray[x][y] = gameObj.subImage(spriteSheet, y * 50, x * 50, 50, 50);
             }
         }
     }

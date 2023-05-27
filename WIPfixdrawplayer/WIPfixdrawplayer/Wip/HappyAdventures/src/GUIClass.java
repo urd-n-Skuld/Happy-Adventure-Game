@@ -16,7 +16,6 @@ public class GUIClass
     JPanel QuitMenuPanel = new JPanel();
     JPanel RetryMenuPanel = new JPanel();
     JPanel SuperSweetTutorialMenuPanel = new JPanel();
-    JPanel foundKeyTutorialMenuPanel = new JPanel();
     JPanel MMbuttonPanel = new JPanel();
     JPanel PAbuttonPanel = new JPanel();
     JPanel QUbuttonPanel = new JPanel();
@@ -24,7 +23,7 @@ public class GUIClass
     JPanel HTPbuttonPanel = new JPanel();
     JPanel CRbuttonPanel = new JPanel();
     JPanel SuperSweetTutorialbuttonPanel = new JPanel();
-    //JPanel foundKeyTutorialbuttonPanel = new JPanel();
+
 
     public void setupGUI(HappyAdventuresGame game, JFrame frame, GameEngine.GamePanel mPanel, String gameStates)
     {
@@ -37,14 +36,13 @@ public class GUIClass
         frame.add(mPanel, BorderLayout.CENTER);
 
         //Load the images for all the menuPanels and buttons
-        Image MMBackgroundImage = GameEngine.loadImage("images/Menus/MainMenuBG.png");
-        Image CRBackgroundImage = GameEngine.loadImage("images/Menus/CreditsMenuBG.png");
-        Image HTPBackgroundImage = GameEngine.loadImage("images/Menus/HowToPlayMenuBG.png");
-        Image PABackgroundImage = GameEngine.loadImage("images/Menus/PauseMenuBG.png");
-        Image QUBackgroundImage = GameEngine.loadImage("images/Menus/QuitMenuBG.png");
-        Image RTBackgroundImage = GameEngine.loadImage("images/Menus/RetryMenuBG.png");
-        Image SSTBackgroundImage = GameEngine.loadImage("images/Menus/supersweetpopup.png");
-        Image FFKBackgroundImage = game.loadImage("images/Menus/keypopup.png");
+        Image MMBackgroundImage = game.loadImage("images/Menus/MainMenuBG.png");
+        Image CRBackgroundImage = game.loadImage("images/Menus/CreditsMenuBG.png");
+        Image HTPBackgroundImage = game.loadImage("images/Menus/HowToPlayMenuBG.png");
+        Image PABackgroundImage = game.loadImage("images/Menus/PauseMenuBG.png");
+        Image QUBackgroundImage = game.loadImage("images/Menus/QuitMenuBG.png");
+        Image RTBackgroundImage = game.loadImage("images/Menus/RetryMenuBG.png");
+        Image SSTBackgroundImage = game.loadImage("images/Menus/supersweetpopup.png");
         ImageIcon playButtonIm = new ImageIcon("images/Menus/PlayBTN.png");
         ImageIcon playHoverButtonIm = new ImageIcon("images/Menus/PlayHoverBTN.png");
         ImageIcon quitButtonIm = new ImageIcon("images/Menus/QuitBTN.png");
@@ -227,7 +225,6 @@ public class GUIClass
         QuitMenuPanel.add(new JLabel(new ImageIcon(QUBackgroundImage))); // add the image to a label and add the label to the panel
         RetryMenuPanel.add(new JLabel(new ImageIcon(RTBackgroundImage))); // add the image to a label and add the label to the panel
         SuperSweetTutorialMenuPanel.add(new JLabel(new ImageIcon(SSTBackgroundImage))); // add the image to a label and add the label to the panel
-        foundKeyTutorialMenuPanel.add(new JLabel(new ImageIcon(FFKBackgroundImage))); // add the image to a label and add the label to the panel
 
         //Set the settings for each menu panel - Main Menu
         MainMenuPanel.setBackground(new Color(0, 0, 0, 0)); // set background color to transparent
@@ -278,11 +275,6 @@ public class GUIClass
         SuperSweetTutorialbuttonPanel.setOpaque(false);
         SuperSweetTutorialbuttonPanel.setLayout(new BoxLayout(SuperSweetTutorialbuttonPanel, BoxLayout.PAGE_AXIS)); // set layout to place buttons in a column
 
-        //Set the settings for each menu panel - SuperSweetTutorial Menu
-        foundKeyTutorialMenuPanel.setBackground(new Color(0, 0, 0, 0)); // set background color to transparent
-        foundKeyTutorialMenuPanel.setOpaque(false); // make the panel transparent
-        foundKeyTutorialMenuPanel.setBounds((game.width() - menuWidth) / 2, (game.height() - menuHeight) /2, menuWidth, menuHeight);
-
 
         //Add all the menu panels to the layered pane of the frame
         layeredPane.add(mPanel);
@@ -315,8 +307,6 @@ public class GUIClass
         layeredPane.setLayer(SuperSweetTutorialbuttonPanel, 1);
         layeredPane.add(SuperSweetTutorialMenuPanel); //1
         layeredPane.setLayer(SuperSweetTutorialMenuPanel, 1);
-        layeredPane.add(foundKeyTutorialMenuPanel); //1
-        layeredPane.setLayer(foundKeyTutorialMenuPanel, 1);
 
 
         //Adding the layeredPane to the mFrame
@@ -338,7 +328,6 @@ public class GUIClass
         RTbuttonPanel.setVisible(false);
         SuperSweetTutorialMenuPanel.setVisible(false);
         SuperSweetTutorialbuttonPanel.setVisible(false);
-        foundKeyTutorialMenuPanel.setVisible(false);
 
         if(Objects.equals(gameStates, "MenuSystem"))
         {
@@ -357,9 +346,8 @@ public class GUIClass
             @Override
             public void actionPerformed(ActionEvent e)
             {System.out.println("Main Menu Single Player button pressed");
-                HappyAdventuresGame.gameOver = false;
+                game.gameOver = false;
                 game.gameStates = "PlayGame";
-                game.unPauseGame();
                 //game.score = 0;
                 MainMenuPanel.setVisible(false);
                 MMbuttonPanel.setVisible(false);
@@ -384,7 +372,7 @@ public class GUIClass
             @Override
             public void actionPerformed(ActionEvent e)
             {System.out.println("Main Menu MultiPlayer button pressed");
-                HappyAdventuresGame.gameOver = false;
+                game.gameOver = false;
                 game.gameStates = "2Player";
                 //game.score = 0; //Add a new score for 2nd player
                 MainMenuPanel.setVisible(false);
@@ -446,7 +434,7 @@ public class GUIClass
             public void actionPerformed(ActionEvent e)
             {
                 game.gameStates = "PlayGame";
-                HappyAdventuresGame.gameOver = false;
+                game.gameOver = false;
                 game.softResetIsTrue = false;
                 game.gameReset();
                 RetryMenuPanel.setVisible(false);

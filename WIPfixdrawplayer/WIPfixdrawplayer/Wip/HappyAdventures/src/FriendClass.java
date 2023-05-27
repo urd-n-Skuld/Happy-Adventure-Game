@@ -21,26 +21,14 @@ public class FriendClass extends BlockClass {
         this.gridLoc = gridIndex;
         System.out.println(this.gridLoc+ " new friend");
     }
-    public FriendClass(EnemyClass enemy) {
-        super(enemy.getPosX(), enemy.getPosY(), enemy.getType()+3);
-        this.posX = enemy.getPosX();
-        this.posY = enemy.getPosY();
-        this.StartX = this.posX;
-        this.StartY = this.posY;
-        this.gridLoc = enemy.getGridLoc();
-        this.follow = true;
-        initFriendSprites();
-    }
-
-
-    public void initFriendSprites()
+    public void initFriendSprites(HappyAdventuresGame gameObj)
     {
-        Image spriteSheet = GameEngine.loadImage("images/Sprites/SPHappFriends.png");
+        Image spriteSheet = gameObj.loadImage("images/Sprites/SPHappFriends.png");
         for (int x = 0; x < ImageArray.length; x++)
         {
             for (int y = 0; y < ImageArray[x].length; y++)
             {
-                ImageArray[x][y] = GameEngine.subImage(spriteSheet, y * 50, x * 50, 50, 50);
+                ImageArray[x][y] = gameObj.subImage(spriteSheet, y * 50, x * 50, 50, 50);
             }
         }
     }
@@ -51,7 +39,7 @@ public class FriendClass extends BlockClass {
     @Override
     public void setblockHitBox(int x, int y, int w, int h)
     {
-            hitBox = new Rectangle(0, 0, 0, 0);
+        hitBox = new Rectangle(0, 0, 0, 0);
     }
     public void setSaved(){
         if(!saved) {
@@ -82,9 +70,9 @@ public class FriendClass extends BlockClass {
     public void softreset() {
         if (!saved)
         {
-        this.follow = false;
-        this.posX = StartX;
-        this.posY = StartY;
+            this.follow = false;
+            this.posX = StartX;
+            this.posY = StartY;
         }
     }
 }

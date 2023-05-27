@@ -5,7 +5,7 @@ import java.awt.*;
 public class BlockClass{
     Rectangle hitBox;
     private int posX, posY, type, cellIndex, startX, startY;
-    private final Image[][] blockAnimArray = new Image[2][15];
+    private Image[][] blockAnimArray = new Image[2][15];
     // init
 
     public BlockClass(int x, int y, int type) { this.posX = x; this.posY = y; this.type = type; this.startX = x; this.startY = y; }
@@ -40,13 +40,13 @@ public class BlockClass{
     public int getStartY () { return startY;}
     public void initBlockAnimSprites(HappyAdventuresGame gameObj)
     {
-        Image spriteSheet = GameEngine.loadImage("images/Sprites/fire_heart_Sprites.png");
+        Image spriteSheet = gameObj.loadImage("images/Sprites/fire_heart_Sprites.png");
 
         for (int x = 0; x < blockAnimArray.length; x++)
         {
             for (int y = 0; y < blockAnimArray[x].length; y++)
             {
-                blockAnimArray[x][y] = GameEngine.subImage(spriteSheet, y * 50, x * 50, 50, 50);
+                blockAnimArray[x][y] = gameObj.subImage(spriteSheet, y * 50, x * 50, 50, 50);
             }
         }
     }
