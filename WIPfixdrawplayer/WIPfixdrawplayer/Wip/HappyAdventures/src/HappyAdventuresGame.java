@@ -515,7 +515,12 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         //--------------------------------------------
         //Removing the enemies that have been converted to friendlies
         for (EnemyClass enemy : enemiesToRemove) {
-            FriendClass friend = new FriendClass(enemy.getPosX(), enemy.getPosY(), enemy.getType()+3, enemy.getGridLoc());
+            FriendClass friend;
+            if (enemy.getType() >= 24 && enemy.getType() <= 26) {
+                friend = new FriendClass(enemy.getPosX(), enemy.getPosY(), enemy.getType() + 3, enemy.getGridLoc());
+            } else { //if (enemy.getType() >= 43 && enemy.getType() <= 47)
+                friend = new FriendClass(enemy.getPosX(), enemy.getPosY(), enemy.getType() -17, enemy.getGridLoc());
+            }
             friend.initFriendSprites(this);
             friend.setFriendFollow();
             friendObj.add(friend);
