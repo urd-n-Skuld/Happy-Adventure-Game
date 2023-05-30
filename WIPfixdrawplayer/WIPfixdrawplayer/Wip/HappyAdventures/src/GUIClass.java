@@ -16,6 +16,7 @@ public class GUIClass
     JPanel QuitMenuPanel = new JPanel();
     JPanel RetryMenuPanel = new JPanel();
     JPanel SuperSweetTutorialMenuPanel = new JPanel();
+    JPanel foundKeyTutorialMenuPanel = new JPanel();
     JPanel MMbuttonPanel = new JPanel();
     JPanel PAbuttonPanel = new JPanel();
     JPanel QUbuttonPanel = new JPanel();
@@ -43,6 +44,7 @@ public class GUIClass
         Image QUBackgroundImage = game.loadImage("images/Menus/QuitMenuBG.png");
         Image RTBackgroundImage = game.loadImage("images/Menus/RetryMenuBG.png");
         Image SSTBackgroundImage = game.loadImage("images/Menus/supersweetpopup.png");
+        Image FFKBackgroundImage = game.loadImage("images/Menus/keypopup.png");
         ImageIcon playButtonIm = new ImageIcon("images/Menus/PlayBTN.png");
         ImageIcon playHoverButtonIm = new ImageIcon("images/Menus/PlayHoverBTN.png");
         ImageIcon quitButtonIm = new ImageIcon("images/Menus/QuitBTN.png");
@@ -225,6 +227,7 @@ public class GUIClass
         QuitMenuPanel.add(new JLabel(new ImageIcon(QUBackgroundImage))); // add the image to a label and add the label to the panel
         RetryMenuPanel.add(new JLabel(new ImageIcon(RTBackgroundImage))); // add the image to a label and add the label to the panel
         SuperSweetTutorialMenuPanel.add(new JLabel(new ImageIcon(SSTBackgroundImage))); // add the image to a label and add the label to the panel
+        foundKeyTutorialMenuPanel.add(new JLabel(new ImageIcon(FFKBackgroundImage))); // add the image to a label and add the label to the panel
 
         //Set the settings for each menu panel - Main Menu
         MainMenuPanel.setBackground(new Color(0, 0, 0, 0)); // set background color to transparent
@@ -275,6 +278,11 @@ public class GUIClass
         SuperSweetTutorialbuttonPanel.setOpaque(false);
         SuperSweetTutorialbuttonPanel.setLayout(new BoxLayout(SuperSweetTutorialbuttonPanel, BoxLayout.PAGE_AXIS)); // set layout to place buttons in a column
 
+        //Set the settings for each menu panel - SuperSweetTutorial Menu
+        foundKeyTutorialMenuPanel.setBackground(new Color(0, 0, 0, 0)); // set background color to transparent
+        foundKeyTutorialMenuPanel.setOpaque(false); // make the panel transparent
+        foundKeyTutorialMenuPanel.setBounds((game.width() - menuWidth) / 2, (game.height() - menuHeight) /2, menuWidth, menuHeight);
+
 
         //Add all the menu panels to the layered pane of the frame
         layeredPane.add(mPanel);
@@ -307,6 +315,8 @@ public class GUIClass
         layeredPane.setLayer(SuperSweetTutorialbuttonPanel, 1);
         layeredPane.add(SuperSweetTutorialMenuPanel); //1
         layeredPane.setLayer(SuperSweetTutorialMenuPanel, 1);
+        layeredPane.add(foundKeyTutorialMenuPanel); //1
+        layeredPane.setLayer(foundKeyTutorialMenuPanel, 1);
 
 
         //Adding the layeredPane to the mFrame
@@ -328,6 +338,7 @@ public class GUIClass
         RTbuttonPanel.setVisible(false);
         SuperSweetTutorialMenuPanel.setVisible(false);
         SuperSweetTutorialbuttonPanel.setVisible(false);
+        foundKeyTutorialMenuPanel.setVisible(false);
 
         if(Objects.equals(gameStates, "MenuSystem"))
         {

@@ -10,7 +10,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     //------------------------------------------------------
     //Global generic variables
     //------------------------------------------------------
-    int numCols, numRows, superSweetsEaten;       //These values are initialised when the world map is loaded (See loadBlocks())
+    int numCols, numRows, superSweetsEaten, keysFound;       //These values are initialised when the world map is loaded (See loadBlocks())
     static int blockSize = 25, blockVelX = 50, blockVelY = 50;
     public boolean showHitboxes, showGrid = false;
     Timer hitTimer = new Timer();
@@ -22,7 +22,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     //String csvFile = "images/WorldMaps/Horisontal world.csv";
 
     // putting this here allows easier changes
-    static boolean death, gameOver, gamePause, firstSuperSweetEaten;
+    static boolean death, gameOver, gamePause, firstSuperSweetEaten, firstKeyFound;;
     public boolean softResetIsTrue;
 
     //volpy HUD variables
@@ -124,8 +124,11 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         setWindowSize(frameWidth, frameHeight);
 
         gameStates = "MenuSystem";    //Change this to "MenuSystem" if you want to turn on game menus
-        showHitboxes = death = gameOver = gamePause = firstSuperSweetEaten = false;
+        showHitboxes = death = gameOver = gamePause = false;
+        firstSuperSweetEaten = false;
         superSweetsEaten = 0;
+        firstKeyFound = false;
+        keysFound = 0;
 
         initAudio();// line 109
         initWorld(csvFile, secretCSV);// line 176 .... creates variables for grid class
@@ -342,6 +345,11 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             gamePause = true;
             menuObj.SuperSweetTutorialMenuPanel.setVisible(true);
             menuObj.SuperSweetTutorialbuttonPanel.setVisible(true);
+        }
+        if(gamePause && keysFound == 1 && firstKeyFound)
+        {
+            gamePause = true;
+            menuObj.foundKeyTutorialMenuPanel.setVisible(true);
         }
         if ((!gameOver) && (!gamePause))
         {
@@ -962,7 +970,14 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                     menuObj.PAbuttonPanel.setVisible(true);
                 }
             }
-
+        }
+        if (event.getKeyCode() == KeyEvent.VK_ENTER) {
+            if(menuObj.foundKeyTutorialMenuPanel.isVisible())
+            {
+                unPauseGame();
+                menuObj.foundKeyTutorialMenuPanel.setVisible(false);
+                keysFound = 2;
+            }
         }
     }
 
@@ -1249,6 +1264,12 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                     keys[type - 13] = true;
                     KEYtot[type - 13]++;
                     KEYtot[3]++;
+                    keysFound++;
+                    if(keysFound == 1)
+                    {
+                        firstKeyFound = true;
+                        pauseGame();
+                    }
                     playAudio(audioObj.KeySound);
                     deleteBlock(block);
                     break;
