@@ -49,8 +49,8 @@ public class GUIClass
         ImageIcon quitHoverButtonIm = new ImageIcon("images/Menus/QuitHoverBTN.png");
         ImageIcon creditsButtonIm = new ImageIcon("images/Menus/CreditsBTN.png");
         ImageIcon creditsHoverButtonIm = new ImageIcon("images/Menus/CreditsHoverBTN.png");
-        ImageIcon multiPlayerButtonIm = new ImageIcon("images/Menus/MultiPlayerBTN.png");
-        ImageIcon multiPlayerHoverButtonIm = new ImageIcon("images/Menus/multiPlayerHoverBTN.png");
+        //ImageIcon multiPlayerButtonIm = new ImageIcon("images/Menus/MultiPlayerBTN.png");
+        //ImageIcon multiPlayerHoverButtonIm = new ImageIcon("images/Menus/multiPlayerHoverBTN.png");
         ImageIcon noButtonIm = new ImageIcon("images/Menus/NoBTN.png");
         ImageIcon noHoverButtonIm = new ImageIcon("images/Menus/NoHoverBTN.png");
         ImageIcon yesButtonIm = new ImageIcon("images/Menus/YesBTN.png");
@@ -70,7 +70,7 @@ public class GUIClass
         JButton MMquitButton = new JButton();
         JButton PAquitButton = new JButton();
         JButton creditsButton = new JButton();
-        JButton multiPlayerButton = new JButton();
+        //JButton multiPlayerButton = new JButton();
         JButton RTnoButton = new JButton();
         JButton QUnoButton = new JButton();
         JButton RTyesButton = new JButton();
@@ -90,8 +90,8 @@ public class GUIClass
         PAquitButton.setRolloverIcon(quitHoverButtonIm);
         creditsButton.setIcon(creditsButtonIm);
         creditsButton.setRolloverIcon(creditsHoverButtonIm);
-        multiPlayerButton.setIcon(multiPlayerButtonIm);
-        multiPlayerButton.setRolloverIcon(multiPlayerHoverButtonIm);
+        //multiPlayerButton.setIcon(multiPlayerButtonIm);
+        //multiPlayerButton.setRolloverIcon(multiPlayerHoverButtonIm);
         RTnoButton.setIcon(noButtonIm);
         RTnoButton.setRolloverIcon(noHoverButtonIm);
         QUnoButton.setIcon(noButtonIm);
@@ -128,10 +128,10 @@ public class GUIClass
         creditsButton.setContentAreaFilled(false);
         creditsButton.setFocusPainted(false);
         creditsButton.setPreferredSize(new Dimension(creditsButtonIm.getIconWidth(), creditsButtonIm.getIconHeight()));
-        multiPlayerButton.setBorder(null);
-        multiPlayerButton.setContentAreaFilled(false);
-        multiPlayerButton.setFocusPainted(false);
-        multiPlayerButton.setPreferredSize(new Dimension(multiPlayerButtonIm.getIconWidth(), multiPlayerButtonIm.getIconHeight()));
+        //multiPlayerButton.setBorder(null);
+        //multiPlayerButton.setContentAreaFilled(false);
+        //multiPlayerButton.setFocusPainted(false);
+        //multiPlayerButton.setPreferredSize(new Dimension(multiPlayerButtonIm.getIconWidth(), multiPlayerButtonIm.getIconHeight()));
         RTnoButton.setBorder(null);
         RTnoButton.setContentAreaFilled(false);
         RTnoButton.setFocusPainted(false);
@@ -164,8 +164,8 @@ public class GUIClass
         // Add the buttons to the Main Menu button panel
         MMbuttonPanel.add(Box.createVerticalGlue());        //create vertical spacing between each button
         MMbuttonPanel.add(MMplayButton);
-        MMbuttonPanel.add(Box.createRigidArea(new Dimension(0, 15))); // add some transparent space between the buttons of specific size
-        MMbuttonPanel.add(multiPlayerButton);
+        //MMbuttonPanel.add(Box.createRigidArea(new Dimension(0, 15))); // add some transparent space between the buttons of specific size
+        //MMbuttonPanel.add(multiPlayerButton);
         MMbuttonPanel.add(Box.createRigidArea(new Dimension(0, 15))); // add some transparent space between the buttons of specific size
         MMbuttonPanel.add(creditsButton);
         MMbuttonPanel.add(Box.createRigidArea(new Dimension(0, 15))); // add some transparent space between the buttons of specific size
@@ -367,7 +367,7 @@ public class GUIClass
         });
 
         //Set the keyListeners for each of the buttons in the different menu screens
-        multiPlayerButton.addActionListener(new ActionListener()
+        /*multiPlayerButton.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent e)
@@ -378,7 +378,7 @@ public class GUIClass
                 MainMenuPanel.setVisible(false);
                 MMbuttonPanel.setVisible(false);
             }
-        });
+        });*/
 
         creditsButton.addActionListener(new ActionListener()
         {
