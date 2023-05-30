@@ -1196,7 +1196,9 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                             }
                         }
 
-                        happyObj.setPlayerScore(4 * ((type) - 16) ^ 2 + 1);
+                        if (type != 37) {
+                            happyObj.setPlayerScore(4 * ((type) - 16) ^ 2 + 1);
+                        }
                         deleteBlock(block);
                     }
                     break;
@@ -1267,8 +1269,6 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 for (FriendClass friend : friendObj) {
                     if (distance(friend.getPosX(), friend.getPosY(), block.getPosX(), block.getPosY()) < 50) {
                         friend.setSaved();
-
-
                     }
                 }
 
