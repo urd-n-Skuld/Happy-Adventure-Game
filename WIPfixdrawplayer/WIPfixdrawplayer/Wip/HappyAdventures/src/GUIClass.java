@@ -17,6 +17,7 @@ public class GUIClass
     JPanel RetryMenuPanel = new JPanel();
     JPanel SuperSweetTutorialMenuPanel = new JPanel();
     JPanel foundKeyTutorialMenuPanel = new JPanel();
+    JPanel noKeyTutorialMenuPanel = new JPanel();
     JPanel MMbuttonPanel = new JPanel();
     JPanel PAbuttonPanel = new JPanel();
     JPanel QUbuttonPanel = new JPanel();
@@ -45,6 +46,7 @@ public class GUIClass
         Image RTBackgroundImage = game.loadImage("images/Menus/RetryMenuBG.png");
         Image SSTBackgroundImage = game.loadImage("images/Menus/supersweetpopup.png");
         Image FFKBackgroundImage = game.loadImage("images/Menus/keypopup.png");
+        Image NKBackgroundImage = game.loadImage("images/Menus/missingKey.png");
         ImageIcon playButtonIm = new ImageIcon("images/Menus/PlayBTN.png");
         ImageIcon playHoverButtonIm = new ImageIcon("images/Menus/PlayHoverBTN.png");
         ImageIcon quitButtonIm = new ImageIcon("images/Menus/QuitBTN.png");
@@ -214,7 +216,7 @@ public class GUIClass
         MMbuttonPanel.setBounds((game.width() - playButtonIm.getIconWidth()) / 2, 100, MMBackgroundImage.getWidth(null), MMBackgroundImage.getHeight(null));
         CRbuttonPanel.setBounds((game.width() - continueButtonIm.getIconWidth()) / 2, 80, CRBackgroundImage.getWidth(null), CRBackgroundImage.getHeight(null));
         HTPbuttonPanel.setBounds((game.width() - readyButtonIm.getIconWidth()) / 2, 215, HTPBackgroundImage.getWidth(null), HTPBackgroundImage.getHeight(null));
-        PAbuttonPanel.setBounds((game.width() - continueButtonIm.getIconWidth()) / 2, 130, PABackgroundImage.getWidth(null), PABackgroundImage.getHeight(null));
+        PAbuttonPanel.setBounds((game.width() - continueButtonIm.getIconWidth()) / 2-100, 130, PABackgroundImage.getWidth(null), PABackgroundImage.getHeight(null));
         QUbuttonPanel.setBounds((game.width() - yesButtonIm.getIconWidth()) / 2, 120, QUBackgroundImage.getWidth(null), QUBackgroundImage.getHeight(null));
         RTbuttonPanel.setBounds((game.width() - yesButtonIm.getIconWidth()) / 2, 120, RTBackgroundImage.getWidth(null), RTBackgroundImage.getHeight(null));
         //SuperSweetTutorialbuttonPanel.setBounds((game.width() - resumeButtonIm.getIconWidth()) / 2, 180, SSTBackgroundImage.getWidth(null), SSTBackgroundImage.getHeight(null));
@@ -228,6 +230,7 @@ public class GUIClass
         RetryMenuPanel.add(new JLabel(new ImageIcon(RTBackgroundImage))); // add the image to a label and add the label to the panel
         SuperSweetTutorialMenuPanel.add(new JLabel(new ImageIcon(SSTBackgroundImage))); // add the image to a label and add the label to the panel
         foundKeyTutorialMenuPanel.add(new JLabel(new ImageIcon(FFKBackgroundImage))); // add the image to a label and add the label to the panel
+        noKeyTutorialMenuPanel.add(new JLabel(new ImageIcon(NKBackgroundImage)));
 
         //Set the settings for each menu panel - Main Menu
         MainMenuPanel.setBackground(new Color(0, 0, 0, 0)); // set background color to transparent
@@ -284,6 +287,10 @@ public class GUIClass
         foundKeyTutorialMenuPanel.setOpaque(false); // make the panel transparent
         foundKeyTutorialMenuPanel.setBounds((game.width() / 2) - 127, game.height() /2-75, 264, 165);
 
+        //Set the settings for each menu panel - SuperSweetTutorial Menu
+        noKeyTutorialMenuPanel.setBackground(new Color(0, 0, 0, 0)); // set background color to transparent
+        noKeyTutorialMenuPanel.setOpaque(false); // make the panel transparent
+        noKeyTutorialMenuPanel.setBounds((game.width() / 2) - 127, game.height() /2-75, 264, 165);
 
         //Add all the menu panels to the layered pane of the frame
         layeredPane.add(mPanel);
@@ -318,6 +325,8 @@ public class GUIClass
         layeredPane.setLayer(SuperSweetTutorialMenuPanel, 1);
         layeredPane.add(foundKeyTutorialMenuPanel); //1
         layeredPane.setLayer(foundKeyTutorialMenuPanel, 1);
+        layeredPane.add(noKeyTutorialMenuPanel); //1
+        layeredPane.setLayer(noKeyTutorialMenuPanel, 1);
 
 
         //Adding the layeredPane to the mFrame
@@ -340,6 +349,7 @@ public class GUIClass
         SuperSweetTutorialMenuPanel.setVisible(false);
         //SuperSweetTutorialbuttonPanel.setVisible(false);
         foundKeyTutorialMenuPanel.setVisible(false);
+        noKeyTutorialMenuPanel.setVisible(false);
 
         if(Objects.equals(gameStates, "MenuSystem"))
         {
@@ -365,6 +375,7 @@ public class GUIClass
                 MMbuttonPanel.setVisible(false);
                 HowToPlayMenuPanel.setVisible(true);
                 HTPbuttonPanel.setVisible(true);
+                game.unPauseGame();
             }
         });
 
@@ -499,6 +510,7 @@ public class GUIClass
                 System.out.println("Pause Menu Continue button pressed");
                 PauseMenuPanel.setVisible(false);
                 PAbuttonPanel.setVisible(false);
+                game.unPauseGame();
             }
         });
         SSTresumeButton.addActionListener(new ActionListener()

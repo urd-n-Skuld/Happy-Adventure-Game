@@ -10,7 +10,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     //------------------------------------------------------
     //Global generic variables
     //------------------------------------------------------
-    int numCols, numRows, superSweetsEaten, keysFound;       //These values are initialised when the world map is loaded (See loadBlocks())
+    int numCols, numRows, superSweetsEaten, keysFound, noKeypopup;       //These values are initialised when the world map is loaded (See loadBlocks())
     static int blockSize = 25, blockVelX = 50, blockVelY = 50;
     public boolean showHitboxes, showGrid = false;
     Timer hitTimer = new Timer();
@@ -124,11 +124,13 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         setWindowSize(frameWidth, frameHeight);
 
         gameStates = "MenuSystem";    //Change this to "MenuSystem" if you want to turn on game menus
-        showHitboxes = death = gameOver = gamePause = false;
+        showHitboxes = death = gameOver = false;
+        gamePause = true;
         firstSuperSweetEaten = false;
         superSweetsEaten = 0;
         firstKeyFound = false;
         keysFound = 0;
+        noKeypopup = 0;
 
         initAudio();// line 109
         initWorld(csvFile, secretCSV);// line 176 .... creates variables for grid class
@@ -1005,6 +1007,11 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 menuObj.MainMenuPanel.setVisible(true);
                 menuObj.MMbuttonPanel.setVisible(true);
             }
+            if(menuObj.noKeyTutorialMenuPanel.isVisible())
+            {
+                unPauseGame();
+                menuObj.noKeyTutorialMenuPanel.setVisible(false);
+            }
         }
     }
 
@@ -1302,15 +1309,21 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                     break;
                 }
             } else if ((type >= 9) && (type <= 11)) {// doors
-                if (keys[type - 9] && (distance(happyObj.hitBox.getMinX(), happyObj.hitBox.getMinY(), block.getPosX(), block.getPosY()) < 28)) {
+                if (keys[type - 9] && (distance(happyObj.hitBox.getMinX(), happyObj.hitBox.getMinY(), block.getPosX(), block.getPosY()) < 28))
+                {
                     KEYtot[type - 9]--;
                     if (KEYtot[type - 9] == 0) {
                         keys[type - 9] = false;
-                        message = "You need to find the right key...";
                     }
                     playAudio(audioObj.doorBell);
                     deleteBlock(block);
                     break;
+                }
+                else if (!(keys[type - 9]) && (noKeypopup == 0) && (distance(happyObj.hitBox.getMinX(), happyObj.hitBox.getMinY(), block.getPosX(), block.getPosY()) < 28))
+                {
+                    pauseGame();
+                    menuObj.noKeyTutorialMenuPanel.setVisible(true);
+                    noKeypopup = 1;
                 }
             }
             else if ((type >= 27) && (type <= 29))
