@@ -17,7 +17,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     String gameStates; // "MenuSystem", "PlayGame", "2Player", "Paused"
     String message;
 
-    String csvFile = "images/WorldMaps/Worldmapv3.csv";
+    String csvFile = "images/WorldMaps/Worldmapfinal.csv";
+    String secretCSV = "images/WorldMaps/secretBlocks.csv";
     //String csvFile = "images/WorldMaps/Horisontal world.csv";
 
     // putting this here allows easier changes
@@ -127,7 +128,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         superSweetsEaten = 0;
 
         initAudio();// line 109
-        initWorld(csvFile);// line 176 .... creates variables for grid class
+        initWorld(csvFile, secretCSV);// line 176 .... creates variables for grid class
         initCharacters();// line 145
         initGUI();// line 98
 
@@ -188,13 +189,17 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     //------------------------------------------------------
     ArrayList<BlockClass> myblocks;
     ArrayList<GridClass> gridObj;
+    ArrayList<GridClass> secretAreas;
 
-    public void initWorld(String csv) {
+    public void initWorld(String mapCSV, String secretCSV)  {
         //System.out.println("InitWorld called");
         loadCSV map1 = new loadCSV();
-        Object[] resultingLists = map1.loadMap(csv, blockSize);
+        Object[] resultingLists = map1.loadMap(mapCSV,blockSize);
         myblocks = (ArrayList<BlockClass>) resultingLists[0];
         gridObj = (ArrayList<GridClass>) resultingLists[1];
+
+        Object[] secretBlocks = map1.loadSecretAreas(secretCSV, blockSize);
+        secretAreas = (ArrayList<GridClass>) secretBlocks[0];
 
         numCols = loadCSV.getCol();
         numRows = loadCSV.getRows();
@@ -719,6 +724,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         drawEnemies(drawX, drawY);
         drawFloatingBlocks(drawX, drawY);
         drawBlockAnimations(drawX, drawY);
+        drawSecretAreas(drawX, drawY);
     }
 
     //------------------------------------------------------
@@ -871,6 +877,16 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 int blockPosX = myblocks.get(i).getPosX() - drawX;
                 int blockPosY = myblocks.get(i).getPosY() - drawY;
                 drawImage(blockIMG[42], blockPosX, blockPosY, 50, 25);
+            }
+        }
+    }
+    public void drawSecretAreas(int drawX, int drawY)
+    {
+        for (GridClass secretArea : secretAreas) {
+            if (secretArea.getBlockType() > 0) {
+                int blockPosX = secretArea.getPosX() - drawX;
+                int blockPosY = secretArea.getPosY() - drawY;
+                drawImage(blockIMG[50], blockPosX, blockPosY, 25, 25);
             }
         }
     }
