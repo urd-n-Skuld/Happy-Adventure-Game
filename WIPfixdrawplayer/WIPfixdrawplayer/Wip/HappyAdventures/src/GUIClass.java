@@ -23,7 +23,7 @@ public class GUIClass
     JPanel RTbuttonPanel = new JPanel();
     JPanel HTPbuttonPanel = new JPanel();
     JPanel CRbuttonPanel = new JPanel();
-    JPanel SuperSweetTutorialbuttonPanel = new JPanel();
+    //JPanel SuperSweetTutorialbuttonPanel = new JPanel();
 
 
     public void setupGUI(HappyAdventuresGame game, JFrame frame, GameEngine.GamePanel mPanel, String gameStates)
@@ -205,10 +205,10 @@ public class GUIClass
         RTbuttonPanel.add(RTnoButton);
         RTbuttonPanel.add(Box.createVerticalGlue());        //create vertical spacing between each button
 
-        // Add the buttons to the Quit Menu button panel
+        /*// Add the buttons to the Quit Menu button panel
         SuperSweetTutorialbuttonPanel.add(Box.createVerticalGlue());        //create vertical spacing between each button
         SuperSweetTutorialbuttonPanel.add(SSTresumeButton);
-        SuperSweetTutorialbuttonPanel.add(Box.createVerticalGlue());        //create vertical spacing between each button
+        SuperSweetTutorialbuttonPanel.add(Box.createVerticalGlue());        //create vertical spacing between each button*/
 
         //Set the location of the button panel
         MMbuttonPanel.setBounds((game.width() - playButtonIm.getIconWidth()) / 2, 100, MMBackgroundImage.getWidth(null), MMBackgroundImage.getHeight(null));
@@ -217,7 +217,7 @@ public class GUIClass
         PAbuttonPanel.setBounds((game.width() - continueButtonIm.getIconWidth()) / 2, 130, PABackgroundImage.getWidth(null), PABackgroundImage.getHeight(null));
         QUbuttonPanel.setBounds((game.width() - yesButtonIm.getIconWidth()) / 2, 120, QUBackgroundImage.getWidth(null), QUBackgroundImage.getHeight(null));
         RTbuttonPanel.setBounds((game.width() - yesButtonIm.getIconWidth()) / 2, 120, RTBackgroundImage.getWidth(null), RTBackgroundImage.getHeight(null));
-        SuperSweetTutorialbuttonPanel.setBounds((game.width() - resumeButtonIm.getIconWidth()) / 2, 180, SSTBackgroundImage.getWidth(null), SSTBackgroundImage.getHeight(null));
+        //SuperSweetTutorialbuttonPanel.setBounds((game.width() - resumeButtonIm.getIconWidth()) / 2, 180, SSTBackgroundImage.getWidth(null), SSTBackgroundImage.getHeight(null));
 
         //Set the background images for each of the menu panels
         MainMenuPanel.add(new JLabel(new ImageIcon(MMBackgroundImage))); // add the image to a label and add the label to the panel
@@ -274,14 +274,15 @@ public class GUIClass
         //Set the settings for each menu panel - SuperSweetTutorial Menu
         SuperSweetTutorialMenuPanel.setBackground(new Color(0, 0, 0, 0)); // set background color to transparent
         SuperSweetTutorialMenuPanel.setOpaque(false); // make the panel transparent
-        SuperSweetTutorialMenuPanel.setBounds((game.width() - menuWidth) / 2, (game.height() - menuHeight) /2, menuWidth, menuHeight);
-        SuperSweetTutorialbuttonPanel.setOpaque(false);
-        SuperSweetTutorialbuttonPanel.setLayout(new BoxLayout(SuperSweetTutorialbuttonPanel, BoxLayout.PAGE_AXIS)); // set layout to place buttons in a column
+        //SuperSweetTutorialMenuPanel.setBounds((game.width() - menuWidth) / 2+20, (game.height() - menuHeight) /2+110, 244, 145);
+        SuperSweetTutorialMenuPanel.setBounds((game.width() / 2) - 127, game.height() /2-75, 264, 165);
+        //SuperSweetTutorialbuttonPanel.setOpaque(false);
+        //SuperSweetTutorialbuttonPanel.setLayout(new BoxLayout(SuperSweetTutorialbuttonPanel, BoxLayout.PAGE_AXIS)); // set layout to place buttons in a column
 
         //Set the settings for each menu panel - SuperSweetTutorial Menu
         foundKeyTutorialMenuPanel.setBackground(new Color(0, 0, 0, 0)); // set background color to transparent
         foundKeyTutorialMenuPanel.setOpaque(false); // make the panel transparent
-        foundKeyTutorialMenuPanel.setBounds((game.width() - menuWidth) / 2, (game.height() - menuHeight) /2, menuWidth, menuHeight);
+        foundKeyTutorialMenuPanel.setBounds((game.width() / 2) - 127, game.height() /2-75, 264, 165);
 
 
         //Add all the menu panels to the layered pane of the frame
@@ -311,8 +312,8 @@ public class GUIClass
         layeredPane.setLayer(RTbuttonPanel, 1);
         layeredPane.add(RetryMenuPanel); //1
         layeredPane.setLayer(RetryMenuPanel, 1);
-        layeredPane.add(SuperSweetTutorialbuttonPanel); //1
-        layeredPane.setLayer(SuperSweetTutorialbuttonPanel, 1);
+        //layeredPane.add(SuperSweetTutorialbuttonPanel); //1
+        //layeredPane.setLayer(SuperSweetTutorialbuttonPanel, 1);
         layeredPane.add(SuperSweetTutorialMenuPanel); //1
         layeredPane.setLayer(SuperSweetTutorialMenuPanel, 1);
         layeredPane.add(foundKeyTutorialMenuPanel); //1
@@ -337,7 +338,7 @@ public class GUIClass
         RetryMenuPanel.setVisible(false);
         RTbuttonPanel.setVisible(false);
         SuperSweetTutorialMenuPanel.setVisible(false);
-        SuperSweetTutorialbuttonPanel.setVisible(false);
+        //SuperSweetTutorialbuttonPanel.setVisible(false);
         foundKeyTutorialMenuPanel.setVisible(false);
 
         if(Objects.equals(gameStates, "MenuSystem"))
@@ -507,7 +508,7 @@ public class GUIClass
             {
                 System.out.println("Supersweettutorial Menu Continue button pressed");
                 SuperSweetTutorialMenuPanel.setVisible(false);
-                SuperSweetTutorialbuttonPanel.setVisible(false);
+                //SuperSweetTutorialbuttonPanel.setVisible(false);
                 game.superSweetsEaten = 2;
                 game.unPauseGame();
             }

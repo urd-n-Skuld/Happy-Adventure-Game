@@ -344,7 +344,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         {
             gamePause = true;
             menuObj.SuperSweetTutorialMenuPanel.setVisible(true);
-            menuObj.SuperSweetTutorialbuttonPanel.setVisible(true);
+            //menuObj.SuperSweetTutorialbuttonPanel.setVisible(true);
         }
         if(gamePause && keysFound == 1 && firstKeyFound)
         {
@@ -529,13 +529,15 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         //Removing the enemies that have been converted to friendlies
         for (EnemyClass enemy : enemiesToRemove) {
             FriendClass friend;
-            if (enemy.getType() >= 24 && enemy.getType() <= 26) {
+            if ((enemy.getType() >= 24 && enemy.getType() <= 26))
+            {
                 friend = new FriendClass(enemy.getPosX(), enemy.getPosY(), enemy.getType() + 3, enemy.getGridLoc());
             } else { //if (enemy.getType() >= 43 && enemy.getType() <= 47)
                 friend = new FriendClass(enemy.getPosX(), enemy.getPosY(), enemy.getType() -17, enemy.getGridLoc());
             }
             friend.initFriendSprites(this);
             friend.setFriendFollow();
+            playAudio(audioObj.friendly);
             friendObj.add(friend);
             enemyObj.remove(enemy); // Remove enemies from the enemyObj list
             HUDtot[4]--;
@@ -979,6 +981,12 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 menuObj.foundKeyTutorialMenuPanel.setVisible(false);
                 keysFound = 2;
             }
+            if(menuObj.SuperSweetTutorialMenuPanel.isVisible())
+            {
+                unPauseGame();
+                menuObj.SuperSweetTutorialMenuPanel.setVisible(false);
+                superSweetsEaten = 2;
+            }
         }
     }
 
@@ -1012,7 +1020,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
 
     public boolean collisionCheck(double dt) {
 //System.out.println("collisioncheck called");
-
+        ArrayList<FriendClass> friendliesToRemove = new ArrayList<>();
         int posX = happyObj.getPosX();
         int posY = happyObj.getPosY();
         int HBposX = happyObj.getHitBoxX();
@@ -1292,7 +1300,12 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 if (distance(happyObj.hitBox.getMinX(), happyObj.hitBox.getMinY(), block.getPosX(), block.getPosY())<29)
                 {
                     if (block instanceof FriendClass myfriend){
+                        if(!myfriend.getFollow())
+                        {
+                            playAudio(audioObj.friendly);
+                        }
                         myfriend.setFriendFollow();
+
                     }
 
                     break;
@@ -1310,13 +1323,22 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
 //            }
             else if (type == 7) {
                 for (FriendClass friend : friendObj) {
-                    if (distance(friend.getPosX(), friend.getPosY(), block.getPosX(), block.getPosY()) < 50) {
+                    if (distance(friend.getPosX(), friend.getPosY(), block.getPosX(), block.getPosY()) < 20) {
                         friend.setSaved();
+                        friendliesToRemove.add(friend);
                     }
                 }
-
             }
         }
+        if(friendliesToRemove.size() > 0)
+        {
+            for(FriendClass friend : friendliesToRemove)
+            {
+                playAudio(audioObj.byebye);
+                friendObj.remove(friend);
+            }
+        }
+
         return false;
 
     }
@@ -1325,6 +1347,12 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         gridObj.get(block.getCellIndex()).setBlockType(-1);
         gridObj.get(block.getCellIndex()).setActiveInd(false);
         myblocks.remove(block);
+    }
+    private void deleteFriend(FriendClass friend)
+    {
+        gridObj.get(friend.getCellIndex()).setBlockType(-1);
+        gridObj.get(friend.getCellIndex()).setActiveInd(false);
+        friendObj.remove(friend);
     }
 
     private void deleteEnemy(EnemyClass enemy) {
