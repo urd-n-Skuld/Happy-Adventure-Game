@@ -10,7 +10,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     //------------------------------------------------------
     //Global generic variables
     //------------------------------------------------------
-    int numCols, numRows, superSweetsEaten, keysFound, noKeypopup;       //These values are initialised when the world map is loaded (See loadBlocks())
+    int numCols, numRows, superSweetsEaten, keysFound, noKeypopup, friendsSaved;       //These values are initialised when the world map is loaded (See loadBlocks())
     static int blockSize = 25, blockVelX = 50, blockVelY = 50;
     public boolean showHitboxes, showGrid = false;
     Timer hitTimer = new Timer();
@@ -22,7 +22,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     //String csvFile = "images/WorldMaps/Horisontal world.csv";
 
     // putting this here allows easier changes
-    static boolean death, gameOver, gamePause, firstSuperSweetEaten, firstKeyFound;;
+    static boolean death, gameOver, gamePause, firstSuperSweetEaten, firstKeyFound, firstFriendSaved;
     public boolean softResetIsTrue;
 
     //volpy HUD variables
@@ -130,6 +130,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         superSweetsEaten = 0;
         firstKeyFound = false;
         keysFound = 0;
+        firstFriendSaved = false;
+        friendsSaved = 0;
         noKeypopup = 0;
 
         initAudio();// line 109
@@ -352,6 +354,11 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         {
             gamePause = true;
             menuObj.foundKeyTutorialMenuPanel.setVisible(true);
+        }
+        if(gamePause && firstFriendSaved)
+        {
+            gamePause = true;
+            menuObj.rescueFirstFriendTutorialMenuPanel.setVisible(true);
         }
         if ((!gameOver) && (!gamePause))
         {
@@ -1012,6 +1019,11 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 unPauseGame();
                 menuObj.noKeyTutorialMenuPanel.setVisible(false);
             }
+            if(menuObj.rescueFirstFriendTutorialMenuPanel.isVisible())
+            {
+                unPauseGame();
+                menuObj.rescueFirstFriendTutorialMenuPanel.setVisible(false);
+            }
         }
     }
 
@@ -1334,8 +1346,15 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                         if(!myfriend.getFollow() && !myfriend.getSaved())
                         {
                             playAudio(audioObj.friendly);
+                            if((friendsSaved == 0) && (!firstFriendSaved))
+                            {
+                                firstFriendSaved = true;
+                                friendsSaved = 1;
+                                pauseGame();
+                            }
                         }
                         myfriend.setFriendFollow();
+
 
                     }
 
