@@ -841,7 +841,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 //friendImage = i * 2;
                 friendImage = (friendObj.get(i).getType() - 27) * 2;
             }
-            if (i > 3) { friendImage = 0; }
+            //if (i > 3) { friendImage = 0; }
+            if (friendImage < 0 || friendImage > 7) { friendImage = 0; } //Prevents array out of bounds exception
             int friendPosX = friendObj.get(i).getPosX() - drawX;
             int friendPosY = friendObj.get(i).getPosY() - drawY;
             drawImage(friendImageArray[friendImage][happyIndex], friendPosX, friendPosY, blockSize, blockSize);
