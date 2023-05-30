@@ -963,15 +963,27 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             if (showHitboxes) showHitboxes = false;
             else showHitboxes = true;
         }
-        if (event.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            if (gameStates == "PlayGame") {
-                if (menuObj.PauseMenuPanel.isVisible()) {
+        if (event.getKeyCode() == KeyEvent.VK_ESCAPE)
+        {
+            if (gameStates == "PlayGame")
+            {
+                if (menuObj.PauseMenuPanel.isVisible())
+                {
+                    unPauseGame();
                     menuObj.PauseMenuPanel.setVisible(false);
                     menuObj.PAbuttonPanel.setVisible(false);
-                } else {
+                } else
+                {
+                    pauseGame();
                     menuObj.PauseMenuPanel.setVisible(true);
                     menuObj.PAbuttonPanel.setVisible(true);
                 }
+            }
+            if (menuObj.CreditsMenuPanel.isVisible())
+            {
+                menuObj.CreditsMenuPanel.setVisible(false);
+                menuObj.MainMenuPanel.setVisible(true);
+                menuObj.MMbuttonPanel.setVisible(true);
             }
         }
         if (event.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -986,6 +998,12 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 unPauseGame();
                 menuObj.SuperSweetTutorialMenuPanel.setVisible(false);
                 superSweetsEaten = 2;
+            }
+            if(menuObj.CreditsMenuPanel.isVisible())
+            {
+                menuObj.CreditsMenuPanel.setVisible(false);
+                menuObj.MainMenuPanel.setVisible(true);
+                menuObj.MMbuttonPanel.setVisible(true);
             }
         }
     }
@@ -1300,7 +1318,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 if (distance(happyObj.hitBox.getMinX(), happyObj.hitBox.getMinY(), block.getPosX(), block.getPosY())<29)
                 {
                     if (block instanceof FriendClass myfriend){
-                        if(!myfriend.getFollow())
+                        if(!myfriend.getFollow() && !myfriend.getSaved())
                         {
                             playAudio(audioObj.friendly);
                         }

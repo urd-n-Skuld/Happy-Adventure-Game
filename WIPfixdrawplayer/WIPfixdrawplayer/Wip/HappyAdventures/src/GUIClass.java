@@ -267,7 +267,7 @@ public class GUIClass
         //Set the settings for each menu panel - Retry Menu
         RetryMenuPanel.setBackground(new Color(0, 0, 0, 0)); // set background color to transparent
         RetryMenuPanel.setOpaque(false); // make the panel transparent
-        RetryMenuPanel.setBounds((game.width() - menuWidth) / 2, (game.height() - menuHeight) /2, menuWidth, menuHeight);
+        RetryMenuPanel.setBounds(0, 0, game.frameWidth, game.frameHeight);
         RTbuttonPanel.setOpaque(false);
         RTbuttonPanel.setLayout(new BoxLayout(RTbuttonPanel, BoxLayout.PAGE_AXIS)); // set layout to place buttons in a column
 
