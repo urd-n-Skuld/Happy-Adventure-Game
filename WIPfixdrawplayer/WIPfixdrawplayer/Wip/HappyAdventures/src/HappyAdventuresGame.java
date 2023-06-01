@@ -67,9 +67,9 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                     loadImage("images/Sprites/spikesUp25px.png"),//3
                     loadImage("images/Sprites/fire.png"),//4 to create the fire sprite
                     loadImage("images/Sprites/vine.png"),//5
-                    loadImage("images/Sprites/vine.png"),//6 need safe zone
-                    loadImage("images/Sprites/safezonesign.png"),//7 need checkpoint sprites
-                    loadImage("images/Sprites/checkpointInactive.png"),//8 need checkpoint
+                    loadImage("images/Sprites/houseBG.png"),//6 need safe zone HOUSE VOLPY
+                    loadImage("images/Sprites/caveBottom.png"),//7 CAVE BOTTOM
+                    loadImage("images/Sprites/caveTop.png"),//8 cave top
                     loadImage("images/Sprites/door_red25x.png"),//9
                     loadImage("images/Sprites/door_blue25x.png"),//10
                     loadImage("images/Sprites/door_yellow25x.png"),//11
@@ -112,6 +112,21 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                     loadImage("images/Sprites/blockBGPurple25px.png"),//48
                     loadImage("images/Sprites/exitcheckpoint.png"),//49
                     loadImage("images/Sprites/secretblock1.png"),//50
+                    loadImage("images/Sprites/caveTopRight.png"),//51 = volpy cave top right
+                    //Arrows
+                    loadImage("images/Sprites/arrowRight.png"),//52
+                    loadImage("images/Sprites/arrowLeft.png"),//53
+                    loadImage("images/Sprites/arrowUpRight.png"),//54
+                    loadImage("images/Sprites/arrowUpLeft.png"),//55
+                    loadImage("images/Sprites/arrowDownRight.png"),//56
+                    loadImage("images/Sprites/arrowDownLeft.png"),//57
+                    loadImage("images/Sprites/arrowUpandRight.png"),//58
+                    loadImage("images/Sprites/bothWays.png"),//59
+                    loadImage("images/Sprites/arrowUpRightLeft.png"),//60
+                    loadImage("images/Sprites/exitcheckpoint.png"),// 61 is mapped to the new safe house checkpoint
+                    loadImage("images/Sprites/exitsign.png"),//62 is mapped to the new exit sign image
+                    loadImage("images/Sprites/exitcheckpoint.png")// 63 is mapped to the new friend checkpoints
+
             };
 
     //------------------------------------------------------
@@ -732,6 +747,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
             drawY = 0;
         }
 
+        drawVisualAssets(drawX,drawY);
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numCols; col++) {
                 int index = row * numCols + col;
@@ -741,7 +757,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
 
                 //System.out.println("index: " + index + " row" + row + " col: " + col + " numCols: " + numCols + " numRows: " + numRows + " arraysize: " + gridObj.size() + " type: " + gridObj.get(index).getBlockType() );
                 //if (type != -1 && type != 31 && type != 24 && type != 25 && type != 26 && type != 27 && type != 28 && type != 29)
-                if (type != -1 && type != 31 && !(type >= 24 && type <= 29) && (type != 4) && (type != 19) && (type != 33) && (type != 42) && !(type >= 43 && type <= 47)) //Not air, happy, enemies, friends, fire, hearts, or floating blocks
+                if (type != -1 && type != 31 && !(type >= 24 && type <= 29) && (type != 4) && (type != 19)&& (type != 7) && (type != 8) && (type != 51)&& (type != 6) && (type != 33) && (type != 42) && !(type >= 43 && type <= 47) && !(type >= 52 && type <= 63)) //Not air, happy, enemies, friends, fire, hearts, or floating blocks
                 {
                     if (x >= minDrawPosX && x <= maxDrawPosX && y >= minDrawPosY && y <= maxDrawPosY) {
                         drawImage(blockIMG[type], x, y, blockSize, blockSize);
@@ -758,6 +774,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         drawBlockAnimations(drawX, drawY);
         drawSecretAreas(drawX, drawY);
     }
+
+
 
     //------------------------------------------------------
     //Game loop component to draw the playable character
@@ -920,6 +938,102 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 int blockPosX = secretArea.getPosX() - drawX;
                 int blockPosY = secretArea.getPosY() - drawY;
                 drawImage(blockIMG[50], blockPosX, blockPosY, 25, 25);
+            }
+        }
+    }
+
+    public void drawVisualAssets (int drawX, int drawY)
+    {
+        for (int i = 0; i < myblocks.size(); i++)
+        {
+            if(myblocks.get(i).getType() == 6)
+            {
+                int blockPosX = myblocks.get(i).getPosX() - drawX;
+                int blockPosY = myblocks.get(i).getPosY() - drawY;
+                drawImage(blockIMG[6], blockPosX, blockPosY, 525, 175);
+
+            }
+            if(myblocks.get(i).getType() == 7)
+            {
+                int blockPosX = myblocks.get(i).getPosX() - drawX;
+                int blockPosY = myblocks.get(i).getPosY() - drawY;
+                drawImage(blockIMG[7], blockPosX, blockPosY, 775, 225);
+            }
+            if(myblocks.get(i).getType() == 8)
+            {
+                int blockPosX = myblocks.get(i).getPosX() - drawX;
+                int blockPosY = myblocks.get(i).getPosY() - drawY;
+                drawImage(blockIMG[8], blockPosX, blockPosY, 600, 850);
+            }
+            if(myblocks.get(i).getType() == 51)
+            {
+
+                int blockPosX = myblocks.get(i).getPosX() - drawX;
+                int blockPosY = myblocks.get(i).getPosY() - drawY;
+                drawImage(blockIMG[51], blockPosX, blockPosY, 800, 250);
+            }
+            if(myblocks.get(i).getType() == 52)
+            {
+
+                int blockPosX = myblocks.get(i).getPosX() - drawX;
+                int blockPosY = myblocks.get(i).getPosY() - drawY;
+                drawImage(blockIMG[52], blockPosX, blockPosY, 50, 50);
+            }
+            if(myblocks.get(i).getType() == 53)
+            {
+
+                int blockPosX = myblocks.get(i).getPosX() - drawX;
+                int blockPosY = myblocks.get(i).getPosY() - drawY;
+                drawImage(blockIMG[53], blockPosX, blockPosY, 50, 50);
+            }
+            if(myblocks.get(i).getType() == 54)
+            {
+
+                int blockPosX = myblocks.get(i).getPosX() - drawX;
+                int blockPosY = myblocks.get(i).getPosY() - drawY;
+                drawImage(blockIMG[54], blockPosX, blockPosY, 50, 50);
+            }
+            if(myblocks.get(i).getType() == 55)
+            {
+
+                int blockPosX = myblocks.get(i).getPosX() - drawX;
+                int blockPosY = myblocks.get(i).getPosY() - drawY;
+                drawImage(blockIMG[55], blockPosX, blockPosY, 50, 50);
+            }
+            if(myblocks.get(i).getType() == 56)
+            {
+
+                int blockPosX = myblocks.get(i).getPosX() - drawX;
+                int blockPosY = myblocks.get(i).getPosY() - drawY;
+                drawImage(blockIMG[56], blockPosX, blockPosY, 50, 50);
+            }
+            if(myblocks.get(i).getType() == 57)
+            {
+
+                int blockPosX = myblocks.get(i).getPosX() - drawX;
+                int blockPosY = myblocks.get(i).getPosY() - drawY;
+                drawImage(blockIMG[56], blockPosX, blockPosY, 50, 50);
+            }
+            if(myblocks.get(i).getType() == 58)
+            {
+
+                int blockPosX = myblocks.get(i).getPosX() - drawX;
+                int blockPosY = myblocks.get(i).getPosY() - drawY;
+                drawImage(blockIMG[58], blockPosX, blockPosY, 50, 50);
+            }
+            if(myblocks.get(i).getType() == 59)
+            {
+
+                int blockPosX = myblocks.get(i).getPosX() - drawX;
+                int blockPosY = myblocks.get(i).getPosY() - drawY;
+                drawImage(blockIMG[59], blockPosX, blockPosY, 50, 50);
+            }
+            if(myblocks.get(i).getType() == 60)
+            {
+
+                int blockPosX = myblocks.get(i).getPosX() - drawX;
+                int blockPosY = myblocks.get(i).getPosY() - drawY;
+                drawImage(blockIMG[60], blockPosX, blockPosY, 50, 50);
             }
         }
     }
@@ -1415,7 +1529,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
 //                    break;
 //                }
 //            }
-            else if (type == 7) //Safe zone checkpoint
+            else if (type == 61) //Safe zone checkpoint
             {
                 for (FriendClass friend : friendObj) {
                     if (distance(friend.getPosX(), friend.getPosY(), block.getPosX(), block.getPosY()) < 20) {
