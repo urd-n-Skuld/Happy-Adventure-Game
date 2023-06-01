@@ -27,8 +27,6 @@ public class GUIClass
     JPanel RTbuttonPanel = new JPanel();
     JPanel HTPbuttonPanel = new JPanel();
     JPanel CRbuttonPanel = new JPanel();
-    //JPanel SuperSweetTutorialbuttonPanel = new JPanel();
-
 
     public void setupGUI(HappyAdventuresGame game, JFrame frame, GameEngine.GamePanel mPanel, String gameStates)
     {
@@ -59,14 +57,11 @@ public class GUIClass
         ImageIcon quitHoverButtonIm = new ImageIcon("images/Menus/QuitHoverBTN.png");
         ImageIcon creditsButtonIm = new ImageIcon("images/Menus/CreditsBTN.png");
         ImageIcon creditsHoverButtonIm = new ImageIcon("images/Menus/CreditsHoverBTN.png");
-        //ImageIcon multiPlayerButtonIm = new ImageIcon("images/Menus/MultiPlayerBTN.png");
-        //ImageIcon multiPlayerHoverButtonIm = new ImageIcon("images/Menus/multiPlayerHoverBTN.png");
         ImageIcon noButtonIm = new ImageIcon("images/Menus/NoBTN.png");
         ImageIcon noHoverButtonIm = new ImageIcon("images/Menus/NoHoverBTN.png");
         ImageIcon yesButtonIm = new ImageIcon("images/Menus/YesBTN.png");
         ImageIcon yesHoverButtonIm = new ImageIcon("images/Menus/YesHoverBTN.png");
         ImageIcon continueButtonIm = new ImageIcon("images/Menus/continueBTN.png");
-        ImageIcon continueHoverButtonIm = new ImageIcon("images/Menus/continueHoverBTN.png");
         ImageIcon mainMenuButtonIm = new ImageIcon("images/Menus/MainMenuBTN.png");
         ImageIcon mainMenuHoverButtonIm = new ImageIcon("images/Menus/MainMenuHoverBTN.png");
         ImageIcon readyButtonIm = new ImageIcon("images/Menus/imreadyBTN.png");
@@ -80,7 +75,6 @@ public class GUIClass
         JButton MMquitButton = new JButton();
         JButton PAquitButton = new JButton();
         JButton creditsButton = new JButton();
-        //JButton multiPlayerButton = new JButton();
         JButton RTnoButton = new JButton();
         JButton QUnoButton = new JButton();
         JButton RTyesButton = new JButton();
@@ -100,8 +94,6 @@ public class GUIClass
         PAquitButton.setRolloverIcon(quitHoverButtonIm);
         creditsButton.setIcon(creditsButtonIm);
         creditsButton.setRolloverIcon(creditsHoverButtonIm);
-        //multiPlayerButton.setIcon(multiPlayerButtonIm);
-        //multiPlayerButton.setRolloverIcon(multiPlayerHoverButtonIm);
         RTnoButton.setIcon(noButtonIm);
         RTnoButton.setRolloverIcon(noHoverButtonIm);
         QUnoButton.setIcon(noButtonIm);
@@ -138,10 +130,6 @@ public class GUIClass
         creditsButton.setContentAreaFilled(false);
         creditsButton.setFocusPainted(false);
         creditsButton.setPreferredSize(new Dimension(creditsButtonIm.getIconWidth(), creditsButtonIm.getIconHeight()));
-        //multiPlayerButton.setBorder(null);
-        //multiPlayerButton.setContentAreaFilled(false);
-        //multiPlayerButton.setFocusPainted(false);
-        //multiPlayerButton.setPreferredSize(new Dimension(multiPlayerButtonIm.getIconWidth(), multiPlayerButtonIm.getIconHeight()));
         RTnoButton.setBorder(null);
         RTnoButton.setContentAreaFilled(false);
         RTnoButton.setFocusPainted(false);
@@ -174,8 +162,6 @@ public class GUIClass
         // Add the buttons to the Main Menu button panel
         MMbuttonPanel.add(Box.createVerticalGlue());        //create vertical spacing between each button
         MMbuttonPanel.add(MMplayButton);
-        //MMbuttonPanel.add(Box.createRigidArea(new Dimension(0, 15))); // add some transparent space between the buttons of specific size
-        //MMbuttonPanel.add(multiPlayerButton);
         MMbuttonPanel.add(Box.createRigidArea(new Dimension(0, 15))); // add some transparent space between the buttons of specific size
         MMbuttonPanel.add(creditsButton);
         MMbuttonPanel.add(Box.createRigidArea(new Dimension(0, 15))); // add some transparent space between the buttons of specific size
@@ -212,11 +198,6 @@ public class GUIClass
         RTbuttonPanel.add(Box.createRigidArea(new Dimension(0, 15))); // add some transparent space between the buttons of specific size
         RTbuttonPanel.add(RTnoButton);
         RTbuttonPanel.add(Box.createVerticalGlue());        //create vertical spacing between each button
-
-        /*// Add the buttons to the Quit Menu button panel
-        SuperSweetTutorialbuttonPanel.add(Box.createVerticalGlue());        //create vertical spacing between each button
-        SuperSweetTutorialbuttonPanel.add(SSTresumeButton);
-        SuperSweetTutorialbuttonPanel.add(Box.createVerticalGlue());        //create vertical spacing between each button*/
 
         //Set the location of the button panel
         MMbuttonPanel.setBounds((game.width() - playButtonIm.getIconWidth()) / 2, 100, MMBackgroundImage.getWidth(null), MMBackgroundImage.getHeight(null));
@@ -287,10 +268,7 @@ public class GUIClass
         //Set the settings for each menu panel - SuperSweetTutorial Menu
         SuperSweetTutorialMenuPanel.setBackground(new Color(0, 0, 0, 0)); // set background color to transparent
         SuperSweetTutorialMenuPanel.setOpaque(false); // make the panel transparent
-        //SuperSweetTutorialMenuPanel.setBounds((game.width() - menuWidth) / 2+20, (game.height() - menuHeight) /2+110, 244, 145);
         SuperSweetTutorialMenuPanel.setBounds((game.width() / 2) - 127, game.height() /2-75, 264, 165);
-        //SuperSweetTutorialbuttonPanel.setOpaque(false);
-        //SuperSweetTutorialbuttonPanel.setLayout(new BoxLayout(SuperSweetTutorialbuttonPanel, BoxLayout.PAGE_AXIS)); // set layout to place buttons in a column
 
         //Set the settings for each menu panel - SuperSweetTutorial Menu
         foundKeyTutorialMenuPanel.setBackground(new Color(0, 0, 0, 0)); // set background color to transparent
@@ -344,8 +322,6 @@ public class GUIClass
         layeredPane.setLayer(RTbuttonPanel, 1);
         layeredPane.add(RetryMenuPanel); //1
         layeredPane.setLayer(RetryMenuPanel, 1);
-        //layeredPane.add(SuperSweetTutorialbuttonPanel); //1
-        //layeredPane.setLayer(SuperSweetTutorialbuttonPanel, 1);
         layeredPane.add(SuperSweetTutorialMenuPanel); //1
         layeredPane.setLayer(SuperSweetTutorialMenuPanel, 1);
         layeredPane.add(foundKeyTutorialMenuPanel); //1
@@ -377,7 +353,6 @@ public class GUIClass
         RetryMenuPanel.setVisible(false);
         RTbuttonPanel.setVisible(false);
         SuperSweetTutorialMenuPanel.setVisible(false);
-        //SuperSweetTutorialbuttonPanel.setVisible(false);
         foundKeyTutorialMenuPanel.setVisible(false);
         noKeyTutorialMenuPanel.setVisible(false);
         rescueFirstFriendTutorialMenuPanel.setVisible(false);
@@ -421,20 +396,6 @@ public class GUIClass
                 HTPbuttonPanel.setVisible(false);
             }
         });
-
-        //Set the keyListeners for each of the buttons in the different menu screens
-        /*multiPlayerButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {System.out.println("Main Menu MultiPlayer button pressed");
-                game.gameOver = false;
-                game.gameStates = "2Player";
-                //game.score = 0; //Add a new score for 2nd player
-                MainMenuPanel.setVisible(false);
-                MMbuttonPanel.setVisible(false);
-            }
-        });*/
 
         creditsButton.addActionListener(new ActionListener()
         {
@@ -558,10 +519,5 @@ public class GUIClass
                 game.unPauseGame();
             }
         });
-
-        /*mainMenuButton.addActionListener(new ActionListener()
-        {
-
-        });*/
     }
 }

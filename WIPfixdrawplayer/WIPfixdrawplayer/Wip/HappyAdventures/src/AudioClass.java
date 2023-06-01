@@ -16,7 +16,8 @@ public class AudioClass
 
     public void setupAudio(HappyAdventuresGame game)
     {
-        game.startAudioLoop(bgMusic);
+        bgMusic = game.loadAudio("audio/BGMusic.wav");
+        game.startAudioLoop(bgMusic, -15f);
         jumpFX = game.loadAudio("audio/jump.wav");
         revive = game.loadAudio("audio/revive.wav");
         eatCandy = game.loadAudio("audio/candy.wav");
@@ -42,6 +43,5 @@ public class AudioClass
     public void playAudioEatCandy(HappyAdventuresGame game, GameEngine.AudioClip eatCandy) { game.playAudio(eatCandy,-10f); }
     public void playAudioWasHit(HappyAdventuresGame game, GameEngine.AudioClip wasHit) { game.playAudio(wasHit,-10f);}
     public void playAudioExtraLife(HappyAdventuresGame game, GameEngine.AudioClip extraLife) { game.playAudio(extraLife,-10f);}
-    public void playAudioFriendSaved(HappyAdventuresGame game, GameEngine.AudioClip friendly) { game.playAudio(friendly,-10f);}
 
 }

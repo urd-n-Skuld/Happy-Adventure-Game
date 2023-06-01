@@ -7,11 +7,9 @@ public class BlockClass{
     private int posX, posY, type, cellIndex, startX, startY;
     private Image[][] blockAnimArray = new Image[2][15];
     // init
-
     public BlockClass(int x, int y, int type) { this.posX = x; this.posY = y; this.type = type; this.startX = x; this.startY = y; }
 
-    //set
-
+    //setters
     public void setPosX(int x) { posX = x; }
     public void setPosY(int y) { posY = y; }
     public void setType(int t) { type = t; }
@@ -29,8 +27,7 @@ public class BlockClass{
         else { hitBox = new Rectangle(x, y, w, h); }
     }
 
-    // Get
-
+    // Getters
     public int getPosX() { return posX; }
     public int getPosY() { return posY; }
     public int getType() { return type; }

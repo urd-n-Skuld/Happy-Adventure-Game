@@ -28,7 +28,6 @@ public class loadCSV {
 
                 for (String col : columns)
                 {
-//System.out.println(i + " " + column + " " + row);
                     int x = column * blockSize;
                     int y = row * blockSize;
                     type = Integer.parseInt(col);
@@ -113,12 +112,10 @@ public class loadCSV {
     }
     public static int getCol()
     {
-        //System.out.println(" loadBlocks Line 81 " +numCols+ " numCols ");
         return numCols;
     }
     public static int getRows()
     {
-        //System.out.println(" loadBlocks Line 86 " +numRows+ " numRows ");
         return numRows;
     }
 

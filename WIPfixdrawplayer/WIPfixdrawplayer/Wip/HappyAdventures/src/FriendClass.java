@@ -7,11 +7,6 @@ public class FriendClass extends BlockClass {
     private final int  StartX, StartY, gridLoc;
     private final Image[][] ImageArray = new Image[8][15];
 
-
-
-
-    // init
-
     public FriendClass(int x, int y, int type, int gridIndex) {
         super(x, y, type);
         this.posX = x;
@@ -33,8 +28,7 @@ public class FriendClass extends BlockClass {
         }
     }
 
-    // set
-
+    // setters
     public void setFriendFollow() { if(!saved) {this.follow = true;} }
     @Override
     public void setblockHitBox(int x, int y, int w, int h)
@@ -50,9 +44,7 @@ public class FriendClass extends BlockClass {
 
     }
 
-    //get
-
-
+    //getters
     @Override public int getPosX() { return posX; }
     @Override public int getPosY() { return posY; }
     public boolean getSaved() { return this.saved; }
@@ -61,8 +53,6 @@ public class FriendClass extends BlockClass {
     public Image[][] getImageArray() { return ImageArray; }
 
     // class specific
-
-
     public void Move(double HappyX, double HappyY, double distance) {
         this.posX += ((HappyX - this.posX) / distance) * (distance/5);
         this.posY += ((HappyY - this.posY) / distance) * (distance/5);

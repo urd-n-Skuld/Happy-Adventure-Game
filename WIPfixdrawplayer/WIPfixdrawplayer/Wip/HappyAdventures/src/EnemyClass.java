@@ -9,8 +9,6 @@ public class EnemyClass extends BlockClass {
     private int leftTravelMax, rightTravelMax;
     private Image[][] ImageArray = new Image[8][15];
 
-    // init
-
     public EnemyClass(int x, int y, int type, int gridIndex) {
         super(x, y, type);
         this.locX = x;
@@ -30,8 +28,7 @@ public class EnemyClass extends BlockClass {
         }
     }
 
-    //set
-
+    //setters
     public void setMaxLeft(int max, int blockSize){ this.leftTravelMax = max; }
     public void setMaxRight(int max, int blockSize){ this.rightTravelMax = max; }
     public void setEnemyHitBox(int x, int y, int w, int h)
@@ -39,8 +36,7 @@ public class EnemyClass extends BlockClass {
         hitBox = new Rectangle(x, y, w, h);
     }
 
-    //get
-
+    //getters
     @Override public int getPosY() {
         return locY;
     }
@@ -53,7 +49,6 @@ public class EnemyClass extends BlockClass {
     }
 
     // class specific
-
     public void Move() {
         this.locX += (int) VelX;
         if ((this.locX <= leftTravelMax)||(this.locX >= rightTravelMax)) { VelX *= -1; }

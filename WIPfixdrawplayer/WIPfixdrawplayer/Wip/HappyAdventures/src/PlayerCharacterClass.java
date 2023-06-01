@@ -46,10 +46,6 @@ public class PlayerCharacterClass
         {
             return gameObj.loadImage("images/Sprites/happy.png");
         }
-        else if (type == 32)
-        {
-            //return gameObj.loadImage("images/Sprites/bappy.png");
-        }
         return null;
     }
     public void loadPlayerSprites(HappyAdventuresGame gameObj)
@@ -64,7 +60,6 @@ public class PlayerCharacterClass
             }
         }
     }
-
 
     public void createHitBox(int x, int y, int s)
     {
