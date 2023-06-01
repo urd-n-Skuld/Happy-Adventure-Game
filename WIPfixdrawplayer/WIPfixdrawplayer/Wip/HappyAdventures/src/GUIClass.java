@@ -19,6 +19,8 @@ public class GUIClass
     JPanel rescueFirstFriendTutorialMenuPanel = new JPanel();
     JPanel foundKeyTutorialMenuPanel = new JPanel();
     JPanel noKeyTutorialMenuPanel = new JPanel();
+    JPanel endScreen1MenuPanel = new JPanel();
+    JPanel endScreen2MenuPanel = new JPanel();
     JPanel MMbuttonPanel = new JPanel();
     JPanel PAbuttonPanel = new JPanel();
     JPanel QUbuttonPanel = new JPanel();
@@ -49,6 +51,8 @@ public class GUIClass
         Image FFKBackgroundImage = game.loadImage("images/Menus/keypopup.png");
         Image NKBackgroundImage = game.loadImage("images/Menus/missingKey.png");
         Image FFBackgroundImage = game.loadImage("images/Menus/thankYou.png");
+        Image ES1BackgroundImage = game.loadImage("images/Menus/endScreen1.png");
+        Image ES2BackgroundImage = game.loadImage("images/Menus/endScreen2.png");
         ImageIcon playButtonIm = new ImageIcon("images/Menus/PlayBTN.png");
         ImageIcon playHoverButtonIm = new ImageIcon("images/Menus/PlayHoverBTN.png");
         ImageIcon quitButtonIm = new ImageIcon("images/Menus/QuitBTN.png");
@@ -234,6 +238,9 @@ public class GUIClass
         foundKeyTutorialMenuPanel.add(new JLabel(new ImageIcon(FFKBackgroundImage))); // add the image to a label and add the label to the panel
         noKeyTutorialMenuPanel.add(new JLabel(new ImageIcon(NKBackgroundImage)));
         rescueFirstFriendTutorialMenuPanel.add(new JLabel(new ImageIcon(FFBackgroundImage)));
+        endScreen1MenuPanel.add(new JLabel(new ImageIcon(ES1BackgroundImage)));
+        endScreen2MenuPanel.add(new JLabel(new ImageIcon(ES2BackgroundImage)));
+
 
         //Set the settings for each menu panel - Main Menu
         MainMenuPanel.setBackground(new Color(0, 0, 0, 0)); // set background color to transparent
@@ -300,6 +307,16 @@ public class GUIClass
         rescueFirstFriendTutorialMenuPanel.setOpaque(false); // make the panel transparent
         rescueFirstFriendTutorialMenuPanel.setBounds((game.width() / 2) - 127, game.height() /2-75, 264, 165);
 
+        //Set the settings for each menu panel - SuperSweetTutorial Menu
+        endScreen1MenuPanel.setBackground(new Color(0, 0, 0, 0)); // set background color to transparent
+        endScreen1MenuPanel.setOpaque(false); // make the panel transparent
+        endScreen1MenuPanel.setBounds(0, 0, game.frameWidth, game.frameHeight);
+
+        //Set the settings for each menu panel - SuperSweetTutorial Menu
+        endScreen2MenuPanel.setBackground(new Color(0, 0, 0, 0)); // set background color to transparent
+        endScreen2MenuPanel.setOpaque(false); // make the panel transparent
+        endScreen2MenuPanel.setBounds(0, 0, game.frameWidth, game.frameHeight);
+
         //Add all the menu panels to the layered pane of the frame
         layeredPane.add(mPanel);
         layeredPane.setLayer(mPanel, 0);
@@ -337,6 +354,10 @@ public class GUIClass
         layeredPane.setLayer(noKeyTutorialMenuPanel, 1);
         layeredPane.add(rescueFirstFriendTutorialMenuPanel); //1
         layeredPane.setLayer(rescueFirstFriendTutorialMenuPanel, 1);
+        layeredPane.add(endScreen1MenuPanel); //1
+        layeredPane.setLayer(endScreen1MenuPanel, 1);
+        layeredPane.add(endScreen2MenuPanel); //1
+        layeredPane.setLayer(endScreen2MenuPanel, 1);
 
         //Adding the layeredPane to the mFrame
         frame.setContentPane(layeredPane);
@@ -360,6 +381,8 @@ public class GUIClass
         foundKeyTutorialMenuPanel.setVisible(false);
         noKeyTutorialMenuPanel.setVisible(false);
         rescueFirstFriendTutorialMenuPanel.setVisible(false);
+        endScreen1MenuPanel.setVisible(false);
+        endScreen2MenuPanel.setVisible(false);
 
         if(Objects.equals(gameStates, "MenuSystem"))
         {

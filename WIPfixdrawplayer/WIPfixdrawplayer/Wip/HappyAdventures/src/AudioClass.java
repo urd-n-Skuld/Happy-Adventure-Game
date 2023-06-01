@@ -11,6 +11,8 @@ public class AudioClass
     GameEngine.AudioClip sweetSound;
     GameEngine.AudioClip doorBell;
     GameEngine.AudioClip byebye;
+    GameEngine.AudioClip endingClap;
+    GameEngine.AudioClip endingSad;
 
     public void setupAudio(HappyAdventuresGame game)
     {
@@ -25,6 +27,8 @@ public class AudioClass
         sweetSound = game.loadAudio("audio/superSweet.wav");
         doorBell = game.loadAudio("audio/doorBell.wav");
         byebye = game.loadAudio("audio/byebye.wav");
+        endingClap = game.loadAudio("audio/Ending.wav");
+        endingSad = game.loadAudio("audio/orangeSadMusic.wav");
     }
 
     public void playAudioJump(HappyAdventuresGame game, GameEngine.AudioClip jump)

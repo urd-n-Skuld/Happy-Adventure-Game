@@ -1,3 +1,11 @@
+/**********************************************************************************************
+ Happy's Adventures brought to you by:  The Good Gamers Team
+ Luiz dos Santos (07246870)
+ Willow Lunicke (22001021)
+ Mishke van Wyk (21002736)
+ Lisinda Gericke (16448443)
+***********************************************************************************************/
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,7 +18,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     //------------------------------------------------------
     //Global generic variables
     //------------------------------------------------------
-    int numCols, numRows, superSweetsEaten, keysFound, noKeypopup, friendsSaved;       //These values are initialised when the world map is loaded (See loadBlocks())
+    int numCols, numRows, superSweetsEaten, keysFound, noKeypopup, friendsSaved, reachEnd;       //These values are initialised when the world map is loaded (See loadBlocks())
     static int blockSize = 25, blockVelX = 50, blockVelY = 50;
     public boolean showHitboxes, showGrid = false;
     Timer hitTimer = new Timer();
@@ -22,8 +30,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
     //String csvFile = "images/WorldMaps/Horisontal world.csv";
 
     // putting this here allows easier changes
-    static boolean death, gameOver, gamePause, firstSuperSweetEaten, firstKeyFound, firstFriendSaved;
-    public boolean softResetIsTrue;
+    static boolean death, gameOver, gamePause, firstSuperSweetEaten, firstKeyFound, firstFriendSaved, endGame;
+    public boolean softResetIsTrue, directionUp;
 
     //volpy HUD variables
     int[] HUDtot = {0, 0, 0, 0, 0};
@@ -124,7 +132,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         setWindowSize(frameWidth, frameHeight);
 
         gameStates = "MenuSystem";    //Change this to "MenuSystem" if you want to turn on game menus
-        showHitboxes = death = gameOver = false;
+        showHitboxes = death = gameOver = endGame = false;
         gamePause = true;
         firstSuperSweetEaten = false;
         superSweetsEaten = 0;
@@ -133,6 +141,7 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         firstFriendSaved = false;
         friendsSaved = 0;
         noKeypopup = 0;
+        reachEnd = 0;
 
         initAudio();// line 109
         initWorld(csvFile, secretCSV);// line 176 .... creates variables for grid class
@@ -359,6 +368,10 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
         {
             gamePause = true;
             menuObj.rescueFirstFriendTutorialMenuPanel.setVisible(true);
+        }
+        if(gamePause && endGame && reachEnd == 0)
+        {
+            menuObj.endScreen1MenuPanel.setVisible(true);
         }
         if ((!gameOver) && (!gamePause))
         {
@@ -1024,6 +1037,18 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 unPauseGame();
                 menuObj.rescueFirstFriendTutorialMenuPanel.setVisible(false);
             }
+            if(menuObj.endScreen2MenuPanel.isVisible())
+            {
+                menuObj.endScreen2MenuPanel.setVisible(false);
+                menuObj.CreditsMenuPanel.setVisible(true);
+            }
+            if(menuObj.endScreen1MenuPanel.isVisible())
+            {
+                reachEnd++;
+                menuObj.endScreen1MenuPanel.setVisible(false);
+                playAudio(audioObj.endingSad);
+                menuObj.endScreen2MenuPanel.setVisible(true);
+            }
         }
     }
 
@@ -1144,7 +1169,6 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
 
                     }
                     //---------------------------------------------------
-
                     if (velY > 0 && happyObj.hitBox.getMaxY() >= block.hitBox.getMinY()) //Happy Top Collision
                     {
                         //Happy is falling down to the ground, his feet is going through the nearest block below
@@ -1191,16 +1215,26 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                         //blockAboveRightIndex = myblocks.indexOf(block) - numCols + 1;
                         //if (myblocks.get(blockAboveRightIndex).getType() != -1)
                         //{
-                        canMoveRight = false;
-                        rightKey = false;
-                        //}
-                        velX = 0;
-                        posX = (int) block.hitBox.getMinX() - 1 - blockSize;
-                        collided = false;
-                        isOnGround = checkIsOnGround(posX, posY);
-                        if (!isOnGround) {
-                            canJump = false;
+                        if(isFloating && directionUp)
+                        {
+                            //canMoveRight = false;
+                            //rightKey = false;
+                            posX += velX * dt;
                         }
+                        else
+                        {
+                            canMoveRight = false;
+                            rightKey = false;
+                            //}
+                            velX = 0;
+                            posX = (int) block.hitBox.getMinX() - 1 - blockSize;
+                            collided = false;
+                            isOnGround = checkIsOnGround(posX, posY);
+                            if (!isOnGround) {
+                                canJump = false;
+                            }
+                        }
+
                     } else if (velX < 0 && happyObj.hitBox.getMinX() <= block.hitBox.getMaxX()) //Happy Left Side Collision
                     {
                         //Happy is moving to the left, his left side is going through the block on the left
@@ -1212,19 +1246,29 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                         //blockAboveLeftIndex = myblocks.indexOf(block) - numCols - 1;
                         //if (myblocks.get(blockAboveLeftIndex).getType() != -1)
                         //{
-                        canMoveLeft = false;
-                        leftKey = false;
-                        //}
-                        velX = 0;
-                        posX = (int) block.hitBox.getMaxX() + 1;
-                        collided = false;
-                        isOnGround = checkIsOnGround(posX, posY);
-
-                        if (!isOnGround) {
-                            canJump = false;
-                        } else {
-                            canJump = true;
+                        if(isFloating && directionUp)
+                        {
+                            //canMoveLeft = false;
+                            //leftKey = false;
+                            posX += velX * dt;
                         }
+                        else
+                        {
+                            canMoveLeft = false;
+                            leftKey = false;
+                            //}
+                            velX = 0;
+                            posX = (int) block.hitBox.getMaxX() + 1;
+                            collided = false;
+                            isOnGround = checkIsOnGround(posX, posY);
+
+                            if (!isOnGround) {
+                                canJump = false;
+                            } else {
+                                canJump = true;
+                            }
+                        }
+
                         //System.out.println("isOnGround: " + isOnGround);
                     } else if ((velX == 0) && (velY == 0)) {
                         System.out.println("714 HAG Condition 5 is true. Collision occurred with VelX = 0 and VelY = 0... hmmmmm.....");
@@ -1371,12 +1415,23 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
 //                    break;
 //                }
 //            }
-            else if (type == 7) {
+            else if (type == 7) //Safe zone checkpoint
+            {
                 for (FriendClass friend : friendObj) {
                     if (distance(friend.getPosX(), friend.getPosY(), block.getPosX(), block.getPosY()) < 20) {
                         friend.setSaved();
                         friendliesToRemove.add(friend);
                     }
+                }
+            }
+            else if (type == 49) //Exit zone checkpoint
+            {
+                if ((((happyObj.hitBox.getMaxX() - 5 > block.getPosX() && happyObj.hitBox.getMaxX() - 5 < block.getPosX() + blockSize)) && (happyObj.hitBox.getMaxY() - 5 > block.getPosY() && happyObj.hitBox.getMaxY() - 5 < block.getPosY() + blockSize))
+                        || ((((happyObj.hitBox.getMinX() + 5 > block.getPosX() && happyObj.hitBox.getMinX() + 5 < block.getPosX() + blockSize)) && (happyObj.hitBox.getMinY() + 5 > block.getPosY() && happyObj.hitBox.getMinY() + 5 < block.getPosY() + blockSize))))
+                {
+                    endGame = true;
+                    pauseGame();
+                    playAudio(audioObj.endingClap);
                 }
             }
         }
@@ -1519,7 +1574,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                 block.setPosY(blockY);
 
                 if (blockY < maxTop)
-                {//If right side of block reaches maxtop
+                {//If top side of block reaches maxtop
+                    directionUp = false;
                     blockY = maxTop+1;     //reposition so that it doesn't lose space
                     block.setPosY(blockY);
                     blockVelY *= -1;
@@ -1529,7 +1585,8 @@ public class HappyAdventuresGame extends GameEngine implements ActionListener {
                     System.out.println(block.hitBox.getMinX() + " " + block.hitBox.getMaxX() + " " + block.hitBox.getMinY());
                 }
                 if (blockY > maxBottom)
-                {//If left side of the block reaches maxLeft
+                {//If bottom side of the block reaches maxLeft
+                    directionUp = true;
                     blockY = maxBottom -1;     //reposition so that it doesn't lose space
                     block.setPosY(blockY);
                     blockVelY *= -1;
